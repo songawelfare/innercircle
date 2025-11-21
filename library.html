@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>E-Library - I AM MUGERA</title>
-    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png">
+    <title>Library - THE SONGA WELFARE</title>
+    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -15,13 +15,17 @@
         }
 
         :root {
+            --gold: #D4AF37;
+            --gold-light: #F5E6B3;
+            --gold-dark: #B8860B;
             --black: #000000;
             --white: #ffffff;
             --gray: #f5f5f5;
             --dark-gray: #333333;
             --light-gray: #e0e0e0;
             --accent: #25D366;
-            --gold: #FFD700;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #128C7E;
         }
 
         html {
@@ -45,8 +49,7 @@
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-bottom: 1px solid var(--light-gray);
-            height: auto;
-            min-height: 60px;
+            height: 60px;
         }
 
         .header-container {
@@ -66,38 +69,38 @@
             width: auto;
         }
 
-        .search-container {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
-            position: relative;
+        .brand-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            color: var(--gold-dark);
         }
 
-        .search-bar {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--light-gray);
-            border-radius: 25px;
-            font-size: 0.9rem;
-            background-color: var(--gray);
-            transition: all 0.3s;
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .search-bar:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(37, 211, 102, 0.2);
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
+        .join-btn {
+            background-color: var(--gold);
+            color: var(--black);
             border: none;
-            color: var(--dark-gray);
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .join-btn:hover {
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         /* Main Content */
@@ -128,157 +131,81 @@
         .brand-title {
             font-size: 2.8rem;
             font-weight: 700;
-            color: var(--black);
+            color: var(--gold-dark);
             letter-spacing: 1px;
         }
 
-        /* Subscription Plans */
-        .subscription-plans {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+        .brand-subtitle {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            margin-top: 0.5rem;
+        }
+
+        /* Subscription Button */
+        .subscription-section {
+            text-align: center;
             margin-bottom: 3rem;
         }
 
-        .plan-card {
-            background: var(--white);
-            border: 2px solid var(--light-gray);
-            border-radius: 12px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-        }
-
-        .plan-card.featured {
-            border-color: var(--gold);
-            transform: scale(1.05);
-        }
-
-        .plan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .plan-badge {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gold);
+        .subscription-btn {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .plan-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--black);
-            color: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
-        }
-
-        .plan-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--black);
-        }
-
-        .plan-duration {
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            text-align: left;
-        }
-
-        .plan-features li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-
-        .plan-features i {
-            color: var(--accent);
-            font-size: 0.9rem;
-        }
-
-        .subscribe-btn {
-            background-color: var(--black);
-            color: var(--white);
             border: none;
             border-radius: 8px;
-            padding: 12px 30px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .subscription-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Content Tabs */
+        .content-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 24px;
             font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
+            border-radius: 6px;
+            transition: all 0.3s;
             font-weight: 600;
+            color: var(--dark-gray);
         }
 
-        .subscribe-btn:hover {
-            background-color: var(--dark-gray);
+        .tab-btn.active {
+            background-color: var(--gold);
+            color: var(--black);
         }
 
-        /* Library Categories */
-        .library-categories {
-            display: flex;
-            gap: 10px;
-            padding: 1rem 0;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-            scrollbar-width: none;
-            justify-content: center;
+        .tab-btn:hover:not(.active) {
+            background-color: var(--gold-light);
         }
 
-        .library-categories::-webkit-scrollbar {
+        /* Content Sections */
+        .content-section {
             display: none;
         }
 
-        .category-btn {
-            background: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 20px;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-
-        .category-btn.active {
-            background: var(--black);
-            color: var(--white);
-            border-color: var(--black);
+        .content-section.active {
+            display: block;
         }
 
         /* Books Grid */
@@ -434,35 +361,214 @@
             transform: scale(1.1);
         }
 
-        /* How It Works */
-        .how-it-works {
-            background-color: var(--gray);
-            border-radius: 12px;
-            padding: 3rem 2rem;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .steps-grid {
+        /* Articles Grid */
+        .articles-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
+            margin-bottom: 3rem;
         }
 
-        .step-card {
+        .article-card {
+            background-color: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-category {
+            color: var(--dark-gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .article-date {
+            color: var(--dark-gray);
+            font-size: 0.8rem;
+        }
+
+        .article-read-time {
+            color: var(--dark-gray);
+            font-size: 0.8rem;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .read-btn {
+            flex: 1;
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .read-btn:hover {
+            background-color: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* Subscription Modal */
+        .subscription-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .subscription-modal.active {
+            display: flex;
+        }
+
+        .subscription-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .subscription-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 1.5rem;
             text-align: center;
+            position: relative;
         }
 
-        .step-number {
-            width: 50px;
-            height: 50px;
+        .subscription-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subscription-body {
+            padding: 2rem;
+        }
+
+        .subscription-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .plan-card {
+            background: var(--white);
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .plan-card.featured {
+            border-color: var(--gold);
+            transform: scale(1.05);
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--black);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .plan-icon {
+            width: 60px;
+            height: 60px;
             background: var(--black);
             color: var(--white);
             border-radius: 50%;
@@ -470,19 +576,87 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.5rem;
         }
 
-        .step-title {
-            font-size: 1.1rem;
+        .plan-title {
+            font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
-        .step-description {
+        .plan-price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .plan-duration {
             color: var(--dark-gray);
             font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .subscribe-btn {
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        .subscribe-btn:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            color: var(--black);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
         }
 
         /* Contact Section */
@@ -496,6 +670,7 @@
 
         .contact-section h3 {
             margin-bottom: 1rem;
+            color: var(--gold-dark);
         }
 
         .contact-buttons {
@@ -506,8 +681,8 @@
         }
 
         .contact-btn {
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--gold);
+            color: var(--black);
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
@@ -517,49 +692,12 @@
             align-items: center;
             gap: 8px;
             transition: background-color 0.3s;
-        }
-
-        .contact-btn:hover {
-            background-color: var(--dark-gray);
-        }
-
-        /* Coffee Support Section */
-        .coffee-support {
-            background-color: var(--gray);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .coffee-support h2 {
-            margin-bottom: 1rem;
-        }
-
-        .coffee-support p {
-            margin-bottom: 1.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .coffee-btn {
-            background-color: #6F4E37;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
             font-weight: 600;
         }
 
-        .coffee-btn:hover {
-            background-color: #5a3e2b;
+        .contact-btn:hover {
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         /* Bottom Navigation */
@@ -592,11 +730,11 @@
         }
 
         .nav-item.active {
-            color: var(--black);
+            color: var(--gold-dark);
         }
 
         .nav-item:hover {
-            color: var(--black);
+            color: var(--gold-dark);
         }
 
         /* Responsive Design */
@@ -609,25 +747,9 @@
                 transform: none;
             }
             
-            .books-grid {
+            .books-grid, .articles-grid {
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 1.5rem;
-            }
-            
-            .library-categories {
-                justify-content: flex-start;
-            }
-            
-            .header-container {
-                flex-direction: column;
-                gap: 15px;
-                padding: 10px 0;
-            }
-            
-            .search-container {
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
             }
             
             .brand-title {
@@ -640,21 +762,17 @@
         }
 
         @media (max-width: 480px) {
-            .books-grid {
+            .books-grid, .articles-grid {
                 grid-template-columns: 1fr;
             }
             
-            .book-actions {
+            .book-actions, .article-actions {
                 flex-direction: column;
             }
             
             .whatsapp-btn {
                 width: 100%;
                 height: 44px;
-            }
-            
-            .steps-grid {
-                grid-template-columns: 1fr;
             }
             
             .contact-buttons {
@@ -677,258 +795,332 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
+                <div class="brand-name">THE SONGA WELFARE</div>
             </div>
-            
-            <div class="search-container">
-                <input type="text" class="search-bar" id="searchInput" placeholder="Search for books, authors, or categories...">
-                <button class="search-btn" id="searchButton">
-                    <i class="fas fa-search"></i>
+            <div class="auth-section">
+                <button class="join-btn" id="headerJoinBtn">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Join Us</span>
                 </button>
             </div>
         </div>
     </header>
+
+    <!-- Subscription Modal -->
+    <div class="subscription-modal" id="subscriptionModal">
+        <div class="subscription-content">
+            <div class="subscription-header">
+                <h2>Library Subscription Plans</h2>
+                <p>Choose the plan that fits your reading goals</p>
+                <button class="close-modal" id="closeSubscriptionModal">&times;</button>
+            </div>
+            <div class="subscription-body">
+                <div class="subscription-plans">
+                    <!-- 1 Month Plan -->
+                    <div class="plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="plan-title">Explorer Plan</h3>
+                        <div class="plan-price">KSh 1,500</div>
+                        <div class="plan-duration">1 Month Access</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Access to 500+ books</li>
+                            <li><i class="fas fa-check"></i> 2 books at a time</li>
+                            <li><i class="fas fa-check"></i> Basic genres</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                        </ul>
+                        <button class="subscribe-btn" data-plan="1 Month" data-price="1500">
+                            <i class="fas fa-bookmark"></i>
+                            Subscribe Now
+                        </button>
+                    </div>
+
+                    <!-- 2 Month Plan -->
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Most Popular</div>
+                        <div class="plan-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="plan-title">Scholar Plan</h3>
+                        <div class="plan-price">KSh 2,500</div>
+                        <div class="plan-duration">2 Months Access</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Access to 1000+ books</li>
+                            <li><i class="fas fa-check"></i> 4 books at a time</li>
+                            <li><i class="fas fa-check"></i> All genres included</li>
+                            <li><i class="fas fa-check"></i> Priority support</li>
+                            <li><i class="fas fa-check"></i> Book recommendations</li>
+                        </ul>
+                        <button class="subscribe-btn" data-plan="2 Months" data-price="2500">
+                            <i class="fas fa-crown"></i>
+                            Subscribe Now
+                        </button>
+                    </div>
+
+                    <!-- 3 Month Plan -->
+                    <div class="plan-card">
+                        <div class="plan-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3 class="plan-title">Visionary Plan</h3>
+                        <div class="plan-price">KSh 3,500</div>
+                        <div class="plan-duration">3 Months Access</div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Access to all books</li>
+                            <li><i class="fas fa-check"></i> 6 books at a time</li>
+                            <li><i class="fas fa-check"></i> All genres + new releases</li>
+                            <li><i class="fas fa-check"></i> 24/7 WhatsApp support</li>
+                            <li><i class="fas fa-check"></i> Personalized reading plan</li>
+                            <li><i class="fas fa-check"></i> Exclusive author content</li>
+                        </ul>
+                        <button class="subscribe-btn" data-plan="3 Months" data-price="3500">
+                            <i class="fas fa-rocket"></i>
+                            Subscribe Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="container">
         <!-- Brand Header -->
         <div class="brand-header">
             <div class="brand-logo">
-                <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
             </div>
-            <h1 class="brand-title">E-LIBRARY</h1>
+            <h1 class="brand-title">DIGITAL LIBRARY</h1>
+            <p class="brand-subtitle">Your gateway to knowledge and personal growth</p>
         </div>
 
-        <!-- Subscription Plans -->
-        <div class="subscription-plans">
-            <!-- 1 Month Plan -->
-            <div class="plan-card">
-                <div class="plan-icon">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h3 class="plan-title">Explorer Plan</h3>
-                <div class="plan-price">KSh 1,500</div>
-                <div class="plan-duration">1 Month Access</div>
-                <ul class="plan-features">
-                    <li><i class="fas fa-check"></i> Access to 500+ books</li>
-                    <li><i class="fas fa-check"></i> 2 books at a time</li>
-                    <li><i class="fas fa-check"></i> Basic genres</li>
-                    <li><i class="fas fa-check"></i> Email support</li>
-                </ul>
-                <button class="subscribe-btn" data-plan="1 Month" data-price="1500">
-                    <i class="fas fa-bookmark"></i>
-                    Subscribe Now
-                </button>
-            </div>
-
-            <!-- 2 Month Plan -->
-            <div class="plan-card featured">
-                <div class="plan-badge">Most Popular</div>
-                <div class="plan-icon">
-                    <i class="fas fa-gem"></i>
-                </div>
-                <h3 class="plan-title">Scholar Plan</h3>
-                <div class="plan-price">KSh 2,500</div>
-                <div class="plan-duration">2 Months Access</div>
-                <ul class="plan-features">
-                    <li><i class="fas fa-check"></i> Access to 1000+ books</li>
-                    <li><i class="fas fa-check"></i> 4 books at a time</li>
-                    <li><i class="fas fa-check"></i> All genres included</li>
-                    <li><i class="fas fa-check"></i> Priority support</li>
-                    <li><i class="fas fa-check"></i> Book recommendations</li>
-                </ul>
-                <button class="subscribe-btn" data-plan="2 Months" data-price="2500">
-                    <i class="fas fa-crown"></i>
-                    Subscribe Now
-                </button>
-            </div>
-
-            <!-- 3 Month Plan -->
-            <div class="plan-card">
-                <div class="plan-icon">
-                    <i class="fas fa-infinity"></i>
-                </div>
-                <h3 class="plan-title">Visionary Plan</h3>
-                <div class="plan-price">KSh 3,500</div>
-                <div class="plan-duration">3 Months Access</div>
-                <ul class="plan-features">
-                    <li><i class="fas fa-check"></i> Access to all books</li>
-                    <li><i class="fas fa-check"></i> 6 books at a time</li>
-                    <li><i class="fas fa-check"></i> All genres + new releases</li>
-                    <li><i class="fas fa-check"></i> 24/7 WhatsApp support</li>
-                    <li><i class="fas fa-check"></i> Personalized reading plan</li>
-                    <li><i class="fas fa-check"></i> Exclusive author content</li>
-                </ul>
-                <button class="subscribe-btn" data-plan="3 Months" data-price="3500">
-                    <i class="fas fa-rocket"></i>
-                    Subscribe Now
-                </button>
-            </div>
-        </div>
-
-        <!-- How It Works -->
-        <div class="how-it-works">
-            <h2 class="section-title">How It Works</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3 class="step-title">Choose Your Plan</h3>
-                    <p class="step-description">Select the subscription plan that fits your reading goals and budget</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3 class="step-title">Get Access</h3>
-                    <p class="step-description">Receive instant access to our digital library after subscription</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3 class="step-title">Start Reading</h3>
-                    <p class="step-description">Browse, borrow, and read books on any device, anywhere</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">4</div>
-                    <h3 class="step-title">Return & Repeat</h3>
-                    <p class="step-description">Return books and borrow new ones as often as you like</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Coffee Support Section -->
-        <div class="coffee-support">
-            <h2>Support Our Digital Content</h2>
-            <p>Enjoy our soft-copy materials? Help us continue creating valuable content by buying us a coffee. Your support allows us to maintain and expand our digital library offerings.</p>
-            <button class="coffee-btn" id="coffeeBtn">
-                <i class="fas fa-coffee"></i>
-                Buy Me a Coffee
+        <!-- Subscription Button -->
+        <div class="subscription-section">
+            <button class="subscription-btn" id="subscriptionBtn">
+                <i class="fas fa-crown"></i>
+                View Subscription Plans
             </button>
         </div>
 
-        <!-- Library Categories -->
-        <div class="library-categories">
-            <button class="category-btn active" data-category="all">All Books</button>
-            <button class="category-btn" data-category="personal-growth">Personal Growth</button>
-            <button class="category-btn" data-category="business">Business & Entrepreneurship</button>
-            <button class="category-btn" data-category="spirituality">Spirituality</button>
-            <button class="category-btn" data-category="psychology">Psychology</button>
-            <button class="category-btn" data-category="african-literature">African Literature</button>
+        <!-- Content Tabs -->
+        <div class="content-tabs">
+            <button class="tab-btn active" data-tab="books">Books</button>
+            <button class="tab-btn" data-tab="articles">Articles</button>
         </div>
 
-        <!-- Books Grid -->
-        <div class="books-grid">
-            <!-- Book 1 -->
-            <div class="book-card" data-category="personal-growth">
-                <div class="book-cover">
-                    <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Atomic Habits">
-                    <div class="book-badge">Bestseller</div>
-                </div>
-                <div class="book-content">
-                    <div class="book-category">Personal Growth</div>
-                    <h3 class="book-title">Atomic Habits</h3>
-                    <div class="book-author">James Clear</div>
-                    <p class="book-description">Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones</p>
-                    <div class="book-meta">
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.8</span>
-                        </div>
-                        <div class="book-pages">320 pages</div>
+        <!-- Books Section -->
+        <div class="content-section active" id="books-section">
+            <div class="books-grid">
+                <!-- Book 1 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Atomic Habits">
+                        <div class="book-badge">Bestseller</div>
                     </div>
-                    <div class="book-actions">
-                        <button class="borrow-btn">
-                            <i class="fas fa-book-open"></i>
-                            Borrow Now
-                        </button>
-                        <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Atomic%20Habits'%20from%20your%20e-library" class="whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
+                    <div class="book-content">
+                        <div class="book-category">Personal Growth</div>
+                        <h3 class="book-title">Atomic Habits</h3>
+                        <div class="book-author">James Clear</div>
+                        <p class="book-description">Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones</p>
+                        <div class="book-meta">
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8</span>
+                            </div>
+                            <div class="book-pages">320 pages</div>
+                        </div>
+                        <div class="book-actions">
+                            <button class="borrow-btn">
+                                <i class="fas fa-book-open"></i>
+                                Borrow Now
+                            </button>
+                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Atomic%20Habits'%20from%20your%20e-library" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Lean Startup">
+                    </div>
+                    <div class="book-content">
+                        <div class="book-category">Business</div>
+                        <h3 class="book-title">The Lean Startup</h3>
+                        <div class="book-author">Eric Ries</div>
+                        <p class="book-description">How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses</p>
+                        <div class="book-meta">
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.6</span>
+                            </div>
+                            <div class="book-pages">336 pages</div>
+                        </div>
+                        <div class="book-actions">
+                            <button class="borrow-btn">
+                                <i class="fas fa-book-open"></i>
+                                Borrow Now
+                            </button>
+                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Lean%20Startup'%20from%20your%20e-library" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Power of Now">
+                    </div>
+                    <div class="book-content">
+                        <div class="book-category">Spirituality</div>
+                        <h3 class="book-title">The Power of Now</h3>
+                        <div class="book-author">Eckhart Tolle</div>
+                        <p class="book-description">A Guide to Spiritual Enlightenment that has the potential to completely transform your life</p>
+                        <div class="book-meta">
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.7</span>
+                            </div>
+                            <div class="book-pages">236 pages</div>
+                        </div>
+                        <div class="book-actions">
+                            <button class="borrow-btn">
+                                <i class="fas fa-book-open"></i>
+                                Borrow Now
+                            </button>
+                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Power%20of%20Now'%20from%20your%20e-library" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 4 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Things Fall Apart">
+                        <div class="book-badge">Classic</div>
+                    </div>
+                    <div class="book-content">
+                        <div class="book-category">African Literature</div>
+                        <h3 class="book-title">Things Fall Apart</h3>
+                        <div class="book-author">Chinua Achebe</div>
+                        <p class="book-description">A masterpiece that has sold over 20 million copies worldwide about traditional African life</p>
+                        <div class="book-meta">
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.9</span>
+                            </div>
+                            <div class="book-pages">209 pages</div>
+                        </div>
+                        <div class="book-actions">
+                            <button class="borrow-btn">
+                                <i class="fas fa-book-open"></i>
+                                Borrow Now
+                            </button>
+                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Things%20Fall%20Apart'%20from%20your%20e-library" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Book 2 -->
-            <div class="book-card" data-category="business">
-                <div class="book-cover">
-                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Lean Startup">
-                </div>
-                <div class="book-content">
-                    <div class="book-category">Business</div>
-                    <h3 class="book-title">The Lean Startup</h3>
-                    <div class="book-author">Eric Ries</div>
-                    <p class="book-description">How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses</p>
-                    <div class="book-meta">
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.6</span>
+        <!-- Articles Section -->
+        <div class="content-section" id="articles-section">
+            <div class="articles-grid">
+                <!-- Article 1 -->
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Mindfulness">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-category">Personal Growth</div>
+                        <h3 class="article-title">The Science of Mindfulness and Its Impact on Daily Life</h3>
+                        <p class="article-excerpt">Discover how practicing mindfulness can transform your mental health, improve focus, and enhance overall well-being in our modern, fast-paced world.</p>
+                        <div class="article-meta">
+                            <div class="article-date">Nov 15, 2025</div>
+                            <div class="article-read-time">8 min read</div>
                         </div>
-                        <div class="book-pages">336 pages</div>
-                    </div>
-                    <div class="book-actions">
-                        <button class="borrow-btn">
-                            <i class="fas fa-book-open"></i>
-                            Borrow Now
-                        </button>
-                        <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Lean%20Startup'%20from%20your%20e-library" class="whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
+                        <div class="article-actions">
+                            <button class="read-btn">
+                                <i class="fas fa-book-reader"></i>
+                                Read Article
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Book 3 -->
-            <div class="book-card" data-category="spirituality">
-                <div class="book-cover">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Power of Now">
-                </div>
-                <div class="book-content">
-                    <div class="book-category">Spirituality</div>
-                    <h3 class="book-title">The Power of Now</h3>
-                    <div class="book-author">Eckhart Tolle</div>
-                    <p class="book-description">A Guide to Spiritual Enlightenment that has the potential to completely transform your life</p>
-                    <div class="book-meta">
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.7</span>
+                <!-- Article 2 -->
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Entrepreneurship">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-category">Business</div>
+                        <h3 class="article-title">Building a Sustainable Business in the Digital Age</h3>
+                        <p class="article-excerpt">Learn the key principles for creating businesses that not only generate profit but also create positive social impact and environmental sustainability.</p>
+                        <div class="article-meta">
+                            <div class="article-date">Nov 10, 2025</div>
+                            <div class="article-read-time">12 min read</div>
                         </div>
-                        <div class="book-pages">236 pages</div>
-                    </div>
-                    <div class="book-actions">
-                        <button class="borrow-btn">
-                            <i class="fas fa-book-open"></i>
-                            Borrow Now
-                        </button>
-                        <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Power%20of%20Now'%20from%20your%20e-library" class="whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
+                        <div class="article-actions">
+                            <button class="read-btn">
+                                <i class="fas fa-book-reader"></i>
+                                Read Article
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Book 4 -->
-            <div class="book-card" data-category="african-literature">
-                <div class="book-cover">
-                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Things Fall Apart">
-                    <div class="book-badge">Classic</div>
-                </div>
-                <div class="book-content">
-                    <div class="book-category">African Literature</div>
-                    <h3 class="book-title">Things Fall Apart</h3>
-                    <div class="book-author">Chinua Achebe</div>
-                    <p class="book-description">A masterpiece that has sold over 20 million copies worldwide about traditional African life</p>
-                    <div class="book-meta">
-                        <div class="book-rating">
-                            <i class="fas fa-star"></i>
-                            <span>4.9</span>
-                        </div>
-                        <div class="book-pages">209 pages</div>
+                <!-- Article 3 -->
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Meditation">
                     </div>
-                    <div class="book-actions">
-                        <button class="borrow-btn">
-                            <i class="fas fa-book-open"></i>
-                            Borrow Now
-                        </button>
-                        <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Things%20Fall%20Apart'%20from%20your%20e-library" class="whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
+                    <div class="article-content">
+                        <div class="article-category">Spirituality</div>
+                        <h3 class="article-title">The Ancient Practice of Meditation: Modern Applications</h3>
+                        <p class="article-excerpt">Explore how ancient meditation techniques are being validated by modern science and how you can incorporate them into your daily routine for better mental health.</p>
+                        <div class="article-meta">
+                            <div class="article-date">Nov 5, 2025</div>
+                            <div class="article-read-time">10 min read</div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="read-btn">
+                                <i class="fas fa-book-reader"></i>
+                                Read Article
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="article-card">
+                    <div class="article-image">
+                        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="African Philosophy">
+                    </div>
+                    <div class="article-content">
+                        <div class="article-category">African Literature</div>
+                        <h3 class="article-title">Ubuntu Philosophy: The African Concept of Humanity</h3>
+                        <p class="article-excerpt">Delve into the profound African philosophy of Ubuntu and discover how this concept of interconnectedness can transform our understanding of community and humanity.</p>
+                        <div class="article-meta">
+                            <div class="article-date">Oct 28, 2025</div>
+                            <div class="article-read-time">15 min read</div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="read-btn">
+                                <i class="fas fa-book-reader"></i>
+                                Read Article
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -936,13 +1128,13 @@
 
         <!-- Contact Section -->
         <div class="contact-section">
-            <h3>Need Help Choosing?</h3>
-            <p>Not sure which plan is right for you or have questions about the library? We're here to help:</p>
+            <h3>Need Help With Our Library?</h3>
+            <p>Have questions about subscriptions, books, or articles? We're here to help:</p>
             <div class="contact-buttons">
                 <a href="https://wa.me/254727211191" class="contact-btn">
                     <i class="fab fa-whatsapp"></i> WhatsApp Support
                 </a>
-                <a href="mailto:library@iammugera.com" class="contact-btn">
+                <a href="mailto:library@thesongawelfare.com" class="contact-btn">
                     <i class="fas fa-envelope"></i> Email Us
                 </a>
             </div>
@@ -970,130 +1162,96 @@
     </nav>
 
     <script>
-        // Search functionality
-        document.getElementById('searchButton').addEventListener('click', performSearch);
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
+        // DOM Elements
+        const subscriptionModal = document.getElementById('subscriptionModal');
+        const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
+        const subscriptionBtn = document.getElementById('subscriptionBtn');
+        const headerJoinBtn = document.getElementById('headerJoinBtn');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+        const subscribeButtons = document.querySelectorAll('.subscribe-btn');
+        const borrowButtons = document.querySelectorAll('.borrow-btn');
+        const readButtons = document.querySelectorAll('.read-btn');
+
+        // Open subscription modal
+        subscriptionBtn.addEventListener('click', function() {
+            subscriptionModal.classList.add('active');
+        });
+
+        // Header Join Us button
+        headerJoinBtn.addEventListener('click', function() {
+            subscriptionModal.classList.add('active');
+        });
+
+        // Close subscription modal
+        closeSubscriptionModal.addEventListener('click', function() {
+            subscriptionModal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        subscriptionModal.addEventListener('click', function(e) {
+            if (e.target === subscriptionModal) {
+                subscriptionModal.classList.remove('active');
             }
         });
 
-        function performSearch() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                // If search is empty, show all books
-                document.querySelectorAll('.book-card').forEach(card => {
-                    card.style.display = 'block';
-                });
-                return;
-            }
-            
-            // Filter books based on search term
-            document.querySelectorAll('.book-card').forEach(card => {
-                const title = card.querySelector('.book-title').textContent.toLowerCase();
-                const author = card.querySelector('.book-author').textContent.toLowerCase();
-                const category = card.querySelector('.book-category').textContent.toLowerCase();
-                const description = card.querySelector('.book-description').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || author.includes(searchTerm) || 
-                    category.includes(searchTerm) || description.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Subscription plan selection
-        document.querySelectorAll('.subscribe-btn').forEach(button => {
+        // Tab switching
+        tabButtons.forEach(button => {
             button.addEventListener('click', function() {
-                const plan = this.getAttribute('data-plan');
-                const price = this.getAttribute('data-price');
+                const tabId = this.getAttribute('data-tab');
                 
-                const message = `Hi Mugera, I want to subscribe to your ${plan} E-Library plan for KSh ${price}`;
-                window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
-            });
-        });
-
-        // Book category filtering
-        document.querySelectorAll('.category-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                // Update active button
-                document.querySelectorAll('.category-btn').forEach(btn => {
+                // Update active tab
+                tabButtons.forEach(btn => {
                     btn.classList.remove('active');
                 });
                 this.classList.add('active');
                 
-                // Filter books
-                const category = this.getAttribute('data-category');
-                const bookCards = document.querySelectorAll('.book-card');
-                
-                if (category === 'all') {
-                    bookCards.forEach(card => {
-                        card.style.display = 'block';
-                    });
-                } else {
-                    bookCards.forEach(card => {
-                        if (card.getAttribute('data-category') === category) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                }
+                // Show corresponding section
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(`${tabId}-section`).classList.add('active');
             });
         });
 
-        // Borrow button functionality
-        document.querySelectorAll('.borrow-btn').forEach(button => {
+        // Subscription plan selection
+        subscribeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const plan = this.getAttribute('data-plan');
+                const price = this.getAttribute('data-price');
+                
+                const message = `Hi THE SONGA WELFARE, I want to subscribe to your ${plan} Library plan for KSh ${price}`;
+                window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
+            });
+        });
+
+        // Borrow book functionality
+        borrowButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const bookCard = this.closest('.book-card');
                 const bookTitle = bookCard.querySelector('.book-title').textContent;
                 const bookAuthor = bookCard.querySelector('.book-author').textContent;
                 
-                const message = `Hi Mugera, I want to borrow "${bookTitle}" by ${bookAuthor} from your e-library`;
+                const message = `Hi THE SONGA WELFARE, I want to borrow "${bookTitle}" by ${bookAuthor} from your library`;
                 window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
             });
         });
 
-        // Coffee support button
-        document.getElementById('coffeeBtn').addEventListener('click', function() {
-            const message = "Hi Mugera, I'd like to support your digital library by buying you a coffee!";
-            window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
-        });
-
-        // Bottom nav active state
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                // Only prevent default for current page navigation
-                if (this.href === window.location.href) {
-                    e.preventDefault();
-                }
+        // Read article functionality
+        readButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const articleCard = this.closest('.article-card');
+                const articleTitle = articleCard.querySelector('.article-title').textContent;
                 
-                // Update active state visually
-                document.querySelectorAll('.nav-item').forEach(nav => {
-                    nav.classList.remove('active');
-                });
-                this.classList.add('active');
+                // In a real implementation, this would navigate to the article page
+                alert(`This would navigate to the full article: "${articleTitle}"\n\nIn a complete implementation, each article would have its own dedicated page with the full content.`);
             });
         });
 
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
-            const planCards = document.querySelectorAll('.plan-card');
             const bookCards = document.querySelectorAll('.book-card');
-            
-            planCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
+            const articleCards = document.querySelectorAll('.article-card');
             
             bookCards.forEach((card, index) => {
                 card.style.opacity = '0';
@@ -1103,7 +1261,18 @@
                     card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
-                }, 600 + (index * 100));
+                }, index * 100);
+            });
+            
+            articleCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 400 + (index * 100));
             });
         });
     </script>
