@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>I AM MUGERA - Join Our Community</title>
-    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png">
+    <title>THE SONGA WELFARE - Join Our Community</title>
+    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    
     <style>
         * {
             margin: 0;
@@ -15,6 +24,9 @@
         }
 
         :root {
+            --gold: #D4AF37;
+            --gold-light: #F5E6B3;
+            --gold-dark: #B8860B;
             --black: #000000;
             --white: #ffffff;
             --gray: #f5f5f5;
@@ -68,6 +80,13 @@
             width: auto;
         }
 
+        .brand-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            color: var(--gold-dark);
+        }
+
         .auth-section {
             display: flex;
             align-items: center;
@@ -75,8 +94,8 @@
         }
 
         .join-btn {
-            background-color: var(--whatsapp-green);
-            color: white;
+            background-color: var(--gold);
+            color: var(--black);
             border: none;
             border-radius: 4px;
             padding: 8px 16px;
@@ -87,10 +106,12 @@
             gap: 8px;
             transition: background-color 0.3s;
             text-decoration: none;
+            font-weight: 600;
         }
 
         .join-btn:hover {
-            background-color: var(--whatsapp-dark);
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         /* Welcome Modal */
@@ -127,8 +148,8 @@
         }
 
         .welcome-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
             padding: 2rem;
             text-align: center;
         }
@@ -158,8 +179,8 @@
         }
 
         .benefit-icon {
-            background: var(--whatsapp-green);
-            color: white;
+            background: var(--gold);
+            color: var(--black);
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -172,7 +193,7 @@
 
         .benefit-text h4 {
             margin-bottom: 4px;
-            color: var(--primary);
+            color: var(--gold-dark);
         }
 
         .benefit-text p {
@@ -203,12 +224,14 @@
         }
 
         .btn-primary {
-            background-color: var(--whatsapp-green);
-            color: white;
+            background-color: var(--gold);
+            color: var(--black);
+            font-weight: 600;
         }
 
         .btn-primary:hover {
-            background-color: var(--whatsapp-dark);
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         .btn-secondary {
@@ -225,9 +248,9 @@
             position: absolute;
             top: 15px;
             right: 15px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
             border: none;
-            color: white;
+            color: var(--black);
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -268,8 +291,8 @@
         }
 
         .registration-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
             padding: 1.5rem;
             text-align: center;
             position: relative;
@@ -305,7 +328,7 @@
         }
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--whatsapp-green);
+            border-color: var(--gold);
             outline: none;
         }
 
@@ -334,8 +357,8 @@
         }
 
         .membership-option.selected {
-            border-color: var(--whatsapp-green);
-            background-color: rgba(37, 211, 102, 0.05);
+            border-color: var(--gold);
+            background-color: rgba(212, 175, 55, 0.05);
         }
 
         .membership-header {
@@ -347,12 +370,12 @@
 
         .membership-name {
             font-weight: bold;
-            color: var(--primary);
+            color: var(--gold-dark);
         }
 
         .membership-price {
             font-weight: bold;
-            color: var(--whatsapp-green);
+            color: var(--gold);
         }
 
         .membership-features {
@@ -368,13 +391,13 @@
         }
 
         .membership-features li i {
-            color: var(--whatsapp-green);
+            color: var(--gold);
             font-size: 0.8rem;
         }
 
         .submit-btn {
-            background-color: var(--whatsapp-green);
-            color: white;
+            background-color: var(--gold);
+            color: var(--black);
             border: none;
             border-radius: 6px;
             padding: 14px 20px;
@@ -390,7 +413,8 @@
         }
 
         .submit-btn:hover {
-            background-color: var(--whatsapp-dark);
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         .submit-btn:disabled {
@@ -429,13 +453,13 @@
 
         .success-icon {
             font-size: 3.5rem;
-            color: var(--whatsapp-green);
+            color: var(--gold);
             margin-bottom: 1.5rem;
         }
 
         .success-content h2 {
             margin-bottom: 1rem;
-            color: var(--primary);
+            color: var(--gold-dark);
         }
 
         .success-content p {
@@ -449,7 +473,7 @@
             width: 20px;
             height: 20px;
             border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--whatsapp-green);
+            border-top: 3px solid var(--gold);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -485,7 +509,8 @@
         }
 
         .notification.success {
-            background: var(--whatsapp-green);
+            background: var(--gold);
+            color: var(--black);
         }
 
         /* Main Content */
@@ -645,7 +670,7 @@
         }
 
         .post-action.active {
-            color: #e74c3c;
+            color: var(--gold);
         }
 
         .whatsapp-action {
@@ -682,12 +707,13 @@
         }
 
         .post-type {
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--gold);
+            color: var(--black);
             padding: 0.2rem 0.6rem;
             border-radius: 12px;
             font-size: 0.7rem;
             display: inline-block;
+            font-weight: 600;
         }
 
         /* Bottom Navigation */
@@ -720,11 +746,11 @@
         }
 
         .nav-item.active {
-            color: var(--black);
+            color: var(--gold-dark);
         }
 
         .nav-item:hover {
-            color: var(--black);
+            color: var(--gold-dark);
         }
 
         /* Contact Section */
@@ -738,6 +764,7 @@
 
         .contact-section h3 {
             margin-bottom: 1rem;
+            color: var(--gold-dark);
         }
 
         .contact-buttons {
@@ -748,8 +775,8 @@
         }
 
         .contact-btn {
-            background-color: var(--black);
-            color: var(--white);
+            background-color: var(--gold);
+            color: var(--black);
             border: none;
             border-radius: 5px;
             padding: 10px 20px;
@@ -759,10 +786,12 @@
             align-items: center;
             gap: 8px;
             transition: background-color 0.3s;
+            font-weight: 600;
         }
 
         .contact-btn:hover {
-            background-color: var(--dark-gray);
+            background-color: var(--gold-dark);
+            color: var(--white);
         }
 
         /* Responsive Design */
@@ -810,7 +839,7 @@
     <div class="welcome-modal" id="welcomeModal">
         <div class="welcome-content">
             <div class="welcome-header">
-                <h2>Welcome to I AM MUGERA</h2>
+                <h2>Welcome to THE SONGA WELFARE</h2>
                 <p>Join our community of conscious individuals</p>
                 <button class="close-modal" id="closeWelcomeModal">&times;</button>
             </div>
@@ -863,7 +892,7 @@
     <div class="registration-modal" id="registrationModal">
         <div class="registration-content">
             <div class="registration-header">
-                <h2>Join I AM MUGERA</h2>
+                <h2>Join THE SONGA WELFARE</h2>
                 <p>Complete your registration to access all benefits</p>
                 <button class="close-modal" id="closeRegistrationModal">&times;</button>
             </div>
@@ -964,7 +993,7 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <h2>Registration Successful!</h2>
-            <p>Thank you for joining I AM MUGERA. We're excited to have you in our community.</p>
+            <p>Thank you for joining THE SONGA WELFARE. We're excited to have you in our community.</p>
             <p>We'll contact you shortly with more details about your membership.</p>
             <button class="btn btn-primary" id="closeSuccessModal">
                 <i class="fas fa-thumbs-up"></i> Awesome!
@@ -976,7 +1005,8 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
+                <div class="brand-name">THE SONGA WELFARE</div>
             </div>
             <div class="auth-section">
                 <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20join%20your%20community" class="join-btn" target="_blank">
@@ -994,16 +1024,16 @@
             <div class="post-header">
                 <div class="post-user-info">
                     <div class="post-avatar">
-                        <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
                     </div>
                     <div>
-                        <div class="post-user">iam_mugera</div>
+                        <div class="post-user">thesongawelfare</div>
                         <div class="post-category">Brand Introduction</div>
                     </div>
                 </div>
             </div>
             <div class="post-media">
-                <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="Brand Vision" class="post-image">
+                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Brand Vision" class="post-image">
             </div>
             <div class="post-actions">
                 <div class="action-left">
@@ -1011,13 +1041,13 @@
                         <i class="far fa-bookmark"></i>
                     </button>
                 </div>
-                <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20learn%20more%20about%20your%20brand" class="whatsapp-action" title="Contact via WhatsApp">
+                <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20learn%20more%20about%20THE%20SONGA%20WELFARE" class="whatsapp-action" title="Contact via WhatsApp">
                     <i class="fab fa-whatsapp"></i>
                 </a>
             </div>
             <div class="post-content">
                 <div class="post-caption">
-                    <strong>Welcome to I AM MUGERA</strong><br><br>
+                    <strong>Welcome to THE SONGA WELFARE</strong><br><br>
                     This is more than just a brand - it's a movement. A platform dedicated to awakening consciousness, empowering individuals, and creating meaningful change in our society.<br><br>
                     Through content, conversations, and community, we explore what it means to live with purpose, authenticity, and impact. Whether you're here for inspiration, education, or connection, you're in the right place.<br><br>
                     This is where we challenge norms, break barriers, and build together. Welcome to the journey.
@@ -1032,10 +1062,10 @@
             <div class="post-header">
                 <div class="post-user-info">
                     <div class="post-avatar">
-                        <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
                     </div>
                     <div>
-                        <div class="post-user">iam_mugera</div>
+                        <div class="post-user">thesongawelfare</div>
                         <div class="post-category">Commercial</div>
                     </div>
                 </div>
@@ -1085,10 +1115,10 @@
             <div class="post-header">
                 <div class="post-user-info">
                     <div class="post-avatar">
-                        <img src="https://i.postimg.cc/c4CzSQzq/Whats-App-Image-2025-11-13-at-14-53-50-1-removebg-preview.png" alt="I AM MUGERA Logo">
+                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
                     </div>
                     <div>
-                        <div class="post-user">iam_mugera</div>
+                        <div class="post-user">thesongawelfare</div>
                         <div class="post-category">Dining Program</div>
                     </div>
                 </div>
@@ -1125,12 +1155,12 @@
         <!-- Contact Section -->
         <div class="contact-section">
             <h3>Join The Movement</h3>
-            <p>Ready to awaken your potential and be part of the change? Connect with me directly:</p>
+            <p>Ready to awaken your potential and be part of the change? Connect with us directly:</p>
             <div class="contact-buttons">
                 <a href="https://wa.me/254727211191" class="contact-btn">
                     <i class="fab fa-whatsapp"></i> WhatsApp
                 </a>
-                <a href="mailto:contact@iammugera.com" class="contact-btn">
+                <a href="mailto:contact@thesongawelfare.com" class="contact-btn">
                     <i class="fas fa-envelope"></i> Email
                 </a>
             </div>
@@ -1202,12 +1232,12 @@
 
         // Check if user has visited before
         function hasVisitedBefore() {
-            return localStorage.getItem('iam_mugera_visited') === 'true';
+            return localStorage.getItem('the_songa_welfare_visited') === 'true';
         }
 
         // Mark user as visited
         function markAsVisited() {
-            localStorage.setItem('iam_mugera_visited', 'true');
+            localStorage.setItem('the_songa_welfare_visited', 'true');
         }
 
         // Show welcome modal for first-time visitors
