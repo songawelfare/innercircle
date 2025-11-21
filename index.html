@@ -1196,366 +1196,515 @@
     </nav>
 
     <script>
-        // Initialize EmailJS with your credentials
-        emailjs.init("EOj6VnzCm-icMmiR8"); // You'll need to add your public key here
-        
-        // Configuration
-        const RECIPIENT_EMAIL = 'office.songawelfare@gmail.com';
-        
-        // DOM Elements
-        const welcomeModal = document.getElementById('welcomeModal');
-        const registrationModal = document.getElementById('registrationModal');
-        const successModal = document.getElementById('successModal');
-        const closeWelcomeModal = document.getElementById('closeWelcomeModal');
-        const closeRegistrationModal = document.getElementById('closeRegistrationModal');
-        const closeSuccessModal = document.getElementById('closeSuccessModal');
-        const registerNowBtn = document.getElementById('registerNowBtn');
-        const maybeLaterBtn = document.getElementById('maybeLaterBtn');
-        const headerJoinBtn = document.getElementById('headerJoinBtn');
-        const contactJoinBtn = document.getElementById('contactJoinBtn');
-        const registrationForm = document.getElementById('registrationForm');
-        const submitRegistration = document.getElementById('submitRegistration');
-        const notification = document.getElementById('notification');
-        const membershipOptions = document.querySelectorAll('.membership-option');
-        const membershipTypeInput = document.getElementById('membershipType');
-        const likeButtons = document.querySelectorAll('.action-like');
-        const shareButtons = document.querySelectorAll('.action-share');
-        const saveButtons = document.querySelectorAll('.action-save');
+    // Initialize EmailJS with your credentials
+    emailjs.init("EOj6VnzCm-icMmiR8");
+    
+    // Configuration
+    const RECIPIENT_EMAIL = 'office.songawelfare@gmail.com';
+    
+    // DOM Elements
+    const welcomeModal = document.getElementById('welcomeModal');
+    const registrationModal = document.getElementById('registrationModal');
+    const successModal = document.getElementById('successModal');
+    const closeWelcomeModal = document.getElementById('closeWelcomeModal');
+    const closeRegistrationModal = document.getElementById('closeRegistrationModal');
+    const closeSuccessModal = document.getElementById('closeSuccessModal');
+    const registerNowBtn = document.getElementById('registerNowBtn');
+    const maybeLaterBtn = document.getElementById('maybeLaterBtn');
+    const headerJoinBtn = document.getElementById('headerJoinBtn');
+    const contactJoinBtn = document.getElementById('contactJoinBtn');
+    const registrationForm = document.getElementById('registrationForm');
+    const submitRegistration = document.getElementById('submitRegistration');
+    const notification = document.getElementById('notification');
+    const membershipOptions = document.querySelectorAll('.membership-option');
+    const membershipTypeInput = document.getElementById('membershipType');
+    const likeButtons = document.querySelectorAll('.action-like');
+    const shareButtons = document.querySelectorAll('.action-share');
+    const saveButtons = document.querySelectorAll('.action-save');
 
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = `notification show ${type}`;
+    // Show notification
+    function showNotification(message, type = 'success') {
+        notification.textContent = message;
+        notification.className = `notification show ${type}`;
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 4000);
+    }
+
+    // Show loading state
+    function showLoading(button) {
+        const originalText = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = '<div class="loading"></div> Processing...';
+        button.setAttribute('data-original-text', originalText);
+    }
+
+    // Hide loading state
+    function hideLoading(button) {
+        button.disabled = false;
+        const originalText = button.getAttribute('data-original-text');
+        button.innerHTML = originalText || 'Complete Registration';
+    }
+
+    // Check if user has visited before
+    function hasVisitedBefore() {
+        return localStorage.getItem('the_songa_welfare_visited') === 'true';
+    }
+
+    // Mark user as visited
+    function markAsVisited() {
+        localStorage.setItem('the_songa_welfare_visited', 'true');
+    }
+
+    // Show welcome modal for first-time visitors
+    function showWelcomeModal() {
+        if (!hasVisitedBefore()) {
             setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
+                welcomeModal.classList.add('active');
+            }, 1000);
         }
+    }
 
-        // Show loading state
-        function showLoading(button) {
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = '<div class="loading"></div> Processing...';
-            button.setAttribute('data-original-text', originalText);
-        }
-
-        // Hide loading state
-        function hideLoading(button) {
-            button.disabled = false;
-            const originalText = button.getAttribute('data-original-text');
-            button.innerHTML = originalText || 'Complete Registration';
-        }
-
-        // Check if user has visited before
-        function hasVisitedBefore() {
-            return localStorage.getItem('the_songa_welfare_visited') === 'true';
-        }
-
-        // Mark user as visited
-        function markAsVisited() {
-            localStorage.setItem('the_songa_welfare_visited', 'true');
-        }
-
-        // Show welcome modal for first-time visitors
-        function showWelcomeModal() {
-            if (!hasVisitedBefore()) {
-                setTimeout(() => {
-                    welcomeModal.classList.add('active');
-                }, 1000);
-            }
-        }
-
-        // Membership selection
-        membershipOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                membershipOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                membershipTypeInput.value = this.getAttribute('data-value');
-            });
+    // Membership selection
+    membershipOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            membershipOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            membershipTypeInput.value = this.getAttribute('data-value');
         });
+    });
 
-        // Post interaction functionality
+    // Post interaction functionality
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            this.classList.toggle('active');
+            const icon = this.querySelector('i');
+            
+            if (this.classList.contains('active')) {
+                icon.classList.remove('far', 'fa-heart');
+                icon.classList.add('fas', 'fa-heart');
+                showNotification('Post liked!', 'success');
+            } else {
+                icon.classList.remove('fas', 'fa-heart');
+                icon.classList.add('far', 'fa-heart');
+            }
+            
+            // Store like state in localStorage
+            const likeKey = `post_${postId}_liked`;
+            localStorage.setItem(likeKey, this.classList.contains('active'));
+        });
+    });
+
+    shareButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            this.classList.toggle('active');
+            const icon = this.querySelector('i');
+            
+            if (this.classList.contains('active')) {
+                icon.classList.remove('far', 'fa-share-square');
+                icon.classList.add('fas', 'fa-share-square');
+                
+                // Simulate sharing functionality
+                if (navigator.share) {
+                    // Use Web Share API if available
+                    navigator.share({
+                        title: 'THE SONGA WELFARE',
+                        text: 'Check out this post from THE SONGA WELFARE',
+                        url: window.location.href + `#post-${postId}`
+                    }).then(() => {
+                        showNotification('Post shared successfully!', 'success');
+                    }).catch(() => {
+                        showNotification('Share dialog closed', 'success');
+                    });
+                } else {
+                    // Fallback: copy to clipboard
+                    navigator.clipboard.writeText(window.location.href + `#post-${postId}`).then(() => {
+                        showNotification('Link copied to clipboard!', 'success');
+                    });
+                }
+            } else {
+                icon.classList.remove('fas', 'fa-share-square');
+                icon.classList.add('far', 'fa-share-square');
+            }
+        });
+    });
+
+    saveButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            this.classList.toggle('active');
+            const icon = this.querySelector('i');
+            
+            if (this.classList.contains('active')) {
+                icon.classList.remove('far', 'fa-bookmark');
+                icon.classList.add('fas', 'fa-bookmark');
+                showNotification('Post saved!', 'success');
+            } else {
+                icon.classList.remove('fas', 'fa-bookmark');
+                icon.classList.add('far', 'fa-bookmark');
+                showNotification('Post removed from saved', 'success');
+            }
+            
+            // Store save state in localStorage
+            const saveKey = `post_${postId}_saved`;
+            localStorage.setItem(saveKey, this.classList.contains('active'));
+        });
+    });
+
+    // Restore interaction states from localStorage
+    function restoreInteractionStates() {
         likeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-heart');
-                    icon.classList.add('fas', 'fa-heart');
-                    showNotification('Post liked!', 'success');
-                } else {
-                    icon.classList.remove('fas', 'fa-heart');
-                    icon.classList.add('far', 'fa-heart');
-                }
-                
-                // Store like state in localStorage
-                const likeKey = `post_${postId}_liked`;
-                localStorage.setItem(likeKey, this.classList.contains('active'));
-            });
+            const postId = button.getAttribute('data-post-id');
+            const likeKey = `post_${postId}_liked`;
+            if (localStorage.getItem(likeKey) === 'true') {
+                button.classList.add('active');
+                const icon = button.querySelector('i');
+                icon.classList.remove('far', 'fa-heart');
+                icon.classList.add('fas', 'fa-heart');
+            }
         });
-
-        shareButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-share-square');
-                    icon.classList.add('fas', 'fa-share-square');
-                    
-                    // Simulate sharing functionality
-                    if (navigator.share) {
-                        // Use Web Share API if available
-                        navigator.share({
-                            title: 'THE SONGA WELFARE',
-                            text: 'Check out this post from THE SONGA WELFARE',
-                            url: window.location.href + `#post-${postId}`
-                        }).then(() => {
-                            showNotification('Post shared successfully!', 'success');
-                        }).catch(() => {
-                            showNotification('Share dialog closed', 'success');
-                        });
-                    } else {
-                        // Fallback: copy to clipboard
-                        navigator.clipboard.writeText(window.location.href + `#post-${postId}`).then(() => {
-                            showNotification('Link copied to clipboard!', 'success');
-                        });
-                    }
-                } else {
-                    icon.classList.remove('fas', 'fa-share-square');
-                    icon.classList.add('far', 'fa-share-square');
-                }
-            });
-        });
-
+        
         saveButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-bookmark');
-                    icon.classList.add('fas', 'fa-bookmark');
-                    showNotification('Post saved!', 'success');
-                } else {
-                    icon.classList.remove('fas', 'fa-bookmark');
-                    icon.classList.add('far', 'fa-bookmark');
-                    showNotification('Post removed from saved', 'success');
-                }
-                
-                // Store save state in localStorage
-                const saveKey = `post_${postId}_saved`;
-                localStorage.setItem(saveKey, this.classList.contains('active'));
-            });
+            const postId = button.getAttribute('data-post-id');
+            const saveKey = `post_${postId}_saved`;
+            if (localStorage.getItem(saveKey) === 'true') {
+                button.classList.add('active');
+                const icon = button.querySelector('i');
+                icon.classList.remove('far', 'fa-bookmark');
+                icon.classList.add('fas', 'fa-bookmark');
+            }
         });
+    }
 
-        // Restore interaction states from localStorage
-        function restoreInteractionStates() {
-            likeButtons.forEach(button => {
-                const postId = button.getAttribute('data-post-id');
-                const likeKey = `post_${postId}_liked`;
-                if (localStorage.getItem(likeKey) === 'true') {
-                    button.classList.add('active');
-                    const icon = button.querySelector('i');
-                    icon.classList.remove('far', 'fa-heart');
-                    icon.classList.add('fas', 'fa-heart');
-                }
-            });
-            
-            saveButtons.forEach(button => {
-                const postId = button.getAttribute('data-post-id');
-                const saveKey = `post_${postId}_saved`;
-                if (localStorage.getItem(saveKey) === 'true') {
-                    button.classList.add('active');
-                    const icon = button.querySelector('i');
-                    icon.classList.remove('far', 'fa-bookmark');
-                    icon.classList.add('fas', 'fa-bookmark');
-                }
-            });
-        }
-
-        // Send email using EmailJS
-        async function sendRegistrationEmail(data) {
-            const membershipText = data.membershipType === 'basic' ? 'Basic Membership (KSh 1,500/month)' : 'Premium Membership (KSh 3,000/month)';
-            
-            const templateParams = {
+    // Test EmailJS connection
+    async function testEmailJSConnection() {
+        try {
+            console.log('Testing EmailJS connection...');
+            // Simple test - try to get the user's account info
+            const response = await emailjs.send("service_rkqxhnc", "template_ua308vI", {
                 to_email: RECIPIENT_EMAIL,
-                from_name: `${data.firstName} ${data.lastName}`,
-                from_email: data.email,
-                phone: data.phone,
-                location: data.location,
-                occupation: data.occupation,
-                hear_about: data.hearAbout,
-                membership_type: membershipText,
-                goals: data.goals || 'No specific goals mentioned',
-                timestamp: new Date().toLocaleString()
-            };
-
-            try {
-                // Send email using EmailJS with your service and template IDs
-                const response = await emailjs.send(
-                    'service_rkqxhnc',    // Your service ID
-                    'template_ua308vI',   // Your template ID
-                    templateParams
-                );
-                
-                return { success: true, response };
-            } catch (error) {
-                console.error('Email sending failed:', error);
-                return { success: false, error };
-            }
+                from_name: "Test User",
+                from_email: "test@example.com",
+                test: "This is a connection test"
+            });
+            console.log('EmailJS connection test successful:', response);
+            return true;
+        } catch (error) {
+            console.error('EmailJS connection test failed:', error);
+            return false;
         }
+    }
 
-        // Form submission
-        registrationForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    // Send email using EmailJS with comprehensive error handling
+    async function sendRegistrationEmail(data) {
+        const membershipText = data.membershipType === 'basic' ? 'Basic Membership (KSh 1,500/month)' : 'Premium Membership (KSh 3,000/month)';
+        
+        const templateParams = {
+            to_email: RECIPIENT_EMAIL,
+            from_name: `${data.firstName} ${data.lastName}`,
+            from_email: data.email,
+            phone: data.phone,
+            location: data.location,
+            occupation: data.occupation,
+            hear_about: data.hearAbout,
+            membership_type: membershipText,
+            goals: data.goals || 'No specific goals mentioned',
+            timestamp: new Date().toLocaleString(),
+            reply_to: data.email
+        };
+
+        console.log('Attempting to send email with parameters:', templateParams);
+
+        try {
+            // Send email using EmailJS with your service and template IDs
+            const response = await emailjs.send(
+                'service_rkqxhnc',
+                'template_ua308vI', 
+                templateParams
+            );
             
-            // Validate membership selection
-            if (!membershipTypeInput.value) {
-                showNotification('Please select a membership option', 'error');
-                return;
+            console.log('EmailJS send successful:', response);
+            return { success: true, response };
+        } catch (error) {
+            console.error('EmailJS send failed with full error details:', error);
+            console.error('Error status:', error?.status);
+            console.error('Error text:', error?.text);
+            console.error('Error message:', error?.message);
+            
+            // Provide more specific error messages
+            let errorMessage = 'Unknown error';
+            if (error?.status === 400) {
+                errorMessage = 'Bad request - check template parameters';
+            } else if (error?.status === 401) {
+                errorMessage = 'Unauthorized - check public key';
+            } else if (error?.status === 404) {
+                errorMessage = 'Service or template not found';
+            } else if (error?.text) {
+                errorMessage = error.text;
             }
             
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
+            return { 
+                success: false, 
+                error: {
+                    message: errorMessage,
+                    status: error?.status,
+                    text: error?.text
+                }
+            };
+        }
+    }
+
+    // Fallback email method using Formspree (free service)
+    async function sendRegistrationFallback(data) {
+        const membershipText = data.membershipType === 'basic' ? 'Basic Membership (KSh 1,500/month)' : 'Premium Membership (KSh 3,000/month)';
+        
+        const formData = new FormData();
+        formData.append('firstName', data.firstName);
+        formData.append('lastName', data.lastName);
+        formData.append('email', data.email);
+        formData.append('phone', data.phone);
+        formData.append('location', data.location);
+        formData.append('occupation', data.occupation);
+        formData.append('hearAbout', data.hearAbout);
+        formData.append('membershipType', membershipText);
+        formData.append('goals', data.goals || 'No specific goals mentioned');
+        formData.append('timestamp', new Date().toLocaleString());
+        formData.append('_subject', `New Registration: ${data.firstName} ${data.lastName}`);
+
+        try {
+            // Using Formspree as a fallback
+            const response = await fetch('https://formspree.io/f/xjvnqkzb', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             
-            // Add timestamp
-            data.timestamp = new Date().toISOString();
-            data.source = 'website_registration';
+            if (response.ok) {
+                console.log('Fallback email sent successfully');
+                return { success: true };
+            } else {
+                throw new Error('Fallback service failed');
+            }
+        } catch (error) {
+            console.error('Fallback email failed:', error);
+            return { success: false, error };
+        }
+    }
+
+    // Ultimate fallback - open email client
+    function sendRegistrationMailTo(data) {
+        const membershipText = data.membershipType === 'basic' ? 'Basic Membership (KSh 1,500/month)' : 'Premium Membership (KSh 3,000/month)';
+        
+        const subject = `New Membership Registration: ${data.firstName} ${data.lastName}`;
+        const body = `
+NEW MEMBERSHIP REGISTRATION - THE SONGA WELFARE
+
+PERSONAL DETAILS:
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Phone: ${data.phone}
+Location: ${data.location}
+Occupation: ${data.occupation}
+
+MEMBERSHIP INFORMATION:
+Selected Plan: ${membershipText}
+Heard About Us: ${data.hearAbout}
+
+GOALS & EXPECTATIONS:
+${data.goals || 'No specific goals mentioned'}
+
+REGISTRATION DETAILS:
+Registered: ${new Date().toLocaleString()}
+Source: Website Membership Registration
+        `;
+        
+        const mailtoLink = `mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoLink;
+        return true;
+    }
+
+    // Form submission with multiple fallbacks
+    registrationForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Validate membership selection
+        if (!membershipTypeInput.value) {
+            showNotification('Please select a membership option', 'error');
+            return;
+        }
+        
+        // Get form data
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Add timestamp
+        data.timestamp = new Date().toISOString();
+        data.source = 'website_registration';
+        
+        try {
+            showLoading(submitRegistration);
             
-            try {
-                showLoading(submitRegistration);
+            console.log('Starting registration process...');
+            
+            // Try EmailJS first
+            console.log('Attempting EmailJS...');
+            const emailResult = await sendRegistrationEmail(data);
+            
+            if (emailResult.success) {
+                // Success with EmailJS
+                console.log('EmailJS succeeded');
+                registrationModal.classList.remove('active');
+                successModal.classList.add('active');
+                markAsVisited();
+                registrationForm.reset();
+                membershipOptions.forEach(opt => opt.classList.remove('selected'));
+                membershipTypeInput.value = '';
+                showNotification('Registration successful! We have received your details.');
+            } else {
+                // Try fallback service
+                console.log('EmailJS failed, trying fallback...');
+                const fallbackResult = await sendRegistrationFallback(data);
                 
-                // Send email directly to office.songawelfare@gmail.com
-                const emailResult = await sendRegistrationEmail(data);
-                
-                if (emailResult.success) {
-                    // Show success modal
+                if (fallbackResult.success) {
+                    // Success with fallback
+                    console.log('Fallback succeeded');
                     registrationModal.classList.remove('active');
                     successModal.classList.add('active');
-                    
-                    // Mark as visited to prevent showing welcome modal again
                     markAsVisited();
-                    
-                    // Reset form
                     registrationForm.reset();
                     membershipOptions.forEach(opt => opt.classList.remove('selected'));
                     membershipTypeInput.value = '';
-                    
-                    showNotification('Registration successful! We have received your details.');
+                    showNotification('Registration submitted successfully!');
                 } else {
-                    throw new Error('Failed to send registration email');
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                showNotification('Registration failed. Please try again or contact us directly.', 'error');
-            } finally {
-                hideLoading(submitRegistration);
-            }
-        });
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show welcome modal for first-time visitors
-            showWelcomeModal();
-            
-            // Update post times
-            updatePostTimes();
-            
-            // Restore interaction states
-            restoreInteractionStates();
-        });
-
-        // Welcome modal actions
-        registerNowBtn.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
-            registrationModal.classList.add('active');
-        });
-
-        maybeLaterBtn.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
-            markAsVisited();
-        });
-
-        // Header Join Us button
-        headerJoinBtn.addEventListener('click', function() {
-            registrationModal.classList.add('active');
-        });
-
-        // Contact section Join Membership button
-        contactJoinBtn.addEventListener('click', function() {
-            registrationModal.classList.add('active');
-        });
-
-        // Close modals
-        closeWelcomeModal.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
-            markAsVisited();
-        });
-
-        closeRegistrationModal.addEventListener('click', function() {
-            registrationModal.classList.remove('active');
-        });
-
-        closeSuccessModal.addEventListener('click', function() {
-            successModal.classList.remove('active');
-        });
-
-        // Close modals when clicking outside
-        welcomeModal.addEventListener('click', function(e) {
-            if (e.target === welcomeModal) {
-                welcomeModal.classList.remove('active');
-                markAsVisited();
-            }
-        });
-
-        registrationModal.addEventListener('click', function(e) {
-            if (e.target === registrationModal) {
-                registrationModal.classList.remove('active');
-            }
-        });
-
-        successModal.addEventListener('click', function(e) {
-            if (e.target === successModal) {
-                successModal.classList.remove('active');
-            }
-        });
-
-        // Post time functionality
-        const postDates = {
-            'post-1': new Date('2025-11-15'),
-            'post-2': new Date('2025-11-15'), 
-            'post-3': new Date('2025-11-15')
-        };
-
-        function updatePostTimes() {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            Object.keys(postDates).forEach(postId => {
-                const postDate = new Date(postDates[postId]);
-                const postDay = new Date(postDate.getFullYear(), postDate.getMonth(), postDate.getDate());
-                const timeElement = document.getElementById(`${postId}-time`);
-                
-                if (timeElement) {
-                    const diffTime = today - postDay;
-                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    // Ultimate fallback - open email client
+                    console.log('Fallback failed, using mailto...');
+                    const mailtoSuccess = sendRegistrationMailTo(data);
                     
-                    if (diffDays === 0) {
-                        timeElement.textContent = 'TODAY';
-                    } else if (diffDays === 1) {
-                        timeElement.textContent = '1 DAY AGO';
+                    if (mailtoSuccess) {
+                        registrationModal.classList.remove('active');
+                        successModal.classList.add('active');
+                        markAsVisited();
+                        registrationForm.reset();
+                        membershipOptions.forEach(opt => opt.classList.remove('selected'));
+                        membershipTypeInput.value = '';
+                        showNotification('Please send the pre-filled email to complete your registration.');
                     } else {
-                        timeElement.textContent = `${diffDays} DAYS AGO`;
+                        throw new Error('All email methods failed');
                     }
                 }
-            });
+            }
+        } catch (error) {
+            console.error('Final registration error:', error);
+            showNotification('Registration failed. Please try again or contact us directly.', 'error');
+        } finally {
+            hideLoading(submitRegistration);
         }
-    </script>
+    });
+
+    // Event Listeners
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show welcome modal for first-time visitors
+        showWelcomeModal();
+        
+        // Update post times
+        updatePostTimes();
+        
+        // Restore interaction states
+        restoreInteractionStates();
+        
+        // Test EmailJS connection on load
+        testEmailJSConnection();
+    });
+
+    // Welcome modal actions
+    registerNowBtn.addEventListener('click', function() {
+        welcomeModal.classList.remove('active');
+        registrationModal.classList.add('active');
+    });
+
+    maybeLaterBtn.addEventListener('click', function() {
+        welcomeModal.classList.remove('active');
+        markAsVisited();
+    });
+
+    // Header Join Us button
+    headerJoinBtn.addEventListener('click', function() {
+        registrationModal.classList.add('active');
+    });
+
+    // Contact section Join Membership button
+    contactJoinBtn.addEventListener('click', function() {
+        registrationModal.classList.add('active');
+    });
+
+    // Close modals
+    closeWelcomeModal.addEventListener('click', function() {
+        welcomeModal.classList.remove('active');
+        markAsVisited();
+    });
+
+    closeRegistrationModal.addEventListener('click', function() {
+        registrationModal.classList.remove('active');
+    });
+
+    closeSuccessModal.addEventListener('click', function() {
+        successModal.classList.remove('active');
+    });
+
+    // Close modals when clicking outside
+    welcomeModal.addEventListener('click', function(e) {
+        if (e.target === welcomeModal) {
+            welcomeModal.classList.remove('active');
+            markAsVisited();
+        }
+    });
+
+    registrationModal.addEventListener('click', function(e) {
+        if (e.target === registrationModal) {
+            registrationModal.classList.remove('active');
+        }
+    });
+
+    successModal.addEventListener('click', function(e) {
+        if (e.target === successModal) {
+            successModal.classList.remove('active');
+        }
+    });
+
+    // Post time functionality
+    const postDates = {
+        'post-1': new Date('2025-11-15'),
+        'post-2': new Date('2025-11-15'), 
+        'post-3': new Date('2025-11-15')
+    };
+
+    function updatePostTimes() {
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        
+        Object.keys(postDates).forEach(postId => {
+            const postDate = new Date(postDates[postId]);
+            const postDay = new Date(postDate.getFullYear(), postDate.getMonth(), postDate.getDate());
+            const timeElement = document.getElementById(`${postId}-time`);
+            
+            if (timeElement) {
+                const diffTime = today - postDay;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays === 0) {
+                    timeElement.textContent = 'TODAY';
+                } else if (diffDays === 1) {
+                    timeElement.textContent = '1 DAY AGO';
+                } else {
+                    timeElement.textContent = `${diffDays} DAYS AGO`;
+                }
+            }
+        });
+    }
+</script>
 </body>
 </html>
