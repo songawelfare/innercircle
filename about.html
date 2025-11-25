@@ -6,6 +6,15 @@
     <title>About - THE SONGA WELFARE</title>
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    
     <style>
         * {
             margin: 0;
@@ -383,6 +392,57 @@
             color: var(--gold-dark);
         }
 
+        /* Install Prompt */
+        .install-prompt {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gold);
+            color: var(--black);
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            max-width: 90%;
+        }
+
+        .install-prompt.show {
+            display: flex;
+        }
+
+        .install-btn {
+            background: var(--black);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .install-btn:hover {
+            background: var(--dark-gray);
+        }
+
+        .close-prompt {
+            background: none;
+            border: none;
+            color: var(--black);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .mission-vision {
@@ -404,6 +464,12 @@
             
             .impact-stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .install-prompt {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
             }
         }
 
@@ -434,6 +500,13 @@
     </style>
 </head>
 <body>
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <span>Install THE SONGA WELFARE App</span>
+        <button class="install-btn" id="installButton">Install</button>
+        <button class="close-prompt" id="closePrompt">&times;</button>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="header-container">
@@ -607,6 +680,68 @@
     </nav>
 
     <script>
+        // PWA Installation
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installButton = document.getElementById('installButton');
+        const closePrompt = document.getElementById('closePrompt');
+
+        // Listen for beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show the install prompt
+            installPrompt.classList.add('show');
+        });
+
+        // Install button click handler
+        installButton.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            
+            // Show the install prompt
+            deferredPrompt.prompt();
+            
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+                installPrompt.classList.remove('show');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            
+            // Clear the saved prompt since it can't be used again
+            deferredPrompt = null;
+        });
+
+        // Close prompt handler
+        closePrompt.addEventListener('click', () => {
+            installPrompt.classList.remove('show');
+        });
+
+        // Track app installation
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installPrompt.classList.remove('show');
+            deferredPrompt = null;
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
         // Bottom nav active state
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
