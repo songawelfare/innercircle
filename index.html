@@ -352,16 +352,18 @@
         }
 
         .membership-option {
-            border: 2px solid var(--light-gray);
+            border: 2px solid var(--gold);
             border-radius: 8px;
             padding: 1.5rem;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: rgba(212, 175, 55, 0.05);
         }
 
         .membership-option.selected {
             border-color: var(--gold);
-            background-color: rgba(212, 175, 55, 0.05);
+            background-color: rgba(212, 175, 55, 0.1);
+            transform: scale(1.02);
         }
 
         .membership-header {
@@ -374,11 +376,13 @@
         .membership-name {
             font-weight: bold;
             color: var(--gold-dark);
+            font-size: 1.2rem;
         }
 
         .membership-price {
             font-weight: bold;
             color: var(--gold);
+            font-size: 1.3rem;
         }
 
         .membership-features {
@@ -386,16 +390,16 @@
         }
 
         .membership-features li {
-            padding: 5px 0;
-            font-size: 0.9rem;
+            padding: 8px 0;
+            font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .membership-features li i {
             color: var(--gold);
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
 
         .submit-btn {
@@ -799,10 +803,6 @@
             .post-video {
                 height: 500px;
             }
-            
-            .membership-options {
-                grid-template-columns: 1fr 1fr;
-            }
         }
 
         @media (max-width: 480px) {
@@ -848,8 +848,17 @@
                             <i class="fas fa-book"></i>
                         </div>
                         <div class="benefit-text">
-                            <h4>E-Library Access</h4>
-                            <p>Curated resources for personal growth and development</p>
+                            <h4>Basic Library Access</h4>
+                            <p>Monthly access to our curated digital library resources</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="benefit-text">
+                            <h4>Financial Coaching</h4>
+                            <p>Monthly financial coaching sessions to help you achieve your goals</p>
                         </div>
                     </div>
                     <div class="benefit-item">
@@ -857,17 +866,17 @@
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="benefit-text">
-                            <h4>Life Coaching Events</h4>
-                            <p>Monthly sessions to help you achieve your personal goals</p>
+                            <h4>Team Building</h4>
+                            <p>Regular team building activities to connect with the community</p>
                         </div>
                     </div>
                     <div class="benefit-item">
                         <div class="benefit-icon">
-                            <i class="fas fa-handshake"></i>
+                            <i class="fas fa-door-open"></i>
                         </div>
                         <div class="benefit-text">
-                            <h4>Team Building</h4>
-                            <p>Connect with others in our community through engaging activities</p>
+                            <h4>Club Access</h4>
+                            <p>Full access to our club facilities and community events</p>
                         </div>
                     </div>
                 </div>
@@ -938,35 +947,22 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Select Your Membership</label>
+                        <label>Membership Plan</label>
                         <div class="membership-options">
-                            <div class="membership-option" data-value="basic">
+                            <div class="membership-option selected" data-value="standard">
                                 <div class="membership-header">
-                                    <span class="membership-name">Basic Membership</span>
+                                    <span class="membership-name">Standard Membership</span>
                                     <span class="membership-price">KSh 1,500/month</span>
                                 </div>
                                 <ul class="membership-features">
-                                    <li><i class="fas fa-check"></i> E-library Basic Access</li>
-                                    <li><i class="fas fa-check"></i> Monthly Life Coaching Events</li>
-                                    <li><i class="fas fa-check"></i> Team Building Events</li>
-                                    <li><i class="fas fa-check"></i> Community Access</li>
-                                </ul>
-                            </div>
-                            <div class="membership-option" data-value="premium">
-                                <div class="membership-header">
-                                    <span class="membership-name">Premium Membership</span>
-                                    <span class="membership-price">KSh 3,000/month</span>
-                                </div>
-                                <ul class="membership-features">
-                                    <li><i class="fas fa-check"></i> All Basic Benefits</li>
-                                    <li><i class="fas fa-check"></i> Advanced E-library Access</li>
-                                    <li><i class="fas fa-check"></i> One-on-One Coaching Sessions</li>
-                                    <li><i class="fas fa-check"></i> Priority Event Registration</li>
-                                    <li><i class="fas fa-check"></i> Exclusive Content</li>
+                                    <li><i class="fas fa-check"></i> Basic Library Access per month</li>
+                                    <li><i class="fas fa-check"></i> Monthly financial coaching sessions</li>
+                                    <li><i class="fas fa-check"></i> Team building activities</li>
+                                    <li><i class="fas fa-check"></i> Access to the club</li>
                                 </ul>
                             </div>
                         </div>
-                        <input type="hidden" id="membershipType" name="membershipType" required>
+                        <input type="hidden" id="membershipType" name="membershipType" value="standard" required>
                     </div>
                     
                     <div class="form-group">
@@ -1210,8 +1206,6 @@
         const registrationForm = document.getElementById('registrationForm');
         const submitRegistration = document.getElementById('submitRegistration');
         const notification = document.getElementById('notification');
-        const membershipOptions = document.querySelectorAll('.membership-option');
-        const membershipTypeInput = document.getElementById('membershipType');
         const likeButtons = document.querySelectorAll('.action-like');
         const shareButtons = document.querySelectorAll('.action-share');
         const saveButtons = document.querySelectorAll('.action-save');
@@ -1258,15 +1252,6 @@
                 }, 1000);
             }
         }
-
-        // Membership selection
-        membershipOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                membershipOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                membershipTypeInput.value = this.getAttribute('data-value');
-            });
-        });
 
         // Post interaction functionality
         likeButtons.forEach(button => {
@@ -1397,7 +1382,7 @@
 
         // Fallback email method
         function sendRegistrationMailTo(data) {
-            const membershipText = data.membershipType === 'basic' ? 'Basic Membership (KSh 1,500/month)' : 'Premium Membership (KSh 3,000/month)';
+            const membershipText = 'Standard Membership (KSh 1,500/month)';
             
             const subject = `New Membership Registration: ${data.firstName} ${data.lastName}`;
             const body = `
@@ -1431,12 +1416,6 @@ Source: Website Membership Registration
         registrationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Validate membership selection
-            if (!membershipTypeInput.value) {
-                showNotification('Please select a membership option', 'error');
-                return;
-            }
-            
             // Get form data
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
@@ -1466,8 +1445,6 @@ Source: Website Membership Registration
                     successModal.classList.add('active');
                     markAsVisited();
                     registrationForm.reset();
-                    membershipOptions.forEach(opt => opt.classList.remove('selected'));
-                    membershipTypeInput.value = '';
                     showNotification('Registration successful! We have received your details.');
                 } else {
                     // Fallback to mailto
@@ -1479,8 +1456,6 @@ Source: Website Membership Registration
                         successModal.classList.add('active');
                         markAsVisited();
                         registrationForm.reset();
-                        membershipOptions.forEach(opt => opt.classList.remove('selected'));
-                        membershipTypeInput.value = '';
                         showNotification('Please send the pre-filled email to complete your registration.');
                     } else {
                         throw new Error('All registration methods failed');
