@@ -7,14 +7,6 @@
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#D4AF37">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
-    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
-    
     <style>
         * {
             margin: 0;
@@ -122,7 +114,7 @@
         /* Brand Header */
         .brand-header {
             text-align: center;
-            margin: 2rem 0 3rem;
+            margin: 2rem 0 1rem;
             padding: 0;
         }
 
@@ -150,10 +142,106 @@
             margin-top: 0.5rem;
         }
 
+        /* Search Section */
+        .search-section {
+            margin: 2rem 0;
+            padding: 0 1rem;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            font-size: 1rem;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-dark);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* Search Results */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--light-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.2s;
+        }
+
+        .search-result-item:hover {
+            background-color: var(--gold-light);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-cover {
+            width: 40px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .search-result-author {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+        }
+
         /* Subscription Button */
         .subscription-section {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .subscription-btn {
@@ -241,7 +329,7 @@
 
         .book-cover {
             width: 100%;
-            height: 300px;
+            height: 380px;
             overflow: hidden;
             position: relative;
         }
@@ -772,6 +860,10 @@
             .brand-logo img {
                 height: 90px;
             }
+            
+            .book-cover {
+                height: 320px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -799,6 +891,10 @@
             
             .brand-logo img {
                 height: 70px;
+            }
+            
+            .book-cover {
+                height: 280px;
             }
         }
     </style>
@@ -909,6 +1005,15 @@
             <p class="brand-subtitle">Your gateway to knowledge and personal growth</p>
         </div>
 
+        <!-- Search Section -->
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for books by title or author...">
+                <i class="fas fa-search search-icon"></i>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+
         <!-- Subscription Button -->
         <div class="subscription-section">
             <button class="subscription-btn" id="subscriptionBtn">
@@ -925,124 +1030,8 @@
 
         <!-- Books Section -->
         <div class="content-section active" id="books-section">
-            <div class="books-grid">
-                <!-- Book 1 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="https://i.postimg.cc/85QLsmrt/Atomic_habits.jpg" alt="Atomic Habits">
-                        <div class="book-badge">Bestseller</div>
-                    </div>
-                    <div class="book-content">
-                        <div class="book-category">Personal Growth</div>
-                        <h3 class="book-title">Atomic Habits</h3>
-                        <div class="book-author">James Clear</div>
-                        <p class="book-description">Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones</p>
-                        <div class="book-meta">
-                            <div class="book-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.8</span>
-                            </div>
-                            <div class="book-pages">320 pages</div>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">
-                                <i class="fas fa-book-open"></i>
-                                Borrow Now
-                            </button>
-                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Atomic%20Habits'%20from%20your%20e-library" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 2 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="https://i.postimg.cc/HLX1QTV2/images.jpg" alt="The Lean Startup">
-                    </div>
-                    <div class="book-content">
-                        <div class="book-category">Business</div>
-                        <h3 class="book-title">The Lean Startup</h3>
-                        <div class="book-author">Eric Ries</div>
-                        <p class="book-description">How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses</p>
-                        <div class="book-meta">
-                            <div class="book-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.6</span>
-                            </div>
-                            <div class="book-pages">336 pages</div>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">
-                                <i class="fas fa-book-open"></i>
-                                Borrow Now
-                            </button>
-                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Lean%20Startup'%20from%20your%20e-library" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 3 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="https://i.postimg.cc/fTR35r7y/TPON_Cover_LG.jpg" alt="The Power of Now">
-                    </div>
-                    <div class="book-content">
-                        <div class="book-category">Spirituality</div>
-                        <h3 class="book-title">The Power of Now</h3>
-                        <div class="book-author">Eckhart Tolle</div>
-                        <p class="book-description">A Guide to Spiritual Enlightenment that has the potential to completely transform your life</p>
-                        <div class="book-meta">
-                            <div class="book-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.7</span>
-                            </div>
-                            <div class="book-pages">236 pages</div>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">
-                                <i class="fas fa-book-open"></i>
-                                Borrow Now
-                            </button>
-                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'The%20Power%20of%20Now'%20from%20your%20e-library" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 4 -->
-                <div class="book-card">
-                    <div class="book-cover">
-                        <img src="https://i.postimg.cc/52ZqhVpw/Things_Fall_Apart.jpg" alt="Things Fall Apart">
-                        <div class="book-badge">Classic</div>
-                    </div>
-                    <div class="book-content">
-                        <div class="book-category">African Literature</div>
-                        <h3 class="book-title">Things Fall Apart</h3>
-                        <div class="book-author">Chinua Achebe</div>
-                        <p class="book-description">A masterpiece that has sold over 20 million copies worldwide about traditional African life</p>
-                        <div class="book-meta">
-                            <div class="book-rating">
-                                <i class="fas fa-star"></i>
-                                <span>4.9</span>
-                            </div>
-                            <div class="book-pages">209 pages</div>
-                        </div>
-                        <div class="book-actions">
-                            <button class="borrow-btn">
-                                <i class="fas fa-book-open"></i>
-                                Borrow Now
-                            </button>
-                            <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I%20want%20to%20borrow%20'Things%20Fall%20Apart'%20from%20your%20e-library" class="whatsapp-btn">
-                                <i class="fab fa-whatsapp"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="books-grid" id="booksGrid">
+                <!-- Book cards will be populated by JavaScript -->
             </div>
         </div>
 
@@ -1063,10 +1052,10 @@
                             <div class="article-read-time">8 min read</div>
                         </div>
                         <div class="article-actions">
-                            <button class="read-btn">
+                            <a href="article-one.html" class="read-btn" style="text-decoration: none;">
                                 <i class="fas fa-book-reader"></i>
                                 Read Article
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1175,6 +1164,76 @@
     </nav>
 
     <script>
+        // Book Catalogue Data
+        const bookCatalogue = [
+            {
+                id: 1,
+                title: "Atomic Habits",
+                author: "James Clear",
+                category: "Personal Growth",
+                description: "Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
+                cover: "https://i.postimg.cc/85QLsmrt/Atomic_habits.jpg",
+                rating: 4.8,
+                pages: 320,
+                badge: "Bestseller"
+            },
+            {
+                id: 2,
+                title: "The Lean Startup",
+                author: "Eric Ries",
+                category: "Business",
+                description: "How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses",
+                cover: "https://i.postimg.cc/HLX1QTV2/images.jpg",
+                rating: 4.6,
+                pages: 336,
+                badge: null
+            },
+            {
+                id: 3,
+                title: "The Power of Now",
+                author: "Eckhart Tolle",
+                category: "Spirituality",
+                description: "A Guide to Spiritual Enlightenment that has the potential to completely transform your life",
+                cover: "https://i.postimg.cc/fTR35r7y/TPON_Cover_LG.jpg",
+                rating: 4.7,
+                pages: 236,
+                badge: null
+            },
+            {
+                id: 4,
+                title: "Things Fall Apart",
+                author: "Chinua Achebe",
+                category: "African Literature",
+                description: "A masterpiece that has sold over 20 million copies worldwide about traditional African life",
+                cover: "https://i.postimg.cc/52ZqhVpw/Things_Fall_Apart.jpg",
+                rating: 4.9,
+                pages: 209,
+                badge: "Classic"
+            },
+            {
+                id: 5,
+                title: "The 7 Habits of Highly Effective People",
+                author: "Stephen R. Covey",
+                category: "Personal Growth",
+                description: "Powerful Lessons in Personal Change that have transformed millions of lives worldwide",
+                cover: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.7,
+                pages: 381,
+                badge: "Classic"
+            },
+            {
+                id: 6,
+                title: "Thinking, Fast and Slow",
+                author: "Daniel Kahneman",
+                category: "Psychology",
+                description: "Nobel Prize winner's exploration of the two systems that drive the way we think",
+                cover: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.6,
+                pages: 499,
+                badge: null
+            }
+        ];
+
         // DOM Elements
         const subscriptionModal = document.getElementById('subscriptionModal');
         const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
@@ -1183,8 +1242,142 @@
         const tabButtons = document.querySelectorAll('.tab-btn');
         const contentSections = document.querySelectorAll('.content-section');
         const subscribeButtons = document.querySelectorAll('.subscribe-btn');
-        const borrowButtons = document.querySelectorAll('.borrow-btn');
+        const booksGrid = document.getElementById('booksGrid');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
         const readButtons = document.querySelectorAll('.read-btn');
+
+        // Initialize the books grid
+        function initializeBooksGrid() {
+            booksGrid.innerHTML = '';
+            
+            bookCatalogue.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.setAttribute('data-book-id', book.id);
+                
+                bookCard.innerHTML = `
+                    <div class="book-cover">
+                        <img src="${book.cover}" alt="${book.title}">
+                        ${book.badge ? `<div class="book-badge">${book.badge}</div>` : ''}
+                    </div>
+                    <div class="book-content">
+                        <div class="book-category">${book.category}</div>
+                        <h3 class="book-title">${book.title}</h3>
+                        <div class="book-author">${book.author}</div>
+                        <p class="book-description">${book.description}</p>
+                        <div class="book-meta">
+                            <div class="book-rating">
+                                <i class="fas fa-star"></i>
+                                <span>${book.rating}</span>
+                            </div>
+                            <div class="book-pages">${book.pages} pages</div>
+                        </div>
+                        <div class="book-actions">
+                            <button class="borrow-btn">
+                                <i class="fas fa-book-open"></i>
+                                Borrow Now
+                            </button>
+                            <a href="https://wa.me/254727211191?text=Hi%20THE%20SONGA%20WELFARE,%20I%20want%20to%20borrow%20'${encodeURIComponent(book.title)}'%20by%20${encodeURIComponent(book.author)}%20from%20your%20library" class="whatsapp-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            // Add event listeners to the newly created borrow buttons
+            const borrowButtons = document.querySelectorAll('.borrow-btn');
+            borrowButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const bookCard = this.closest('.book-card');
+                    const bookId = bookCard.getAttribute('data-book-id');
+                    const book = bookCatalogue.find(b => b.id == bookId);
+                    
+                    const message = `Hi THE SONGA WELFARE, I want to borrow "${book.title}" by ${book.author} from your library`;
+                    window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
+                });
+            });
+        }
+
+        // Search functionality
+        function performSearch(query) {
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+            
+            const filteredBooks = bookCatalogue.filter(book => 
+                book.title.toLowerCase().includes(query.toLowerCase()) || 
+                book.author.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            displaySearchResults(filteredBooks);
+        }
+
+        function displaySearchResults(books) {
+            searchResults.innerHTML = '';
+            
+            if (books.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'search-result-item';
+                noResults.textContent = 'No books found';
+                searchResults.appendChild(noResults);
+            } else {
+                books.forEach(book => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-result-item';
+                    resultItem.setAttribute('data-book-id', book.id);
+                    
+                    resultItem.innerHTML = `
+                        <img src="${book.cover}" alt="${book.title}" class="search-result-cover">
+                        <div class="search-result-info">
+                            <div class="search-result-title">${book.title}</div>
+                            <div class="search-result-author">${book.author}</div>
+                        </div>
+                    `;
+                    
+                    resultItem.addEventListener('click', function() {
+                        const bookId = this.getAttribute('data-book-id');
+                        const book = bookCatalogue.find(b => b.id == bookId);
+                        
+                        // Scroll to the book in the grid instead of booking directly
+                        const bookCard = document.querySelector(`.book-card[data-book-id="${bookId}"]`);
+                        if (bookCard) {
+                            bookCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            
+                            // Add a highlight effect
+                            bookCard.style.boxShadow = '0 0 0 3px var(--gold)';
+                            setTimeout(() => {
+                                bookCard.style.boxShadow = '';
+                            }, 2000);
+                        }
+                        
+                        // Clear search and close results
+                        searchInput.value = '';
+                        searchResults.classList.remove('active');
+                    });
+                    
+                    searchResults.appendChild(resultItem);
+                });
+            }
+            
+            searchResults.classList.add('active');
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('input', function() {
+            performSearch(this.value);
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.classList.remove('active');
+            }
+        });
 
         // Open subscription modal
         subscriptionBtn.addEventListener('click', function() {
@@ -1238,18 +1431,6 @@
             });
         });
 
-        // Borrow book functionality
-        borrowButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const bookCard = this.closest('.book-card');
-                const bookTitle = bookCard.querySelector('.book-title').textContent;
-                const bookAuthor = bookCard.querySelector('.book-author').textContent;
-                
-                const message = `Hi THE SONGA WELFARE, I want to borrow "${bookTitle}" by ${bookAuthor} from your library`;
-                window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
-            });
-        });
-
         // Read article functionality
         readButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -1263,6 +1444,8 @@
 
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
+            initializeBooksGrid();
+            
             const bookCards = document.querySelectorAll('.book-card');
             const articleCards = document.querySelectorAll('.article-card');
             
