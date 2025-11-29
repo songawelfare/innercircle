@@ -838,6 +838,24 @@
             color: var(--white);
         }
 
+        /* No Posts Message */
+        .no-posts {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--dark-gray);
+        }
+
+        .no-posts-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .no-posts h3 {
+            margin-bottom: 1rem;
+            color: var(--gold-dark);
+        }
+
         /* Responsive Design */
         @media (min-width: 768px) {
             .container {
@@ -929,17 +947,8 @@
                     </div>
                 </div>
                 
-                <div class="welcome-actions">
-                    <button class="btn btn-primary" id="registerNowBtn">
-                        <i class="fas fa-user-plus"></i> Register Now
-                    </button>
-                    <button class="btn btn-secondary" id="maybeLaterBtn">
-                        Maybe Later
-                    </button>
-                </div>
-                
                 <div class="google-signin-container">
-                    <p>Already have a Google account?</p>
+                    <p>Sign in with Google to continue</p>
                     <div id="g_id_onload"
                          data-client_id="138110899008-60ae40rmsh5v7oqv50o18kuuo08kvvus.apps.googleusercontent.com"
                          data-context="signin"
@@ -1084,146 +1093,14 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Post 1 - Brand Introduction -->
-        <div class="post" id="post-1">
-            <div class="post-header">
-                <div class="post-user-info">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
-                    </div>
-                    <div>
-                        <div class="post-user">thesongawelfare</div>
-                        <div class="post-category">Brand Introduction</div>
-                    </div>
-                </div>
+        <!-- No Posts Message -->
+        <div class="no-posts">
+            <div class="no-posts-icon">
+                <i class="fas fa-newspaper"></i>
             </div>
-            <div class="post-media">
-                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Brand Vision" class="post-image">
-            </div>
-            <div class="post-actions">
-                <div class="action-left">
-                    <button class="post-action action-like" title="Like post" data-post-id="1">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <button class="post-action action-share" title="Share post" data-post-id="1">
-                        <i class="far fa-share-square"></i>
-                    </button>
-                    <button class="post-action action-save" title="Save post" data-post-id="1">
-                        <i class="far fa-bookmark"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="post-caption">
-                    <strong>Welcome to THE SONGA WELFARE</strong><br><br>
-                    This is more than just a brand - it's a movement. A platform dedicated to awakening consciousness, empowering individuals, and creating meaningful change in our society.<br><br>
-                    Through content, conversations, and community, we explore what it means to live with purpose, authenticity, and impact. Whether you're here for inspiration, education, or connection, you're in the right place.<br><br>
-                    This is where we challenge norms, break barriers, and build together. Welcome to the journey.
-                </div>
-                <div class="post-time" id="post-1-time"></div>
-                <span class="post-type">INTRODUCTION</span>
-            </div>
-        </div>
-
-        <!-- Post 2 - Commercial Video -->
-        <div class="post" id="post-2">
-            <div class="post-header">
-                <div class="post-user-info">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
-                    </div>
-                    <div>
-                        <div class="post-user">thesongawelfare</div>
-                        <div class="post-category">Commercial</div>
-                    </div>
-                </div>
-            </div>
-            <div class="post-media">
-                <div class="post-video">
-                    <div class="video-container">
-                        <iframe 
-                            src="https://docs.google.com/videos/d/1Ozl8WCVOSopprrwoDiU9I8tr0ap8dP4m8XoaNpEgTbw/edit?usp=sharing" 
-                            class="google-vid-embed"
-                            allow="autoplay"
-                            frameborder="0"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="video-controls">
-                        <button class="play-pause-btn">
-                            <i class="fas fa-pause"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="post-actions">
-                <div class="action-left">
-                    <button class="post-action action-like" title="Like post" data-post-id="2">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <button class="post-action action-share" title="Share post" data-post-id="2">
-                        <i class="far fa-share-square"></i>
-                    </button>
-                    <button class="post-action action-save" title="Save post" data-post-id="2">
-                        <i class="far fa-bookmark"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="post-caption">
-                    <strong>Awakening Men in Society</strong><br><br>
-                    This commercial addresses the crucial need for conscious masculinity in our modern world. We explore what it means to be a man who leads with purpose, integrity, and emotional intelligence.<br><br>
-                    The awakening begins within - recognizing our power, embracing vulnerability, and stepping into our roles as builders, protectors, and healers of our communities.<br><br>
-                    Join the conversation. Share your thoughts. Let's build better men for a better world.
-                </div>
-                <div class="post-time" id="post-2-time"></div>
-                <span class="post-type">COMMERCIAL</span>
-            </div>
-        </div>
-
-        <!-- Post 3 - Mugs and Dines -->
-        <div class="post" id="post-3">
-            <div class="post-header">
-                <div class="post-user-info">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
-                    </div>
-                    <div>
-                        <div class="post-user">thesongawelfare</div>
-                        <div class="post-category">Dining Program</div>
-                    </div>
-                </div>
-            </div>
-            <div class="post-media">
-                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Mugs and Dines Dining Experience" class="post-image">
-            </div>
-            <div class="post-actions">
-                <div class="action-left">
-                    <button class="post-action action-like" title="Like post" data-post-id="3">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <button class="post-action action-share" title="Share post" data-post-id="3">
-                        <i class="far fa-share-square"></i>
-                    </button>
-                    <button class="post-action action-save" title="Save post" data-post-id="3">
-                        <i class="far fa-bookmark"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="post-caption">
-                    <strong>Mugs and Dines: Conversations Over Cuisine</strong><br><br>
-                    <strong>What to Expect:</strong><br>
-                    • Intimate dining experiences with limited seating<br>
-                    • Guided conversations on relevant relationship topics<br>
-                    • Shared stories and collective wisdom<br>
-                    • Practical tools for strengthening connections<br>
-                    • Networking with like-minded individuals<br><br>
-                    Whether you're navigating the complexities of modern relationships, seeking to strengthen your marriage, or looking to build healthier family dynamics, Mugs and Dines provides the space, community, and insights to support your journey.
-                </div>
-                <div class="post-time" id="post-3-time"></div>
-                <span class="post-type">DINING PROGRAM</span>
-            </div>
+            <h3>No Posts Yet</h3>
+            <p>We're working on creating valuable content for our community.</p>
+            <p>Check back soon for updates, or join our membership to be the first to know when we post new content.</p>
         </div>
 
         <!-- Contact Section -->
@@ -1273,8 +1150,6 @@
         const closeWelcomeModal = document.getElementById('closeWelcomeModal');
         const closeRegistrationModal = document.getElementById('closeRegistrationModal');
         const closeSuccessModal = document.getElementById('closeSuccessModal');
-        const registerNowBtn = document.getElementById('registerNowBtn');
-        const maybeLaterBtn = document.getElementById('maybeLaterBtn');
         const headerJoinBtn = document.getElementById('headerJoinBtn');
         const contactJoinBtn = document.getElementById('contactJoinBtn');
         const registrationForm = document.getElementById('registrationForm');
@@ -1287,9 +1162,6 @@
         const lastNameInput = document.getElementById('lastName');
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
-        const likeButtons = document.querySelectorAll('.action-like');
-        const shareButtons = document.querySelectorAll('.action-share');
-        const saveButtons = document.querySelectorAll('.action-save');
 
         // User state
         let currentUser = null;
@@ -1363,7 +1235,7 @@
             prefillRegistrationForm();
             
             // Show success message
-            showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+            showNotification(`Welcome, ${currentUser.firstName}! You can now register for membership.`, 'success');
             
             // Close welcome modal if open
             welcomeModal.classList.remove('active');
@@ -1442,110 +1314,6 @@
             showNotification('Signed out successfully', 'success');
         }
 
-        // Post interaction functionality
-        likeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-heart');
-                    icon.classList.add('fas', 'fa-heart');
-                    showNotification('Post liked!', 'success');
-                } else {
-                    icon.classList.remove('fas', 'fa-heart');
-                    icon.classList.add('far', 'fa-heart');
-                }
-                
-                // Store like state in localStorage
-                const likeKey = `post_${postId}_liked`;
-                localStorage.setItem(likeKey, this.classList.contains('active'));
-            });
-        });
-
-        shareButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-share-square');
-                    icon.classList.add('fas', 'fa-share-square');
-                    
-                    // Simulate sharing functionality
-                    if (navigator.share) {
-                        // Use Web Share API if available
-                        navigator.share({
-                            title: 'THE SONGA WELFARE',
-                            text: 'Check out this post from THE SONGA WELFARE',
-                            url: window.location.href + `#post-${postId}`
-                        }).then(() => {
-                            showNotification('Post shared successfully!', 'success');
-                        }).catch(() => {
-                            showNotification('Share dialog closed', 'success');
-                        });
-                    } else {
-                        // Fallback: copy to clipboard
-                        navigator.clipboard.writeText(window.location.href + `#post-${postId}`).then(() => {
-                            showNotification('Link copied to clipboard!', 'success');
-                        });
-                    }
-                } else {
-                    icon.classList.remove('fas', 'fa-share-square');
-                    icon.classList.add('far', 'fa-share-square');
-                }
-            });
-        });
-
-        saveButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const postId = this.getAttribute('data-post-id');
-                this.classList.toggle('active');
-                const icon = this.querySelector('i');
-                
-                if (this.classList.contains('active')) {
-                    icon.classList.remove('far', 'fa-bookmark');
-                    icon.classList.add('fas', 'fa-bookmark');
-                    showNotification('Post saved!', 'success');
-                } else {
-                    icon.classList.remove('fas', 'fa-bookmark');
-                    icon.classList.add('far', 'fa-bookmark');
-                    showNotification('Post removed from saved', 'success');
-                }
-                
-                // Store save state in localStorage
-                const saveKey = `post_${postId}_saved`;
-                localStorage.setItem(saveKey, this.classList.contains('active'));
-            });
-        });
-
-        // Restore interaction states from localStorage
-        function restoreInteractionStates() {
-            likeButtons.forEach(button => {
-                const postId = button.getAttribute('data-post-id');
-                const likeKey = `post_${postId}_liked`;
-                if (localStorage.getItem(likeKey) === 'true') {
-                    button.classList.add('active');
-                    const icon = button.querySelector('i');
-                    icon.classList.remove('far', 'fa-heart');
-                    icon.classList.add('fas', 'fa-heart');
-                }
-            });
-            
-            saveButtons.forEach(button => {
-                const postId = button.getAttribute('data-post-id');
-                const saveKey = `post_${postId}_saved`;
-                if (localStorage.getItem(saveKey) === 'true') {
-                    button.classList.add('active');
-                    const icon = button.querySelector('i');
-                    icon.classList.remove('far', 'fa-bookmark');
-                    icon.classList.add('fas', 'fa-bookmark');
-                }
-            });
-        }
-
         // Send data to Google Apps Script
         async function sendToGoogleAppsScript(data) {
             try {
@@ -1604,6 +1372,13 @@ Source: Website Membership Registration
         // Form submission
         registrationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Check if user is signed in
+            if (!currentUser) {
+                showNotification('Please sign in with Google first', 'error');
+                welcomeModal.classList.add('active');
+                return;
+            }
             
             // Get form data
             const formData = new FormData(this);
@@ -1671,48 +1446,32 @@ Source: Website Membership Registration
             // Show welcome modal for first-time visitors
             showWelcomeModal();
             
-            // Update post times
-            updatePostTimes();
-            
-            // Restore interaction states
-            restoreInteractionStates();
-            
             // Add sign-out functionality to user profile
             userProfile.addEventListener('click', signOut);
         });
 
-        // Welcome modal actions
-        registerNowBtn.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
-            registrationModal.classList.add('active');
-            
-            // Pre-fill form if user is signed in
-            if (currentUser) {
-                prefillRegistrationForm();
-            }
-        });
-
-        maybeLaterBtn.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
-            markAsVisited();
-        });
-
         // Header Join Us button
         headerJoinBtn.addEventListener('click', function() {
-            registrationModal.classList.add('active');
-            
-            // Pre-fill form if user is signed in
-            if (currentUser) {
+            if (!currentUser) {
+                // User not signed in, show welcome modal with Google Sign-In
+                welcomeModal.classList.add('active');
+                showNotification('Please sign in with Google first', 'error');
+            } else {
+                // User is signed in, show registration form
+                registrationModal.classList.add('active');
                 prefillRegistrationForm();
             }
         });
 
         // Contact section Join Membership button
         contactJoinBtn.addEventListener('click', function() {
-            registrationModal.classList.add('active');
-            
-            // Pre-fill form if user is signed in
-            if (currentUser) {
+            if (!currentUser) {
+                // User not signed in, show welcome modal with Google Sign-In
+                welcomeModal.classList.add('active');
+                showNotification('Please sign in with Google first', 'error');
+            } else {
+                // User is signed in, show registration form
+                registrationModal.classList.add('active');
                 prefillRegistrationForm();
             }
         });
@@ -1750,37 +1509,6 @@ Source: Website Membership Registration
                 successModal.classList.remove('active');
             }
         });
-
-        // Post time functionality
-        const postDates = {
-            'post-1': new Date('2025-11-15'),
-            'post-2': new Date('2025-11-15'), 
-            'post-3': new Date('2025-11-15')
-        };
-
-        function updatePostTimes() {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            Object.keys(postDates).forEach(postId => {
-                const postDate = new Date(postDates[postId]);
-                const postDay = new Date(postDate.getFullYear(), postDate.getMonth(), postDate.getDate());
-                const timeElement = document.getElementById(`${postId}-time`);
-                
-                if (timeElement) {
-                    const diffTime = today - postDay;
-                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-                    
-                    if (diffDays === 0) {
-                        timeElement.textContent = 'TODAY';
-                    } else if (diffDays === 1) {
-                        timeElement.textContent = '1 DAY AGO';
-                    } else {
-                        timeElement.textContent = `${diffDays} DAYS AGO`;
-                    }
-                }
-            });
-        }
 
         // Global function for Google Sign-In callback
         window.handleGoogleSignIn = handleGoogleSignIn;
