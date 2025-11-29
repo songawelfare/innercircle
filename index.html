@@ -97,6 +97,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
         }
 
         .join-btn {
@@ -128,6 +129,7 @@
             border-radius: 20px;
             background: var(--gold-light);
             cursor: pointer;
+            position: relative;
         }
 
         .user-avatar {
@@ -147,6 +149,49 @@
             font-weight: 600;
             font-size: 0.9rem;
             color: var(--black);
+        }
+
+        /* User Profile Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--gold-light);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--gold-dark);
         }
 
         /* Welcome Modal */
@@ -308,8 +353,8 @@
             font-size: 1.2rem;
         }
 
-        /* Registration Modal */
-        .registration-modal {
+        /* Google Form Modal */
+        .google-form-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -322,22 +367,22 @@
             align-items: center;
         }
 
-        .registration-modal.active {
+        .google-form-modal.active {
             display: flex;
         }
 
-        .registration-content {
+        .google-form-content {
             background-color: white;
             border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
+            width: 95%;
+            max-width: 800px;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             animation: modalAppear 0.5s ease-out;
         }
 
-        .registration-header {
+        .google-form-header {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
             padding: 1.5rem;
@@ -345,132 +390,21 @@
             position: relative;
         }
 
-        .registration-header h2 {
+        .google-form-header h2 {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
 
-        .registration-body {
-            padding: 2rem;
+        .google-form-body {
+            padding: 0;
+            height: 600px;
+            overflow: hidden;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-gray);
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
+        .google-form-iframe {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--light-gray);
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--gold);
-            outline: none;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .membership-options {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin: 1.5rem 0;
-        }
-
-        .membership-option {
-            border: 2px solid var(--gold);
-            border-radius: 8px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            background-color: rgba(212, 175, 55, 0.05);
-        }
-
-        .membership-option.selected {
-            border-color: var(--gold);
-            background-color: rgba(212, 175, 55, 0.1);
-            transform: scale(1.02);
-        }
-
-        .membership-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .membership-name {
-            font-weight: bold;
-            color: var(--gold-dark);
-            font-size: 1.2rem;
-        }
-
-        .membership-price {
-            font-weight: bold;
-            color: var(--gold);
-            font-size: 1.3rem;
-        }
-
-        .membership-features {
-            list-style: none;
-        }
-
-        .membership-features li {
-            padding: 8px 0;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .membership-features li i {
-            color: var(--gold);
-            font-size: 0.9rem;
-        }
-
-        .submit-btn {
-            background-color: var(--gold);
-            color: var(--black);
+            height: 100%;
             border: none;
-            border-radius: 6px;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        .submit-btn:disabled {
-            background-color: var(--light-gray);
-            cursor: not-allowed;
         }
 
         /* Success Modal */
@@ -571,193 +505,22 @@
             padding: 1rem;
         }
 
-        /* Posts */
-        .post {
-            background-color: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem;
-        }
-
-        .post-user-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .post-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 10px;
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .post-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .post-user {
-            font-weight: 600;
-        }
-
-        .post-category {
-            font-size: 0.8rem;
+        /* No Posts Message */
+        .no-posts {
+            text-align: center;
+            padding: 3rem 1rem;
             color: var(--dark-gray);
         }
 
-        .post-media {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .post-image {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .post-video {
-            width: 100%;
-            height: 400px;
-            background: var(--black);
-            position: relative;
-        }
-
-        .video-container {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .google-vid-embed {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .video-placeholder {
-            width: 100%;
-            height: 100%;
-            background: var(--black);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 1.2rem;
-        }
-
-        .video-controls {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            right: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .post-video:hover .video-controls {
-            opacity: 1;
-        }
-
-        .play-pause-btn {
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .action-left {
-            display: flex;
-            gap: 15px;
-        }
-
-        .post-action {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: var(--dark-gray);
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .post-action:hover {
-            color: var(--black);
-        }
-
-        .post-action.active {
+        .no-posts-icon {
+            font-size: 3rem;
             color: var(--gold);
+            margin-bottom: 1rem;
         }
 
-        .action-like.active {
-            color: var(--like-color);
-        }
-
-        .action-share.active {
-            color: var(--share-color);
-        }
-
-        .action-save.active {
-            color: var(--save-color);
-        }
-
-        .post-content {
-            padding: 0 1rem 1rem;
-        }
-
-        .post-caption {
-            margin-bottom: 10px;
-        }
-
-        .post-time {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-        }
-
-        .post-type {
-            background-color: var(--gold);
-            color: var(--black);
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            display: inline-block;
-            font-weight: 600;
+        .no-posts h3 {
+            margin-bottom: 1rem;
+            color: var(--gold-dark);
         }
 
         /* Bottom Navigation */
@@ -838,47 +601,16 @@
             color: var(--white);
         }
 
-        /* No Posts Message */
-        .no-posts {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--dark-gray);
-        }
-
-        .no-posts-icon {
-            font-size: 3rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-        }
-
-        .no-posts h3 {
-            margin-bottom: 1rem;
-            color: var(--gold-dark);
-        }
-
         /* Responsive Design */
         @media (min-width: 768px) {
             .container {
                 max-width: 600px;
             }
-            
-            .post-video {
-                height: 500px;
-            }
         }
 
         @media (max-width: 480px) {
-            .post-video {
-                height: 300px;
-            }
-            
             .welcome-actions {
                 flex-direction: column;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
             }
             
             .notification {
@@ -889,6 +621,15 @@
             
             .user-name {
                 display: none;
+            }
+            
+            .google-form-content {
+                width: 98%;
+                height: 90vh;
+            }
+            
+            .google-form-body {
+                height: calc(90vh - 80px);
             }
         }
     </style>
@@ -969,87 +710,23 @@
         </div>
     </div>
 
-    <!-- Registration Modal -->
-    <div class="registration-modal" id="registrationModal">
-        <div class="registration-content">
-            <div class="registration-header">
-                <h2>Join THE SONGA WELFARE</h2>
-                <p>Complete your registration to access all benefits</p>
-                <button class="close-modal" id="closeRegistrationModal">&times;</button>
+    <!-- Google Form Modal -->
+    <div class="google-form-modal" id="googleFormModal">
+        <div class="google-form-content">
+            <div class="google-form-header">
+                <h2>THE SONGA WELFARE Membership Registration</h2>
+                <p>Complete the form below to join our community</p>
+                <button class="close-modal" id="closeGoogleFormModal">&times;</button>
             </div>
-            <div class="registration-body">
-                <form id="registrationForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" id="location" name="location" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="occupation">Occupation</label>
-                        <input type="text" id="occupation" name="occupation" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="hearAbout">How did you hear about us?</label>
-                        <select id="hearAbout" name="hearAbout" required>
-                            <option value="">Select an option</option>
-                            <option value="social-media">Social Media</option>
-                            <option value="friend">Friend/Colleague</option>
-                            <option value="event">Event</option>
-                            <option value="search">Online Search</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Membership Plan</label>
-                        <div class="membership-options">
-                            <div class="membership-option selected" data-value="standard">
-                                <div class="membership-header">
-                                    <span class="membership-name">Standard Membership</span>
-                                    <span class="membership-price">KSh 1,500/month</span>
-                                </div>
-                                <ul class="membership-features">
-                                    <li><i class="fas fa-check"></i> Basic Library Access per month</li>
-                                    <li><i class="fas fa-check"></i> Monthly financial coaching sessions</li>
-                                    <li><i class="fas fa-check"></i> Team building activities</li>
-                                    <li><i class="fas fa-check"></i> Access to the club</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <input type="hidden" id="membershipType" name="membershipType" value="standard" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="goals">What are your personal development goals?</label>
-                        <textarea id="goals" name="goals" rows="3" placeholder="Tell us about what you hope to achieve by joining our community..."></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn" id="submitRegistration">
-                        <i class="fas fa-paper-plane"></i> Complete Registration
-                    </button>
-                </form>
+            <div class="google-form-body">
+                <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScann_IwZdMXihlYHa6jQK1gLy7qEsIVDR-mKUzc3CroZgvOQ/viewform?embedded=true" 
+                    class="google-form-iframe"
+                    frameborder="0"
+                    marginheight="0"
+                    marginwidth="0">
+                    Loading…
+                </iframe>
             </div>
         </div>
     </div>
@@ -1082,6 +759,24 @@
                         <img id="userAvatar" src="" alt="User Avatar">
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item" id="viewProfileOption">
+                            <i class="fas fa-user"></i>
+                            <span>View Profile</span>
+                        </div>
+                        <div class="dropdown-item" id="membershipOption">
+                            <i class="fas fa-crown"></i>
+                            <span>Membership</span>
+                        </div>
+                        <div class="dropdown-item" id="settingsOption">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-item" id="signOutOption">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sign Out</span>
+                        </div>
+                    </div>
                 </div>
                 <button class="join-btn" id="headerJoinBtn">
                     <i class="fas fa-user-plus"></i>
@@ -1140,31 +835,30 @@
 
     <script>
         // Configuration
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-9qz3gHM-RJutgLedlsxbdG5-6TbOgm5OTxRxl_uVO_jN7r4vqtl9tX1cqp2gqh9ing/exec';
-        const GOOGLE_CLIENT_ID = '138110899008-60ae40rmsh5v7oqv50o18kuuo08kvvus.apps.googleusercontent.com';
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScann_IwZdMXihlYHa6jQK1gLy7qEsIVDR-mKUzc3CroZgvOQ/viewform?embedded=true';
         
         // DOM Elements
         const welcomeModal = document.getElementById('welcomeModal');
-        const registrationModal = document.getElementById('registrationModal');
+        const googleFormModal = document.getElementById('googleFormModal');
         const successModal = document.getElementById('successModal');
         const closeWelcomeModal = document.getElementById('closeWelcomeModal');
-        const closeRegistrationModal = document.getElementById('closeRegistrationModal');
+        const closeGoogleFormModal = document.getElementById('closeGoogleFormModal');
         const closeSuccessModal = document.getElementById('closeSuccessModal');
         const headerJoinBtn = document.getElementById('headerJoinBtn');
         const contactJoinBtn = document.getElementById('contactJoinBtn');
-        const registrationForm = document.getElementById('registrationForm');
-        const submitRegistration = document.getElementById('submitRegistration');
         const notification = document.getElementById('notification');
         const userProfile = document.getElementById('userProfile');
         const userAvatar = document.getElementById('userAvatar');
         const userDisplayName = document.getElementById('userDisplayName');
-        const firstNameInput = document.getElementById('firstName');
-        const lastNameInput = document.getElementById('lastName');
-        const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
+        const userDropdown = document.getElementById('userDropdown');
+        const viewProfileOption = document.getElementById('viewProfileOption');
+        const membershipOption = document.getElementById('membershipOption');
+        const settingsOption = document.getElementById('settingsOption');
+        const signOutOption = document.getElementById('signOutOption');
 
         // User state
         let currentUser = null;
+        let dropdownOpen = false;
 
         // Show notification
         function showNotification(message, type = 'success') {
@@ -1173,21 +867,6 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 4000);
-        }
-
-        // Show loading state
-        function showLoading(button) {
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = '<div class="loading"></div> Processing...';
-            button.setAttribute('data-original-text', originalText);
-        }
-
-        // Hide loading state
-        function hideLoading(button) {
-            button.disabled = false;
-            const originalText = button.getAttribute('data-original-text');
-            button.innerHTML = originalText || 'Complete Registration';
         }
 
         // Check if user has visited before
@@ -1231,14 +910,16 @@
             // Update UI
             updateUserProfile();
             
-            // Pre-fill registration form
-            prefillRegistrationForm();
-            
             // Show success message
-            showNotification(`Welcome, ${currentUser.firstName}! You can now register for membership.`, 'success');
+            showNotification(`Welcome, ${currentUser.firstName}! Opening membership form...`, 'success');
             
             // Close welcome modal if open
             welcomeModal.classList.remove('active');
+            
+            // Automatically open the Google Form after successful sign-in
+            setTimeout(() => {
+                googleFormModal.classList.add('active');
+            }, 1500);
         }
 
         // Parse JWT token
@@ -1269,28 +950,12 @@
             }
         }
 
-        // Pre-fill registration form with user data
-        function prefillRegistrationForm() {
-            if (currentUser) {
-                if (firstNameInput) firstNameInput.value = currentUser.firstName || '';
-                if (lastNameInput) lastNameInput.value = currentUser.lastName || '';
-                if (emailInput) emailInput.value = currentUser.email || '';
-                
-                // Make email field read-only since it's from Google
-                if (emailInput) {
-                    emailInput.readOnly = true;
-                    emailInput.title = 'Email from Google account (cannot be changed)';
-                }
-            }
-        }
-
         // Load user from localStorage
         function loadUserFromStorage() {
             const storedUser = localStorage.getItem('the_songa_welfare_user');
             if (storedUser) {
                 currentUser = JSON.parse(storedUser);
                 updateUserProfile();
-                prefillRegistrationForm();
             }
         }
 
@@ -1300,143 +965,26 @@
             userProfile.style.display = 'none';
             headerJoinBtn.style.display = 'flex';
             localStorage.removeItem('the_songa_welfare_user');
-            
-            // Clear form fields
-            if (firstNameInput) firstNameInput.value = '';
-            if (lastNameInput) lastNameInput.value = '';
-            if (emailInput) {
-                emailInput.value = '';
-                emailInput.readOnly = false;
-                emailInput.title = '';
-            }
-            if (phoneInput) phoneInput.value = '';
+            closeDropdown();
             
             showNotification('Signed out successfully', 'success');
         }
 
-        // Send data to Google Apps Script
-        async function sendToGoogleAppsScript(data) {
-            try {
-                console.log('Sending to Google Apps Script:', data);
-                
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                console.log('Google Apps Script response:', result);
-                
-                return result;
-            } catch (error) {
-                console.error('Google Apps Script error:', error);
-                return { success: false, error: error.toString() };
+        // Toggle dropdown
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            if (dropdownOpen) {
+                userDropdown.classList.add('active');
+            } else {
+                userDropdown.classList.remove('active');
             }
         }
 
-        // Fallback email method
-        function sendRegistrationMailTo(data) {
-            const membershipText = 'Standard Membership (KSh 1,500/month)';
-            
-            const subject = `New Membership Registration: ${data.firstName} ${data.lastName}`;
-            const body = `
-NEW MEMBERSHIP REGISTRATION - THE SONGA WELFARE
-
-PERSONAL DETAILS:
-Name: ${data.firstName} ${data.lastName}
-Email: ${data.email}
-Phone: ${data.phone}
-Location: ${data.location}
-Occupation: ${data.occupation}
-
-MEMBERSHIP INFORMATION:
-Selected Plan: ${membershipText}
-Heard About Us: ${data.hearAbout}
-
-GOALS & EXPECTATIONS:
-${data.goals || 'No specific goals mentioned'}
-
-REGISTRATION DETAILS:
-Registered: ${new Date().toLocaleString()}
-Source: Website Membership Registration
-            `;
-            
-            const mailtoLink = `mailto:office.songawelfare@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-            return true;
+        // Close dropdown
+        function closeDropdown() {
+            dropdownOpen = false;
+            userDropdown.classList.remove('active');
         }
-
-        // Form submission
-        registrationForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Check if user is signed in
-            if (!currentUser) {
-                showNotification('Please sign in with Google first', 'error');
-                welcomeModal.classList.add('active');
-                return;
-            }
-            
-            // Get form data
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            
-            // Add user ID if signed in
-            if (currentUser) {
-                data.googleUserId = currentUser.id;
-            }
-            
-            // Add timestamp
-            data.timestamp = new Date().toISOString();
-            data.source = 'website_registration';
-            
-            try {
-                showLoading(submitRegistration);
-                
-                console.log('Starting registration process...');
-                
-                // Try Google Apps Script first
-                if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) {
-                    console.log('Google Apps Script URL not configured, using fallback');
-                    throw new Error('Google Apps Script not configured');
-                }
-                
-                console.log('Attempting Google Apps Script...');
-                const scriptResult = await sendToGoogleAppsScript(data);
-                
-                if (scriptResult.success) {
-                    // Success with Google Apps Script
-                    console.log('Google Apps Script succeeded');
-                    registrationModal.classList.remove('active');
-                    successModal.classList.add('active');
-                    markAsVisited();
-                    registrationForm.reset();
-                    showNotification('Registration successful! We have received your details.');
-                } else {
-                    // Fallback to mailto
-                    console.log('Google Apps Script failed, using mailto fallback...');
-                    const mailtoSuccess = sendRegistrationMailTo(data);
-                    
-                    if (mailtoSuccess) {
-                        registrationModal.classList.remove('active');
-                        successModal.classList.add('active');
-                        markAsVisited();
-                        registrationForm.reset();
-                        showNotification('Please send the pre-filled email to complete your registration.');
-                    } else {
-                        throw new Error('All registration methods failed');
-                    }
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                showNotification('Registration failed. Please try again or contact us directly.', 'error');
-            } finally {
-                hideLoading(submitRegistration);
-            }
-        });
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
@@ -1446,8 +994,47 @@ Source: Website Membership Registration
             // Show welcome modal for first-time visitors
             showWelcomeModal();
             
-            // Add sign-out functionality to user profile
-            userProfile.addEventListener('click', signOut);
+            // Add click event to user profile to toggle dropdown
+            userProfile.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+            
+            // Close dropdown when clicking elsewhere
+            document.addEventListener('click', function() {
+                closeDropdown();
+            });
+            
+            // Prevent dropdown from closing when clicking inside it
+            userDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Dropdown option event listeners
+        viewProfileOption.addEventListener('click', function() {
+            showNotification('Profile feature coming soon!', 'success');
+            closeDropdown();
+        });
+
+        membershipOption.addEventListener('click', function() {
+            if (currentUser) {
+                googleFormModal.classList.add('active');
+                closeDropdown();
+            } else {
+                showNotification('Please sign in first', 'error');
+                welcomeModal.classList.add('active');
+            }
+        });
+
+        settingsOption.addEventListener('click', function() {
+            showNotification('Settings feature coming soon!', 'success');
+            closeDropdown();
+        });
+
+        signOutOption.addEventListener('click', function() {
+            signOut();
+            closeDropdown();
         });
 
         // Header Join Us button
@@ -1457,9 +1044,8 @@ Source: Website Membership Registration
                 welcomeModal.classList.add('active');
                 showNotification('Please sign in with Google first', 'error');
             } else {
-                // User is signed in, show registration form
-                registrationModal.classList.add('active');
-                prefillRegistrationForm();
+                // User is signed in, show Google Form
+                googleFormModal.classList.add('active');
             }
         });
 
@@ -1470,9 +1056,8 @@ Source: Website Membership Registration
                 welcomeModal.classList.add('active');
                 showNotification('Please sign in with Google first', 'error');
             } else {
-                // User is signed in, show registration form
-                registrationModal.classList.add('active');
-                prefillRegistrationForm();
+                // User is signed in, show Google Form
+                googleFormModal.classList.add('active');
             }
         });
 
@@ -1482,8 +1067,8 @@ Source: Website Membership Registration
             markAsVisited();
         });
 
-        closeRegistrationModal.addEventListener('click', function() {
-            registrationModal.classList.remove('active');
+        closeGoogleFormModal.addEventListener('click', function() {
+            googleFormModal.classList.remove('active');
         });
 
         closeSuccessModal.addEventListener('click', function() {
@@ -1498,9 +1083,9 @@ Source: Website Membership Registration
             }
         });
 
-        registrationModal.addEventListener('click', function(e) {
-            if (e.target === registrationModal) {
-                registrationModal.classList.remove('active');
+        googleFormModal.addEventListener('click', function(e) {
+            if (e.target === googleFormModal) {
+                googleFormModal.classList.remove('active');
             }
         });
 
