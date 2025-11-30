@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>THE SONGA WELFARE - Private Members Portal</title>
+    <title>THE SONGA WELFARE - Private Community</title>
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -194,67 +194,8 @@
             color: var(--gold-dark);
         }
 
-        /* Access Gateway */
-        .access-gateway {
-            display: none;
-            text-align: center;
-            padding: 4rem 1rem;
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .access-gateway.active {
-            display: flex;
-        }
-
-        .gateway-icon {
-            font-size: 5rem;
-            color: var(--gold);
-            margin-bottom: 2rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .gateway-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--gold-dark);
-        }
-
-        .gateway-subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: var(--dark-gray);
-            max-width: 500px;
-        }
-
-        .gateway-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        /* Member Content */
-        .member-content {
-            display: none;
-        }
-
-        .member-content.active {
-            display: block;
-        }
-
-        /* Welcome Modal */
-        .welcome-modal {
+        /* Platform Intro Modal */
+        .intro-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -267,11 +208,11 @@
             align-items: center;
         }
 
-        .welcome-modal.active {
+        .intro-modal.active {
             display: flex;
         }
 
-        .welcome-content {
+        .intro-content {
             background-color: white;
             border-radius: 12px;
             width: 90%;
@@ -286,38 +227,38 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .welcome-header {
+        .intro-header {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
             padding: 2rem;
             text-align: center;
         }
 
-        .welcome-header h2 {
+        .intro-header h2 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
 
-        .welcome-header p {
+        .intro-header p {
             opacity: 0.9;
         }
 
-        .welcome-body {
+        .intro-body {
             padding: 2rem;
         }
 
-        .benefits-list {
+        .intro-features {
             margin: 1.5rem 0;
         }
 
-        .benefit-item {
+        .feature-item {
             display: flex;
             align-items: flex-start;
             gap: 12px;
             margin-bottom: 1rem;
         }
 
-        .benefit-icon {
+        .feature-icon {
             background: var(--gold);
             color: var(--black);
             width: 24px;
@@ -330,17 +271,17 @@
             font-size: 0.8rem;
         }
 
-        .benefit-text h4 {
+        .feature-text h4 {
             margin-bottom: 4px;
             color: var(--gold-dark);
         }
 
-        .benefit-text p {
+        .feature-text p {
             font-size: 0.9rem;
             color: var(--dark-gray);
         }
 
-        .welcome-actions {
+        .intro-actions {
             display: flex;
             gap: 10px;
             margin-top: 1.5rem;
@@ -662,6 +603,65 @@
             font-size: 1.2rem;
         }
 
+        /* No Posts Message */
+        .no-posts {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--dark-gray);
+        }
+
+        .no-posts-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .no-posts h3 {
+            margin-bottom: 1rem;
+            color: var(--gold-dark);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--gray);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            margin-bottom: 1rem;
+            color: var(--gold-dark);
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .contact-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+            font-weight: 600;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--gold-dark);
+            color: var(--white);
+        }
+
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -709,13 +709,13 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .gateway-actions {
+            .intro-actions {
                 flex-direction: row;
             }
         }
 
         @media (max-width: 480px) {
-            .welcome-actions {
+            .intro-actions {
                 flex-direction: column;
             }
             
@@ -738,12 +738,8 @@
                 height: calc(90vh - 80px);
             }
             
-            .gateway-title {
-                font-size: 2rem;
-            }
-            
-            .gateway-subtitle {
-                font-size: 1.1rem;
+            .contact-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -752,73 +748,54 @@
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
-    <!-- Welcome Modal -->
-    <div class="welcome-modal" id="welcomeModal">
-        <div class="welcome-content">
-            <div class="welcome-header">
-                <h2>Join THE SONGA WELFARE Inner Circle</h2>
-                <p>Apply for exclusive membership privileges</p>
-                <button class="close-modal" id="closeWelcomeModal">&times;</button>
+    <!-- Platform Intro Modal -->
+    <div class="intro-modal" id="introModal">
+        <div class="intro-content">
+            <div class="intro-header">
+                <h2>Welcome to THE SONGA WELFARE</h2>
+                <p>A Private Membership Community</p>
+                <button class="close-modal" id="closeIntroModal">&times;</button>
             </div>
-            <div class="welcome-body">
-                <p>We're building a community of conscious individuals dedicated to growth and mutual support. As a member, you will gain <strong>exclusive access</strong> to our premium resources and private network.</p>
+            <div class="intro-body">
+                <p>THE SONGA WELFARE is an exclusive membership-based platform dedicated to personal growth, financial empowerment, and community building.</p>
                 
-                <div class="benefits-list">
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <i class="fas fa-book"></i>
+                <div class="intro-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-crown"></i>
                         </div>
-                        <div class="benefit-text">
-                            <h4>Premium Library Access</h4>
-                            <p>Exclusive monthly access to our curated digital library resources</p>
-                        </div>
-                    </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="benefit-text">
-                            <h4>Private Financial Coaching</h4>
-                            <p>Monthly financial coaching sessions with our premium advisors</p>
+                        <div class="feature-text">
+                            <h4>Membership-Based Access</h4>
+                            <p>All platform features and content require an active membership</p>
                         </div>
                     </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
+                    <div class="feature-item">
+                        <div class="feature-icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <div class="benefit-text">
-                            <h4>Exclusive Team Building</h4>
-                            <p>Private team building activities to connect with our elite community</p>
+                        <div class="feature-text">
+                            <h4>Exclusive Community</h4>
+                            <p>Connect with like-minded individuals in our private network</p>
                         </div>
                     </div>
-                    <div class="benefit-item">
-                        <div class="benefit-icon">
-                            <i class="fas fa-door-open"></i>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
-                        <div class="benefit-text">
-                            <h4>VIP Club Access</h4>
-                            <p>Full access to our premium club facilities and members-only events</p>
+                        <div class="feature-text">
+                            <h4>Premium Resources</h4>
+                            <p>Access curated content, events, and coaching sessions</p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="google-signin-container">
-                    <p>Sign in with Google to begin your application</p>
-                    <div id="g_id_onload"
-                         data-client_id="138110899008-60ae40rmsh5v7oqv50o18kuuo08kvvus.apps.googleusercontent.com"
-                         data-context="signin"
-                         data-ux_mode="popup"
-                         data-callback="handleGoogleSignIn"
-                         data-auto_prompt="false">
-                    </div>
-                    <div class="g_id_signin"
-                         data-type="standard"
-                         data-shape="rectangular"
-                         data-theme="outline"
-                         data-text="signin_with"
-                         data-size="large"
-                         data-logo_alignment="left">
-                    </div>
+                <div class="intro-actions">
+                    <button class="btn btn-primary" id="introApplyBtn">
+                        <i class="fas fa-user-plus"></i> Apply for Membership
+                    </button>
+                    <button class="btn btn-secondary" id="explorePlatformBtn">
+                        <i class="fas fa-compass"></i> Explore Platform First
+                    </button>
                 </div>
             </div>
         </div>
@@ -900,108 +877,109 @@
         </div>
     </header>
 
-    <!-- Access Gateway (Shown to Non-Members) -->
-    <div class="access-gateway active" id="accessGateway">
-        <div class="gateway-icon">
-            <i class="fas fa-lock"></i>
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h2>THE SONGA WELFARE</h2>
+            <p>Private Community Portal</p>
         </div>
-        <h1 class="gateway-title">Members Only</h1>
-        <p class="gateway-subtitle">
-            This area is reserved for THE SONGA WELFARE members. 
-            Apply for membership to access our exclusive community portal, 
-            premium resources, and private network.
-        </p>
-        <div class="gateway-actions">
-            <button class="btn btn-primary" id="gatewayApplyBtn">
-                <i class="fas fa-user-plus"></i> Apply for Membership
-            </button>
-            <a href="mailto:office.songawelfare@gmail.com" class="btn btn-secondary">
-                <i class="fas fa-envelope"></i> Contact Us
-            </a>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="card-title">Exclusive Events</h3>
+                <p class="card-description">Access members-only workshops, networking events, and community gatherings</p>
+                <button class="card-action" id="eventsCardBtn">View Events</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3 class="card-title">Resource Library</h3>
+                <p class="card-description">Premium educational content, guides, and exclusive member resources</p>
+                <button class="card-action" id="libraryCardBtn">Access Library</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="card-title">Community Network</h3>
+                <p class="card-description">Connect with fellow members and participate in private discussions</p>
+                <button class="card-action" id="communityCardBtn">Join Community</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="card-title">Financial Coaching</h3>
+                <p class="card-description">Private financial coaching sessions and wealth-building strategies</p>
+                <button class="card-action" id="coachingCardBtn">Book Session</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Member Content (Shown to Members Only) -->
-    <div class="member-content" id="memberContent">
-        <main class="container">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-                <h2>Welcome to THE SONGA WELFARE</h2>
-                <p>Your exclusive members portal</p>
-            </div>
-
-            <!-- Dashboard Grid -->
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <div class="card-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h3 class="card-title">Upcoming Events</h3>
-                    <p class="card-description">Access exclusive member events, workshops, and networking opportunities</p>
-                    <a href="events.html" class="card-action">View Events</a>
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+            <h3 class="activity-title">Platform Features</h3>
+            
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-shield-alt"></i>
                 </div>
-
-                <div class="dashboard-card">
-                    <div class="card-icon">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <h3 class="card-title">Resource Library</h3>
-                    <p class="card-description">Premium educational content, guides, and exclusive resources</p>
-                    <a href="library.html" class="card-action">Access Library</a>
-                </div>
-
-                <div class="dashboard-card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3 class="card-title">Community</h3>
-                    <p class="card-description">Connect with fellow members and participate in discussions</p>
-                    <a href="community.html" class="card-action">Join Community</a>
-                </div>
-
-                <div class="dashboard-card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="card-title">Financial Coaching</h3>
-                    <p class="card-description">Schedule your private financial coaching sessions</p>
-                    <a href="coaching.html" class="card-action">Book Session</a>
+                <div class="activity-text">
+                    <strong>Private Membership</strong> - Exclusive access to all platform features
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="recent-activity">
-                <h3 class="activity-title">Recent Community Activity</h3>
-                
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-newspaper"></i>
-                    </div>
-                    <div class="activity-text">
-                        <strong>New Resource Added:</strong> Financial Independence Guide
-                    </div>
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="activity-text">
-                        <strong>Upcoming Event:</strong> Wealth Building Workshop - Next Saturday
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="activity-text">
-                        <strong>Community Update:</strong> 12 new members joined this week
-                    </div>
+                <div class="activity-text">
+                    <strong>Premium Content</strong> - Curated resources for personal and financial growth
                 </div>
             </div>
-        </main>
-    </div>
+
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="activity-text">
+                    <strong>Community Support</strong> - Network with like-minded individuals
+                </div>
+            </div>
+        </div>
+
+        <!-- No Posts Message -->
+        <div class="no-posts">
+            <div class="no-posts-icon">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <h3>Community Feed</h3>
+            <p>Recent community updates and discussions will appear here.</p>
+            <p>Become a member to participate in conversations and access exclusive content.</p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h3>Ready to Join Our Community?</h3>
+            <p>Apply for membership to unlock all platform features and join our exclusive network.</p>
+            <div class="contact-buttons">
+                <button class="contact-btn" id="contactJoinBtn">
+                    <i class="fas fa-user-plus"></i> Apply for Membership
+                </button>
+                <a href="mailto:office.songawelfare@gmail.com" class="contact-btn">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </main>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -1028,16 +1006,20 @@
         const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScann_IwZdMXihlYHa6jQK1gLy7qEsIVDR-mKUzc3CroZgvOQ/viewform?embedded=true';
         
         // DOM Elements
-        const welcomeModal = document.getElementById('welcomeModal');
+        const introModal = document.getElementById('introModal');
         const googleFormModal = document.getElementById('googleFormModal');
         const successModal = document.getElementById('successModal');
-        const accessGateway = document.getElementById('accessGateway');
-        const memberContent = document.getElementById('memberContent');
-        const closeWelcomeModal = document.getElementById('closeWelcomeModal');
+        const closeIntroModal = document.getElementById('closeIntroModal');
         const closeGoogleFormModal = document.getElementById('closeGoogleFormModal');
         const closeSuccessModal = document.getElementById('closeSuccessModal');
         const headerJoinBtn = document.getElementById('headerJoinBtn');
-        const gatewayApplyBtn = document.getElementById('gatewayApplyBtn');
+        const introApplyBtn = document.getElementById('introApplyBtn');
+        const explorePlatformBtn = document.getElementById('explorePlatformBtn');
+        const contactJoinBtn = document.getElementById('contactJoinBtn');
+        const eventsCardBtn = document.getElementById('eventsCardBtn');
+        const libraryCardBtn = document.getElementById('libraryCardBtn');
+        const communityCardBtn = document.getElementById('communityCardBtn');
+        const coachingCardBtn = document.getElementById('coachingCardBtn');
         const notification = document.getElementById('notification');
         const userProfile = document.getElementById('userProfile');
         const userAvatar = document.getElementById('userAvatar');
@@ -1051,7 +1033,7 @@
         // User state
         let currentUser = null;
         let dropdownOpen = false;
-        let isMember = false; // This would be set based on your membership verification
+        let hasSeenIntro = false;
 
         // Show notification
         function showNotification(message, type = 'success') {
@@ -1062,41 +1044,39 @@
             }, 4000);
         }
 
-        // Check if user is a member (you'll implement this based on your backend)
+        // Check if user has seen intro
+        function checkIntroStatus() {
+            hasSeenIntro = localStorage.getItem('the_songa_welfare_intro_seen') === 'true';
+            if (!hasSeenIntro) {
+                setTimeout(() => {
+                    introModal.classList.add('active');
+                }, 1000);
+            }
+        }
+
+        // Mark intro as seen
+        function markIntroAsSeen() {
+            localStorage.setItem('the_songa_welfare_intro_seen', 'true');
+            hasSeenIntro = true;
+        }
+
+        // Check membership status
         function checkMembershipStatus() {
-            // For demo purposes - you'll replace this with actual membership check
             const storedUser = localStorage.getItem('the_songa_welfare_user');
             if (storedUser) {
                 currentUser = JSON.parse(storedUser);
-                // In real implementation, you'd check against your database
-                // For now, we'll assume signed-in users are members
-                isMember = true;
-                updateUIForMember();
-            } else {
-                isMember = false;
-                updateUIForNonMember();
+                updateUserProfile();
             }
         }
 
-        // Update UI for members
-        function updateUIForMember() {
-            accessGateway.classList.remove('active');
-            memberContent.classList.add('active');
-            userProfile.style.display = 'flex';
-            headerJoinBtn.style.display = 'none';
-            
+        // Update user profile in header
+        function updateUserProfile() {
             if (currentUser) {
                 userAvatar.src = currentUser.picture;
                 userDisplayName.textContent = currentUser.firstName;
+                userProfile.style.display = 'flex';
+                headerJoinBtn.style.display = 'none';
             }
-        }
-
-        // Update UI for non-members
-        function updateUIForNonMember() {
-            accessGateway.classList.add('active');
-            memberContent.classList.remove('active');
-            userProfile.style.display = 'none';
-            headerJoinBtn.style.display = 'flex';
         }
 
         // Google Sign-In Handler
@@ -1116,18 +1096,12 @@
                 emailVerified: userData.email_verified
             };
             
-            // Store user data
+            updateUserProfile();
             localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
             
-            // For demo - treat signed-in users as members
-            // In production, you'd verify membership status with your backend
-            isMember = true;
-            updateUIForMember();
+            showNotification(`Welcome, ${currentUser.firstName}!`, 'success');
+            introModal.classList.remove('active');
             
-            showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
-            welcomeModal.classList.remove('active');
-            
-            // Auto-open application form for new users
             setTimeout(() => {
                 googleFormModal.classList.add('active');
             }, 1000);
@@ -1151,10 +1125,10 @@
         // Sign out user
         function signOut() {
             currentUser = null;
-            isMember = false;
+            userProfile.style.display = 'none';
+            headerJoinBtn.style.display = 'flex';
             localStorage.removeItem('the_songa_welfare_user');
             closeDropdown();
-            updateUIForNonMember();
             showNotification('Signed out successfully', 'success');
         }
 
@@ -1174,23 +1148,28 @@
             userDropdown.classList.remove('active');
         }
 
+        // Show membership required message
+        function showMembershipRequired() {
+            showNotification('Membership required to access this feature. Please apply to join our community.', 'error');
+            setTimeout(() => {
+                introModal.classList.add('active');
+            }, 500);
+        }
+
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Check membership status on page load
+            checkIntroStatus();
             checkMembershipStatus();
             
-            // Add click event to user profile to toggle dropdown
             userProfile.addEventListener('click', function(e) {
                 e.stopPropagation();
                 toggleDropdown();
             });
             
-            // Close dropdown when clicking elsewhere
             document.addEventListener('click', function() {
                 closeDropdown();
             });
             
-            // Prevent dropdown from closing when clicking inside it
             userDropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
@@ -1219,16 +1198,46 @@
 
         // Apply for membership buttons
         headerJoinBtn.addEventListener('click', function() {
-            welcomeModal.classList.add('active');
+            introModal.classList.add('active');
         });
 
-        gatewayApplyBtn.addEventListener('click', function() {
-            welcomeModal.classList.add('active');
+        introApplyBtn.addEventListener('click', function() {
+            introModal.classList.remove('active');
+            markIntroAsSeen();
+            googleFormModal.classList.add('active');
+        });
+
+        explorePlatformBtn.addEventListener('click', function() {
+            introModal.classList.remove('active');
+            markIntroAsSeen();
+            showNotification('Feel free to explore the platform features!', 'success');
+        });
+
+        contactJoinBtn.addEventListener('click', function() {
+            introModal.classList.add('active');
+        });
+
+        // Dashboard card buttons
+        eventsCardBtn.addEventListener('click', function() {
+            showMembershipRequired();
+        });
+
+        libraryCardBtn.addEventListener('click', function() {
+            showMembershipRequired();
+        });
+
+        communityCardBtn.addEventListener('click', function() {
+            showMembershipRequired();
+        });
+
+        coachingCardBtn.addEventListener('click', function() {
+            showMembershipRequired();
         });
 
         // Close modals
-        closeWelcomeModal.addEventListener('click', function() {
-            welcomeModal.classList.remove('active');
+        closeIntroModal.addEventListener('click', function() {
+            introModal.classList.remove('active');
+            markIntroAsSeen();
         });
 
         closeGoogleFormModal.addEventListener('click', function() {
@@ -1240,9 +1249,10 @@
         });
 
         // Close modals when clicking outside
-        welcomeModal.addEventListener('click', function(e) {
-            if (e.target === welcomeModal) {
-                welcomeModal.classList.remove('active');
+        introModal.addEventListener('click', function(e) {
+            if (e.target === introModal) {
+                introModal.classList.remove('active');
+                markIntroAsSeen();
             }
         });
 
