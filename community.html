@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
+    <title>THE SONGA WELFARE - Network & Clubs</title>
+    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#D4AF37">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F5E6B3;
+            --gold-dark: #B8860B;
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --light-gray: #e0e0e0;
+            --accent: #25D366;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #128C7E;
+            --reading-club: #3498db;
+            --finance-club: #2ecc71;
+            --relationship-club: #e74c3c;
+            --family-club: #9b59b6;
+            --leadership-club: #f39c12;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+            padding-bottom: 70px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            color: var(--black);
+            padding: 0.5rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--light-gray);
+            height: 60px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .brand-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            color: var(--gold-dark);
+        }
+
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: var(--gold-light);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--black);
+        }
+
+        /* User Profile Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--gold-light);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--gold-dark);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Network Header */
+        .network-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .network-header h1 {
+            color: var(--gold-dark);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .network-subtitle {
+            color: var(--dark-gray);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Club Categories */
+        .club-categories {
+            margin-bottom: 2rem;
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gold-light);
+        }
+
+        /* Clubs Grid */
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .club-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-gray);
+            cursor: pointer;
+        }
+
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .club-card.reading {
+            border-top: 4px solid var(--reading-club);
+        }
+
+        .club-card.finance {
+            border-top: 4px solid var(--finance-club);
+        }
+
+        .club-card.relationship {
+            border-top: 4px solid var(--relationship-club);
+        }
+
+        .club-card.family {
+            border-top: 4px solid var(--family-club);
+        }
+
+        .club-card.leadership {
+            border-top: 4px solid var(--leadership-club);
+        }
+
+        .club-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+        }
+
+        .club-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .reading .club-icon {
+            background-color: var(--reading-club);
+        }
+
+        .finance .club-icon {
+            background-color: var(--finance-club);
+        }
+
+        .relationship .club-icon {
+            background-color: var(--relationship-club);
+        }
+
+        .family .club-icon {
+            background-color: var(--family-club);
+        }
+
+        .leadership .club-icon {
+            background-color: var(--leadership-club);
+        }
+
+        .club-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-gray);
+        }
+
+        .club-description {
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .club-details {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .club-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        .club-members {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .club-members i {
+            color: var(--gold);
+        }
+
+        .club-join-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .reading .club-join-btn {
+            background-color: var(--reading-club);
+            color: white;
+        }
+
+        .finance .club-join-btn {
+            background-color: var(--finance-club);
+            color: white;
+        }
+
+        .relationship .club-join-btn {
+            background-color: var(--relationship-club);
+            color: white;
+        }
+
+        .family .club-join-btn {
+            background-color: var(--family-club);
+            color: white;
+        }
+
+        .leadership .club-join-btn {
+            background-color: var(--leadership-club);
+            color: white;
+        }
+
+        .club-join-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .club-join-btn.joined {
+            background-color: var(--gold-light);
+            color: var(--gold-dark);
+            border: 2px solid var(--gold);
+        }
+
+        /* My Clubs Section */
+        .my-clubs-section {
+            margin-top: 2rem;
+        }
+
+        .my-clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .my-club-card {
+            background: var(--gold-light);
+            border-radius: 10px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .my-club-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .my-club-info h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--gold-dark);
+        }
+
+        .my-club-info p {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        .no-clubs-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--dark-gray);
+            font-style: italic;
+            background: var(--gray);
+            border-radius: 10px;
+        }
+
+        /* Club Detail Modal */
+        .club-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .club-modal.active {
+            display: flex;
+        }
+
+        .club-modal-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .club-modal-header {
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .club-modal-body {
+            padding: 1.5rem;
+        }
+
+        .club-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .club-modal-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .club-benefits {
+            margin-bottom: 1.5rem;
+        }
+
+        .club-benefits h4 {
+            margin-bottom: 0.8rem;
+            color: var(--gold-dark);
+        }
+
+        .club-benefits ul {
+            padding-left: 1.5rem;
+        }
+
+        .club-benefits li {
+            margin-bottom: 0.5rem;
+        }
+
+        .club-modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .club-modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .club-modal-btn.primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        .club-modal-btn.secondary {
+            background-color: var(--gray);
+            color: var(--dark-gray);
+        }
+
+        .club-modal-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        /* Sign In Modal */
+        .signin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signin-modal.active {
+            display: flex;
+        }
+
+        .signin-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalAppear 0.5s ease-out;
+        }
+
+        .signin-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .signin-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signin-body {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            z-index: 100;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: var(--gold-dark);
+        }
+
+        .nav-item:hover {
+            color: var(--gold-dark);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: var(--black);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.success {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .notification.info {
+            background: var(--reading-club);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .user-name {
+                display: none;
+            }
+            
+            .clubs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .club-modal-content {
+                max-height: 85vh;
+            }
+            
+            .club-modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Club Detail Modal -->
+    <div class="club-modal" id="clubModal">
+        <div class="club-modal-content">
+            <button class="close-modal" id="closeClubModal">&times;</button>
+            <div class="club-modal-header" id="modalHeader">
+                <div class="club-icon" id="modalIcon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div>
+                    <h2 class="club-modal-title" id="modalTitle">Club Title</h2>
+                </div>
+            </div>
+            <div class="club-modal-body">
+                <p class="club-modal-description" id="modalDescription">Club description will appear here.</p>
+                
+                <div class="club-benefits">
+                    <h4>Benefits of Joining:</h4>
+                    <ul id="modalBenefits">
+                        <li>Benefit 1</li>
+                        <li>Benefit 2</li>
+                        <li>Benefit 3</li>
+                    </ul>
+                </div>
+                
+                <div class="club-meta">
+                    <div class="club-members">
+                        <i class="fas fa-users"></i>
+                        <span id="modalMembers">150 Members</span>
+                    </div>
+                    <div id="modalMeetings">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Monthly Meetings</span>
+                    </div>
+                </div>
+                
+                <div class="club-modal-actions">
+                    <button class="club-modal-btn secondary" id="closeModalBtn">Close</button>
+                    <button class="club-modal-btn primary" id="joinClubModalBtn">Join Club</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="signin-modal" id="signinModal">
+        <div class="signin-content">
+            <div class="signin-header">
+                <h2>Welcome to THE SONGA WELFARE</h2>
+                <p>Member Network Portal</p>
+                <button class="close-modal" id="closeSigninModal">&times;</button>
+            </div>
+            <div class="signin-body">
+                <p>Sign in to explore and join our exclusive clubs and connect with like-minded members.</p>
+                
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="138110899008-60ae40rmsh5v7oqv50o18kuuo08kvvus.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                
+                <p style="font-size: 0.9rem; color: var(--dark-gray); margin-top: 1rem;">
+                    By signing in, you agree to our community guidelines and membership terms.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
+                <div class="brand-name">THE SONGA™</div>
+            </div>
+            <div class="auth-section">
+                <div id="userProfile" class="user-profile" style="display: none;">
+                    <div class="user-avatar">
+                        <img id="userAvatar" src="" alt="User Avatar">
+                    </div>
+                    <div class="user-name" id="userDisplayName"></div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item" id="viewProfileOption">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </div>
+                        <div class="dropdown-item" id="membershipOption">
+                            <i class="fas fa-crown"></i>
+                            <span>Membership Status</span>
+                        </div>
+                        <div class="dropdown-item" id="settingsOption">
+                            <i class="fas fa-cog"></i>
+                            <span>Preferences</span>
+                        </div>
+                        <div class="dropdown-item" id="signOutOption">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sign Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="network-header">
+            <h1>Member Network & Clubs</h1>
+            <p class="network-subtitle">Join clubs that match your interests and goals. Connect with like-minded members and grow together towards success.</p>
+        </div>
+
+        <!-- Available Clubs -->
+        <div class="club-categories">
+            <h2 class="category-title">Available Clubs</h2>
+            <div class="clubs-grid" id="clubsGrid">
+                <!-- Clubs will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- My Clubs -->
+        <div class="my-clubs-section">
+            <h2 class="category-title">My Clubs</h2>
+            <div id="myClubsContainer">
+                <!-- My clubs will be dynamically loaded here -->
+                <div class="no-clubs-message" id="noClubsMessage">
+                    <p>You haven't joined any clubs yet. Browse above and join clubs that interest you!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Feed</span>
+        </a>
+        <a href="events.html" class="nav-item">
+            <i class="fas fa-calendar-alt nav-icon"></i>
+            <span>Events</span>
+        </a>
+        <a href="library.html" class="nav-item">
+            <i class="fas fa-book nav-icon"></i>
+            <span>Library</span>
+        </a>
+        <a href="community.html" class="nav-item active">
+            <i class="fas fa-users nav-icon"></i>
+            <span>Network</span>
+        </a>
+    </nav>
+
+    <script>
+        // DOM Elements
+        const signinModal = document.getElementById('signinModal');
+        const userProfile = document.getElementById('userProfile');
+        const userAvatar = document.getElementById('userAvatar');
+        const userDisplayName = document.getElementById('userDisplayName');
+        const userDropdown = document.getElementById('userDropdown');
+        const notification = document.getElementById('notification');
+        const clubModal = document.getElementById('clubModal');
+        const clubsGrid = document.getElementById('clubsGrid');
+        const myClubsContainer = document.getElementById('myClubsContainer');
+        const noClubsMessage = document.getElementById('noClubsMessage');
+
+        // User state
+        let currentUser = null;
+        let dropdownOpen = false;
+        let userClubs = [];
+        let selectedClub = null;
+
+        // Club Data
+        const clubsData = [
+            {
+                id: 1,
+                type: 'reading',
+                title: 'Lion Readers Club',
+                icon: 'fas fa-book',
+                description: 'For members who believe knowledge is power. Join our reading club to explore books on personal development, finance, and success stories.',
+                members: 150,
+                meetingFrequency: 'Monthly',
+                color: 'var(--reading-club)',
+                benefits: [
+                    'Monthly book recommendations and discussions',
+                    'Author Q&A sessions',
+                    'Reading challenges and rewards',
+                    'Digital library access',
+                    'Member reading lists'
+                ],
+                actionText: 'Join Readers Club'
+            },
+            {
+                id: 2,
+                type: 'finance',
+                title: 'Wealth Builders Circle',
+                icon: 'fas fa-chart-line',
+                description: 'A dedicated group focused on financial literacy, investment strategies, and wealth creation techniques.',
+                members: 220,
+                meetingFrequency: 'Bi-weekly',
+                color: 'var(--finance-club)',
+                benefits: [
+                    'Investment strategy workshops',
+                    'Market analysis sessions',
+                    'Portfolio review opportunities',
+                    'Tax planning guidance',
+                    'Access to financial experts'
+                ],
+                actionText: 'Join Finance Club'
+            },
+            {
+                id: 3,
+                type: 'relationship',
+                title: 'Connections Collective',
+                icon: 'fas fa-handshake',
+                description: 'Build meaningful professional and personal relationships. Network with successful individuals across various industries.',
+                members: 180,
+                meetingFrequency: 'Weekly',
+                color: 'var(--relationship-club)',
+                benefits: [
+                    'Networking events and mixers',
+                    'Mentorship opportunities',
+                    'Industry-specific groups',
+                    'Professional development workshops',
+                    'Community support network'
+                ],
+                actionText: 'Join Relationships Club'
+            },
+            {
+                id: 4,
+                type: 'family',
+                title: 'Family Legacy Builders',
+                icon: 'fas fa-home',
+                description: 'Focus on building strong family foundations, generational wealth, and creating lasting legacies.',
+                members: 120,
+                meetingFrequency: 'Monthly',
+                color: 'var(--family-club)',
+                benefits: [
+                    'Family wealth planning sessions',
+                    'Parenting and family workshops',
+                    'Estate planning guidance',
+                    'Family business strategies',
+                    'Intergenerational wealth transfer'
+                ],
+                actionText: 'Join Family Club'
+            },
+            {
+                id: 5,
+                type: 'leadership',
+                title: 'Leadership Academy',
+                icon: 'fas fa-crown',
+                description: 'Develop leadership skills, executive presence, and management capabilities to lead in business and community.',
+                members: 90,
+                meetingFrequency: 'Weekly',
+                color: 'var(--leadership-club)',
+                benefits: [
+                    'Leadership workshops',
+                    'Public speaking training',
+                    'Executive mentorship',
+                    'Team management strategies',
+                    'Community leadership projects'
+                ],
+                actionText: 'Join Leadership Club'
+            }
+        ];
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Check if user is signed in
+        function checkAuthStatus() {
+            const storedUser = localStorage.getItem('the_songa_welfare_user');
+            if (storedUser) {
+                currentUser = JSON.parse(storedUser);
+                const storedClubs = localStorage.getItem(`the_songa_clubs_${currentUser.id}`);
+                if (storedClubs) {
+                    userClubs = JSON.parse(storedClubs);
+                }
+                updateUIForMember();
+                signinModal.classList.remove('active');
+            } else {
+                signinModal.classList.add('active');
+            }
+        }
+
+        // Update UI for signed-in members
+        function updateUIForMember() {
+            userProfile.style.display = 'flex';
+            
+            if (currentUser) {
+                userAvatar.src = currentUser.picture;
+                userDisplayName.textContent = currentUser.firstName;
+                
+                // Load clubs
+                renderClubs();
+                renderMyClubs();
+            }
+        }
+
+        // Google Sign-In Handler
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In response:', response);
+            
+            const userData = parseJwt(response.credential);
+            console.log('User data:', userData);
+            
+            currentUser = {
+                id: userData.sub,
+                email: userData.email,
+                firstName: userData.given_name,
+                lastName: userData.family_name,
+                fullName: userData.name,
+                picture: userData.picture,
+                emailVerified: userData.email_verified
+            };
+            
+            localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
+            
+            // Initialize empty clubs array for new user
+            if (!localStorage.getItem(`the_songa_clubs_${currentUser.id}`)) {
+                localStorage.setItem(`the_songa_clubs_${currentUser.id}`, JSON.stringify([]));
+            }
+            
+            updateUIForMember();
+            signinModal.classList.remove('active');
+            
+            showNotification(`Welcome to the network, ${currentUser.firstName}!`, 'success');
+        }
+
+        // Parse JWT token
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (error) {
+                console.error('Error parsing JWT:', error);
+                return {};
+            }
+        }
+
+        // Sign out user
+        function signOut() {
+            currentUser = null;
+            localStorage.removeItem('the_songa_welfare_user');
+            closeDropdown();
+            signinModal.classList.add('active');
+            showNotification('Signed out successfully', 'success');
+        }
+
+        // Toggle dropdown
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            if (dropdownOpen) {
+                userDropdown.classList.add('active');
+            } else {
+                userDropdown.classList.remove('active');
+            }
+        }
+
+        // Close dropdown
+        function closeDropdown() {
+            dropdownOpen = false;
+            userDropdown.classList.remove('active');
+        }
+
+        // Render available clubs
+        function renderClubs() {
+            clubsGrid.innerHTML = '';
+            
+            clubsData.forEach(club => {
+                const isJoined = userClubs.some(userClub => userClub.id === club.id);
+                
+                const clubCard = document.createElement('div');
+                clubCard.className = `club-card ${club.type}`;
+                clubCard.innerHTML = `
+                    <div class="club-header">
+                        <div class="club-icon">
+                            <i class="${club.icon}"></i>
+                        </div>
+                        <h3 class="club-title">${club.title}</h3>
+                        <p class="club-description">${club.description}</p>
+                    </div>
+                    <div class="club-details">
+                        <div class="club-meta">
+                            <div class="club-members">
+                                <i class="fas fa-users"></i>
+                                <span>${club.members} Members</span>
+                            </div>
+                            <div>
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>${club.meetingFrequency} Meetings</span>
+                            </div>
+                        </div>
+                        <button class="club-join-btn ${isJoined ? 'joined' : ''}" data-club-id="${club.id}">
+                            ${isJoined ? '<i class="fas fa-check-circle"></i> Joined' : `<i class="fas fa-plus-circle"></i> ${club.actionText}`}
+                        </button>
+                    </div>
+                `;
+                
+                clubsGrid.appendChild(clubCard);
+            });
+            
+            // Add event listeners to join buttons
+            document.querySelectorAll('.club-join-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const clubId = parseInt(this.getAttribute('data-club-id'));
+                    const club = clubsData.find(c => c.id === clubId);
+                    
+                    if (!currentUser) {
+                        showNotification('Please sign in to join clubs', 'error');
+                        signinModal.classList.add('active');
+                        return;
+                    }
+                    
+                    if (this.classList.contains('joined')) {
+                        leaveClub(clubId);
+                    } else {
+                        joinClub(clubId);
+                    }
+                });
+            });
+            
+            // Add event listeners to club cards for details view
+            document.querySelectorAll('.club-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('club-join-btn')) {
+                        const clubId = parseInt(this.querySelector('.club-join-btn').getAttribute('data-club-id'));
+                        showClubDetails(clubId);
+                    }
+                });
+            });
+        }
+
+        // Render user's clubs
+        function renderMyClubs() {
+            if (!currentUser || userClubs.length === 0) {
+                noClubsMessage.style.display = 'block';
+                return;
+            }
+            
+            noClubsMessage.style.display = 'none';
+            
+            const myClubsGrid = document.createElement('div');
+            myClubsGrid.className = 'my-clubs-grid';
+            
+            userClubs.forEach(userClub => {
+                const clubData = clubsData.find(c => c.id === userClub.id);
+                if (!clubData) return;
+                
+                const myClubCard = document.createElement('div');
+                myClubCard.className = 'my-club-card';
+                myClubCard.innerHTML = `
+                    <div class="my-club-icon" style="background-color: ${clubData.color}">
+                        <i class="${clubData.icon}"></i>
+                    </div>
+                    <div class="my-club-info">
+                        <h4>${clubData.title}</h4>
+                        <p>Joined ${userClub.joinedDate}</p>
+                    </div>
+                `;
+                
+                myClubsGrid.appendChild(myClubCard);
+            });
+            
+            myClubsContainer.innerHTML = '';
+            myClubsContainer.appendChild(myClubsGrid);
+        }
+
+        // Join a club
+        function joinClub(clubId) {
+            const club = clubsData.find(c => c.id === clubId);
+            
+            if (!userClubs.some(c => c.id === clubId)) {
+                userClubs.push({
+                    id: clubId,
+                    joinedDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                });
+                
+                localStorage.setItem(`the_songa_clubs_${currentUser.id}`, JSON.stringify(userClubs));
+                
+                renderClubs();
+                renderMyClubs();
+                
+                showNotification(`You've joined the ${club.title}!`, 'success');
+                
+                // Update modal button if open
+                if (selectedClub && selectedClub.id === clubId) {
+                    document.getElementById('joinClubModalBtn').innerHTML = '<i class="fas fa-check-circle"></i> Joined';
+                    document.getElementById('joinClubModalBtn').classList.add('joined');
+                }
+            }
+        }
+
+        // Leave a club
+        function leaveClub(clubId) {
+            const club = clubsData.find(c => c.id === clubId);
+            const confirmLeave = confirm(`Are you sure you want to leave ${club.title}?`);
+            
+            if (confirmLeave) {
+                userClubs = userClubs.filter(c => c.id !== clubId);
+                localStorage.setItem(`the_songa_clubs_${currentUser.id}`, JSON.stringify(userClubs));
+                
+                renderClubs();
+                renderMyClubs();
+                
+                showNotification(`You've left the ${club.title}.`, 'info');
+                
+                // Update modal button if open
+                if (selectedClub && selectedClub.id === clubId) {
+                    document.getElementById('joinClubModalBtn').innerHTML = 'Join Club';
+                    document.getElementById('joinClubModalBtn').classList.remove('joined');
+                }
+            }
+        }
+
+        // Show club details in modal
+        function showClubDetails(clubId) {
+            selectedClub = clubsData.find(c => c.id === clubId);
+            const isJoined = userClubs.some(c => c.id === clubId);
+            
+            // Update modal content
+            document.getElementById('modalTitle').textContent = selectedClub.title;
+            document.getElementById('modalDescription').textContent = selectedClub.description;
+            document.getElementById('modalMembers').textContent = `${selectedClub.members} Members`;
+            document.getElementById('modalIcon').innerHTML = `<i class="${selectedClub.icon}"></i>`;
+            
+            // Update benefits list
+            const benefitsList = document.getElementById('modalBenefits');
+            benefitsList.innerHTML = '';
+            selectedClub.benefits.forEach(benefit => {
+                const li = document.createElement('li');
+                li.textContent = benefit;
+                benefitsList.appendChild(li);
+            });
+            
+            // Update modal header color
+            const modalHeader = document.getElementById('modalHeader');
+            modalHeader.style.backgroundColor = selectedClub.color;
+            
+            // Update join button
+            const joinBtn = document.getElementById('joinClubModalBtn');
+            if (isJoined) {
+                joinBtn.innerHTML = '<i class="fas fa-check-circle"></i> Joined';
+                joinBtn.classList.add('joined');
+                joinBtn.textContent = 'Joined';
+            } else {
+                joinBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Join Club';
+                joinBtn.classList.remove('joined');
+                joinBtn.textContent = 'Join Club';
+            }
+            
+            // Show modal
+            clubModal.classList.add('active');
+        }
+
+        // Close club modal
+        function closeClubModal() {
+            clubModal.classList.remove('active');
+            selectedClub = null;
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthStatus();
+            
+            // User dropdown functionality
+            userProfile.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+            
+            document.addEventListener('click', function() {
+                closeDropdown();
+            });
+            
+            userDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Modal close buttons
+            document.getElementById('closeClubModal').addEventListener('click', closeClubModal);
+            document.getElementById('closeModalBtn').addEventListener('click', closeClubModal);
+            document.getElementById('closeSigninModal').addEventListener('click', function() {
+                signinModal.classList.remove('active');
+            });
+            
+            // Join club from modal
+            document.getElementById('joinClubModalBtn').addEventListener('click', function() {
+                if (!currentUser) {
+                    showNotification('Please sign in to join clubs', 'error');
+                    signinModal.classList.add('active');
+                    closeClubModal();
+                    return;
+                }
+                
+                if (selectedClub) {
+                    if (this.classList.contains('joined')) {
+                        leaveClub(selectedClub.id);
+                    } else {
+                        joinClub(selectedClub.id);
+                    }
+                    closeClubModal();
+                }
+            });
+            
+            // Close modal when clicking outside
+            clubModal.addEventListener('click', function(e) {
+                if (e.target === clubModal) {
+                    closeClubModal();
+                }
+            });
+        });
+
+        // Dropdown option event listeners
+        document.getElementById('viewProfileOption').addEventListener('click', function() {
+            showNotification('Profile page coming soon!');
+            closeDropdown();
+        });
+
+        document.getElementById('membershipOption').addEventListener('click', function() {
+            showNotification('Your membership is active and in good standing.');
+            closeDropdown();
+        });
+
+        document.getElementById('settingsOption').addEventListener('click', function() {
+            showNotification('Settings page coming soon!');
+            closeDropdown();
+        });
+
+        document.getElementById('signOutOption').addEventListener('click', function() {
+            signOut();
+            closeDropdown();
+        });
+
+        // Global function for Google Sign-In callback
+        window.handleGoogleSignIn = handleGoogleSignIn;
+    </script>
+</body>
+</html>
