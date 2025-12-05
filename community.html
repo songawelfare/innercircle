@@ -43,6 +43,7 @@
             --relationship-club: #e74c3c;
             --family-club: #9b59b6;
             --leadership-club: #f39c12;
+            --fitness-club: #1abc9c;
         }
 
         html {
@@ -255,6 +256,10 @@
             border-top: 4px solid var(--leadership-club);
         }
 
+        .club-card.fitness {
+            border-top: 4px solid var(--fitness-club);
+        }
+
         .club-header {
             padding: 1.5rem 1.5rem 0.5rem;
         }
@@ -289,6 +294,10 @@
 
         .leadership .club-icon {
             background-color: var(--leadership-club);
+        }
+
+        .fitness .club-icon {
+            background-color: var(--fitness-club);
         }
 
         .club-title {
@@ -364,6 +373,11 @@
 
         .leadership .club-join-btn {
             background-color: var(--leadership-club);
+            color: white;
+        }
+
+        .fitness .club-join-btn {
+            background-color: var(--fitness-club);
             color: white;
         }
 
@@ -535,6 +549,215 @@
             transform: scale(1.02);
         }
 
+        /* Google Form Modal */
+        .google-form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .google-form-modal.active {
+            display: flex;
+        }
+
+        .google-form-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalAppear 0.5s ease-out;
+            position: relative;
+        }
+
+        .form-modal-header {
+            padding: 1.5rem;
+            color: white;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-modal-body {
+            padding: 2rem;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 1.4rem;
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--gold);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .form-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .form-btn.primary {
+            background-color: var(--gold);
+            color: var(--black);
+        }
+
+        .form-btn.secondary {
+            background-color: var(--gray);
+            color: var(--dark-gray);
+        }
+
+        .form-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .form-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-progress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+
+        .progress-step.active {
+            background-color: var(--gold);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background-color: var(--gold-light);
+            color: var(--gold-dark);
+        }
+
+        .progress-line {
+            flex: 1;
+            height: 3px;
+            background-color: var(--light-gray);
+            max-width: 50px;
+        }
+
+        .progress-line.completed {
+            background-color: var(--gold);
+        }
+
         .close-modal {
             position: absolute;
             top: 15px;
@@ -666,6 +889,11 @@
             color: white;
         }
 
+        .notification.error {
+            background: #e74c3c;
+            color: white;
+        }
+
         /* Responsive Design */
         @media (max-width: 480px) {
             .user-name {
@@ -676,11 +904,13 @@
                 grid-template-columns: 1fr;
             }
             
-            .club-modal-content {
+            .club-modal-content,
+            .google-form-content {
                 max-height: 85vh;
             }
             
-            .club-modal-actions {
+            .club-modal-actions,
+            .form-actions {
                 flex-direction: column;
             }
         }
@@ -728,6 +958,145 @@
                 <div class="club-modal-actions">
                     <button class="club-modal-btn secondary" id="closeModalBtn">Close</button>
                     <button class="club-modal-btn primary" id="joinClubModalBtn">Join Club</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Form Modal -->
+    <div class="google-form-modal" id="googleFormModal">
+        <div class="google-form-content">
+            <button class="close-modal" id="closeFormModal">&times;</button>
+            <div class="form-modal-header" id="formHeader">
+                <div class="club-icon" id="formIcon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div>
+                    <h2 class="club-modal-title" id="formTitle">Join Club Application</h2>
+                </div>
+            </div>
+            <div class="form-modal-body">
+                <div class="form-progress">
+                    <div class="progress-step active" id="step1">1</div>
+                    <div class="progress-line" id="line1"></div>
+                    <div class="progress-step" id="step2">2</div>
+                    <div class="progress-line" id="line2"></div>
+                    <div class="progress-step" id="step3">3</div>
+                </div>
+
+                <!-- Step 1: Personal Information -->
+                <div class="form-step active" id="formStep1">
+                    <h3 class="form-title">Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="email" placeholder="Enter your email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="phone" placeholder="Enter your phone number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Age Group</label>
+                        <select class="form-select" id="ageGroup" required>
+                            <option value="">Select your age group</option>
+                            <option value="18-25">18-25 years</option>
+                            <option value="26-35">26-35 years</option>
+                            <option value="36-45">36-45 years</option>
+                            <option value="46-55">46-55 years</option>
+                            <option value="56+">56+ years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" id="cancelFormBtn">Cancel</button>
+                        <button class="form-btn primary" id="nextStep1Btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Club Specific Questions -->
+                <div class="form-step" id="formStep2">
+                    <h3 class="form-title" id="step2Title">Club Specific Questions</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="question1Label">What are your main goals for joining this club?</label>
+                        <textarea class="form-textarea" id="goals" placeholder="Please share your goals and expectations..." rows="4"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" id="question2Label">How did you hear about this club?</label>
+                        <select class="form-select" id="referralSource">
+                            <option value="">Select an option</option>
+                            <option value="member">From a current member</option>
+                            <option value="website">THE SONGA website</option>
+                            <option value="social">Social media</option>
+                            <option value="event">At an event</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">How often can you participate?</label>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="frequencyWeekly" value="weekly">
+                            <label for="frequencyWeekly">Weekly</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="frequencyBiWeekly" value="bi-weekly">
+                            <label for="frequencyBiWeekly">Bi-weekly</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="frequencyMonthly" value="monthly">
+                            <label for="frequencyMonthly">Monthly</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="frequencyOccasional" value="occasional">
+                            <label for="frequencyOccasional">Occasionally</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" id="backStep2Btn">Back</button>
+                        <button class="form-btn primary" id="nextStep2Btn">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review & Submit -->
+                <div class="form-step" id="formStep3">
+                    <h3 class="form-title">Review & Submit</h3>
+                    
+                    <div class="form-group">
+                        <div style="background: var(--gray); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                            <h4 style="margin-bottom: 1rem; color: var(--gold-dark);">Application Summary</h4>
+                            <div id="applicationSummary">
+                                <!-- Summary will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Additional Comments (Optional)</label>
+                        <textarea class="form-textarea" id="comments" placeholder="Any additional comments or questions..." rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agreeTerms" required>
+                            <label for="agreeTerms">I agree to the club terms and conditions and community guidelines</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="form-btn secondary" id="backStep3Btn">Back</button>
+                        <button class="form-btn primary" id="submitFormBtn">Submit Application</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -861,6 +1230,7 @@
         const userDropdown = document.getElementById('userDropdown');
         const notification = document.getElementById('notification');
         const clubModal = document.getElementById('clubModal');
+        const googleFormModal = document.getElementById('googleFormModal');
         const clubsGrid = document.getElementById('clubsGrid');
         const myClubsContainer = document.getElementById('myClubsContainer');
         const noClubsMessage = document.getElementById('noClubsMessage');
@@ -870,8 +1240,10 @@
         let dropdownOpen = false;
         let userClubs = [];
         let selectedClub = null;
+        let currentFormStep = 1;
+        let currentClubForForm = null;
 
-        // Club Data
+        // Club Data - Now including WorkFit Fitness Club
         const clubsData = [
             {
                 id: 1,
@@ -889,7 +1261,11 @@
                     'Digital library access',
                     'Member reading lists'
                 ],
-                actionText: 'Join Readers Club'
+                actionText: 'Join Readers Club',
+                questions: {
+                    q1: 'What genres are you most interested in reading?',
+                    q2: 'How many books do you typically read per month?'
+                }
             },
             {
                 id: 2,
@@ -907,7 +1283,11 @@
                     'Tax planning guidance',
                     'Access to financial experts'
                 ],
-                actionText: 'Join Finance Club'
+                actionText: 'Join Finance Club',
+                questions: {
+                    q1: 'What is your primary financial goal?',
+                    q2: 'What is your current investment experience level?'
+                }
             },
             {
                 id: 3,
@@ -925,7 +1305,11 @@
                     'Professional development workshops',
                     'Community support network'
                 ],
-                actionText: 'Join Relationships Club'
+                actionText: 'Join Relationships Club',
+                questions: {
+                    q1: 'What type of networking are you most interested in?',
+                    q2: 'What industries would you like to connect with?'
+                }
             },
             {
                 id: 4,
@@ -943,7 +1327,11 @@
                     'Family business strategies',
                     'Intergenerational wealth transfer'
                 ],
-                actionText: 'Join Family Club'
+                actionText: 'Join Family Club',
+                questions: {
+                    q1: 'What are your main family-related goals?',
+                    q2: 'Are you interested in family business planning?'
+                }
             },
             {
                 id: 5,
@@ -961,7 +1349,33 @@
                     'Team management strategies',
                     'Community leadership projects'
                 ],
-                actionText: 'Join Leadership Club'
+                actionText: 'Join Leadership Club',
+                questions: {
+                    q1: 'What leadership skills do you want to develop?',
+                    q2: 'What is your current leadership experience?'
+                }
+            },
+            {
+                id: 6,
+                type: 'fitness',
+                title: 'WorkFit Fitness Club',
+                icon: 'fas fa-dumbbell',
+                description: 'Health and fitness community for busy professionals. Stay fit, build healthy habits, and achieve work-life wellness balance.',
+                members: 175,
+                meetingFrequency: 'Weekly',
+                color: 'var(--fitness-club)',
+                benefits: [
+                    'Weekly group workout sessions',
+                    'Nutrition planning workshops',
+                    'Fitness challenge events',
+                    'Wellness coaching sessions',
+                    'Corporate wellness strategies'
+                ],
+                actionText: 'Join Fitness Club',
+                questions: {
+                    q1: 'What are your main fitness goals?',
+                    q2: 'What types of exercise do you prefer?'
+                }
             }
         ];
 
@@ -1127,7 +1541,7 @@
                     if (this.classList.contains('joined')) {
                         leaveClub(clubId);
                     } else {
-                        joinClub(clubId);
+                        openGoogleForm(clubId);
                     }
                 });
             });
@@ -1193,7 +1607,7 @@
                 renderClubs();
                 renderMyClubs();
                 
-                showNotification(`You've joined the ${club.title}!`, 'success');
+                showNotification(`You've joined the ${club.title}! Welcome to the club.`, 'success');
                 
                 // Update modal button if open
                 if (selectedClub && selectedClub.id === clubId) {
@@ -1265,10 +1679,216 @@
             clubModal.classList.add('active');
         }
 
+        // Open Google Form modal
+        function openGoogleForm(clubId) {
+            currentClubForForm = clubsData.find(c => c.id === clubId);
+            currentFormStep = 1;
+            
+            // Update form header
+            document.getElementById('formTitle').textContent = `Join ${currentClubForForm.title}`;
+            document.getElementById('formIcon').innerHTML = `<i class="${currentClubForForm.icon}"></i>`;
+            document.getElementById('formHeader').style.backgroundColor = currentClubForForm.color;
+            
+            // Update club-specific questions
+            document.getElementById('question1Label').textContent = currentClubForForm.questions.q1;
+            document.getElementById('question2Label').textContent = currentClubForForm.questions.q2;
+            
+            // Reset form
+            resetForm();
+            
+            // Show first step
+            showFormStep(1);
+            
+            // Show modal
+            googleFormModal.classList.add('active');
+        }
+
+        // Reset form
+        function resetForm() {
+            // Clear all form fields
+            document.getElementById('fullName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('ageGroup').value = '';
+            document.getElementById('goals').value = '';
+            document.getElementById('referralSource').value = '';
+            document.getElementById('comments').value = '';
+            
+            // Clear checkboxes
+            document.getElementById('frequencyWeekly').checked = false;
+            document.getElementById('frequencyBiWeekly').checked = false;
+            document.getElementById('frequencyMonthly').checked = false;
+            document.getElementById('frequencyOccasional').checked = false;
+            document.getElementById('agreeTerms').checked = false;
+            
+            // Reset progress
+            updateProgress(1);
+        }
+
+        // Show form step
+        function showFormStep(step) {
+            // Hide all steps
+            document.getElementById('formStep1').classList.remove('active');
+            document.getElementById('formStep2').classList.remove('active');
+            document.getElementById('formStep3').classList.remove('active');
+            
+            // Show current step
+            document.getElementById(`formStep${step}`).classList.add('active');
+            
+            // Update progress
+            updateProgress(step);
+            
+            currentFormStep = step;
+            
+            // Update application summary if on step 3
+            if (step === 3) {
+                updateApplicationSummary();
+            }
+        }
+
+        // Update progress indicator
+        function updateProgress(currentStep) {
+            // Reset all steps
+            document.getElementById('step1').classList.remove('active', 'completed');
+            document.getElementById('step2').classList.remove('active', 'completed');
+            document.getElementById('step3').classList.remove('active', 'completed');
+            document.getElementById('line1').classList.remove('completed');
+            document.getElementById('line2').classList.remove('completed');
+            
+            // Mark completed steps
+            if (currentStep >= 1) {
+                document.getElementById('step1').classList.add('completed');
+            }
+            if (currentStep >= 2) {
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('line1').classList.add('completed');
+            }
+            if (currentStep >= 3) {
+                document.getElementById('step3').classList.add('completed');
+                document.getElementById('line2').classList.add('completed');
+            }
+            
+            // Mark active step
+            document.getElementById(`step${currentStep}`).classList.add('active');
+        }
+
+        // Update application summary
+        function updateApplicationSummary() {
+            const summaryDiv = document.getElementById('applicationSummary');
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const ageGroup = document.getElementById('ageGroup').value;
+            const goals = document.getElementById('goals').value;
+            const referralSource = document.getElementById('referralSource').value;
+            
+            let frequency = [];
+            if (document.getElementById('frequencyWeekly').checked) frequency.push('Weekly');
+            if (document.getElementById('frequencyBiWeekly').checked) frequency.push('Bi-weekly');
+            if (document.getElementById('frequencyMonthly').checked) frequency.push('Monthly');
+            if (document.getElementById('frequencyOccasional').checked) frequency.push('Occasionally');
+            
+            summaryDiv.innerHTML = `
+                <p><strong>Club:</strong> ${currentClubForForm.title}</p>
+                <p><strong>Name:</strong> ${fullName || 'Not provided'}</p>
+                <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+                <p><strong>Age Group:</strong> ${ageGroup || 'Not selected'}</p>
+                <p><strong>Goals:</strong> ${goals ? (goals.length > 100 ? goals.substring(0, 100) + '...' : goals) : 'Not provided'}</p>
+                <p><strong>Referral Source:</strong> ${referralSource || 'Not selected'}</p>
+                <p><strong>Participation Frequency:</strong> ${frequency.length > 0 ? frequency.join(', ') : 'Not selected'}</p>
+            `;
+        }
+
+        // Validate form step
+        function validateFormStep(step) {
+            if (step === 1) {
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const ageGroup = document.getElementById('ageGroup').value;
+                
+                if (!fullName) {
+                    showNotification('Please enter your full name', 'error');
+                    return false;
+                }
+                
+                if (!email) {
+                    showNotification('Please enter your email address', 'error');
+                    return false;
+                }
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return false;
+                }
+                
+                if (!ageGroup) {
+                    showNotification('Please select your age group', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            if (step === 2) {
+                const goals = document.getElementById('goals').value.trim();
+                const referralSource = document.getElementById('referralSource').value;
+                
+                if (!goals) {
+                    showNotification('Please share your goals for joining the club', 'error');
+                    return false;
+                }
+                
+                if (!referralSource) {
+                    showNotification('Please select how you heard about the club', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            if (step === 3) {
+                if (!document.getElementById('agreeTerms').checked) {
+                    showNotification('Please agree to the terms and conditions', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+
+        // Submit form application
+        function submitFormApplication() {
+            if (!validateFormStep(3)) return;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Close form modal
+                googleFormModal.classList.remove('active');
+                
+                // Actually join the club
+                joinClub(currentClubForForm.id);
+                
+                // Show success message
+                showNotification(`Application submitted successfully! You've been added to ${currentClubForForm.title}.`, 'success');
+                
+                // Reset form
+                resetForm();
+            }, 1500);
+        }
+
         // Close club modal
         function closeClubModal() {
             clubModal.classList.remove('active');
             selectedClub = null;
+        }
+
+        // Close form modal
+        function closeFormModal() {
+            googleFormModal.classList.remove('active');
+            currentClubForForm = null;
+            resetForm();
         }
 
         // Event Listeners
@@ -1292,6 +1912,7 @@
             // Modal close buttons
             document.getElementById('closeClubModal').addEventListener('click', closeClubModal);
             document.getElementById('closeModalBtn').addEventListener('click', closeClubModal);
+            document.getElementById('closeFormModal').addEventListener('click', closeFormModal);
             document.getElementById('closeSigninModal').addEventListener('click', function() {
                 signinModal.classList.remove('active');
             });
@@ -1309,16 +1930,47 @@
                     if (this.classList.contains('joined')) {
                         leaveClub(selectedClub.id);
                     } else {
-                        joinClub(selectedClub.id);
+                        openGoogleForm(selectedClub.id);
                     }
                     closeClubModal();
                 }
             });
             
+            // Form navigation buttons
+            document.getElementById('nextStep1Btn').addEventListener('click', function() {
+                if (validateFormStep(1)) {
+                    showFormStep(2);
+                }
+            });
+            
+            document.getElementById('backStep2Btn').addEventListener('click', function() {
+                showFormStep(1);
+            });
+            
+            document.getElementById('nextStep2Btn').addEventListener('click', function() {
+                if (validateFormStep(2)) {
+                    showFormStep(3);
+                }
+            });
+            
+            document.getElementById('backStep3Btn').addEventListener('click', function() {
+                showFormStep(2);
+            });
+            
+            document.getElementById('submitFormBtn').addEventListener('click', submitFormApplication);
+            
+            document.getElementById('cancelFormBtn').addEventListener('click', closeFormModal);
+            
             // Close modal when clicking outside
             clubModal.addEventListener('click', function(e) {
                 if (e.target === clubModal) {
                     closeClubModal();
+                }
+            });
+            
+            googleFormModal.addEventListener('click', function(e) {
+                if (e.target === googleFormModal) {
+                    closeFormModal();
                 }
             });
         });
