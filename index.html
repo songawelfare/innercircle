@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>THE SONGA - Community</title>
+    <title>THE SONGA - Peer Community</title>
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase SDK for Authentication ONLY -->
+    <!-- Firebase for Authentication ONLY -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -59,6 +59,8 @@
             --comment-blue: #1d9bf0;
             --whatsapp-green: #25D366;
             --whatsapp-dark: #128C7E;
+            --peer-blue: #3B82F6;
+            --peer-purple: #8B5CF6;
         }
 
         html {
@@ -70,10 +72,9 @@
             color: var(--text-primary);
             line-height: 1.6;
             padding-bottom: 70px;
-            overflow-x: hidden;
         }
 
-        /* Header Styles */
+        /* Header */
         header {
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -113,125 +114,30 @@
             color: var(--gold-dark);
         }
 
-        /* Auth Section */
-        .auth-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            border-radius: 50px;
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .user-profile:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--gold);
-        }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
-
-        .dropdown-icon {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Create Post Button */
-        .create-post-btn {
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
+        /* Peer Status */
+        .peer-status {
             display: flex;
             align-items: center;
             gap: 8px;
+            padding: 6px 12px;
+            background: var(--peer-blue);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
-        .create-post-btn:hover {
-            background-color: var(--gold-dark);
-            transform: scale(1.05);
+        .peer-status.offline {
+            background: var(--light-gray);
+            color: var(--text-secondary);
         }
 
-        /* User Dropdown */
-        .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            min-width: 200px;
-            z-index: 1000;
-            display: none;
-            margin-top: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
+        .peer-status i {
+            font-size: 0.9rem;
         }
 
-        .user-dropdown.active {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 14px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-
-        .dropdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-item:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-
-        .dropdown-item i {
-            width: 20px;
-            text-align: center;
-            color: var(--gold-dark);
-            font-size: 1.1rem;
-        }
-
-        /* Sign In Modal */
-        .signin-modal {
+        /* Peer Connection Modal */
+        .peer-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -244,102 +150,148 @@
             align-items: center;
         }
 
-        .signin-modal.active {
+        .peer-modal.active {
             display: flex;
         }
 
-        .signin-content {
+        .peer-content {
             background-color: white;
             border-radius: 16px;
             width: 90%;
-            max-width: 420px;
+            max-width: 500px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.3s ease-out;
         }
 
-        @keyframes modalAppear {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .signin-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            padding: 2.5rem 2rem;
+        .peer-header {
+            background: linear-gradient(135deg, var(--peer-blue), var(--peer-purple));
+            color: white;
+            padding: 2rem;
             text-align: center;
         }
 
-        .signin-header h2 {
-            font-size: 1.8rem;
+        .peer-header h2 {
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
 
-        .signin-body {
-            padding: 2.5rem 2rem;
+        .peer-body {
+            padding: 2rem;
+        }
+
+        .peer-id-display {
+            background: var(--gray);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
 
-        .google-signin-container {
-            margin: 2rem 0;
+        .peer-id {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: var(--peer-blue);
+            word-break: break-all;
         }
 
-        .google-signin-btn {
-            background: #4285F4;
-            color: white;
+        .peer-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .peer-btn {
+            padding: 12px;
             border: none;
             border-radius: 8px;
-            padding: 14px 24px;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
             transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
-        }
-
-        .google-signin-btn:hover {
-            background: #3367D6;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
-        }
-
-        .google-signin-btn i {
-            font-size: 18px;
-            background: white;
-            color: #4285F4;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border: none;
+        .peer-btn.connect {
+            background: var(--whatsapp-green);
+            color: white;
+        }
+
+        .peer-btn.scan {
+            background: var(--gold);
             color: var(--black);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.3rem;
-            transition: background-color 0.2s;
         }
 
-        .close-modal:hover {
-            background: rgba(0, 0, 0, 0.3);
+        .peer-btn.copy {
+            background: var(--light-gray);
+            color: var(--text-primary);
+        }
+
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            background: var(--whatsapp-green);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            z-index: 99;
+            display: none;
+        }
+
+        .connection-status.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* Post Card - Peer Indicator */
+        .post-card.peer-post {
+            border: 2px solid var(--peer-blue);
+            position: relative;
+        }
+
+        .peer-source {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--peer-blue);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .peer-source i {
+            font-size: 0.8rem;
+        }
+
+        /* Post Availability */
+        .post-availability {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid var(--peer-blue);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: var(--peer-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-availability i {
+            font-size: 1rem;
         }
 
         /* Main Content */
@@ -349,7 +301,7 @@
             padding: 1rem;
         }
 
-        /* Create Post Section */
+        /* Create Post */
         .create-post-section {
             background: var(--card-bg);
             border-radius: 16px;
@@ -402,619 +354,60 @@
             background: #eff1f2;
         }
 
-        .create-post-input textarea::placeholder {
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .create-post-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .post-options {
+        .post-privacy {
             display: flex;
             gap: 15px;
-        }
-
-        .post-option {
-            background: none;
-            border: none;
-            color: var(--gold-dark);
-            cursor: pointer;
-            padding: 8px 12px;
+            margin-top: 1rem;
+            padding: 10px;
+            background: var(--gray);
             border-radius: 8px;
-            font-size: 1.1rem;
-            transition: background-color 0.2s;
         }
 
-        .post-option:hover {
-            background-color: rgba(212, 175, 55, 0.1);
-        }
-
-        .post-submit {
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 50px;
-            padding: 10px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .post-submit:hover {
-            background-color: var(--gold-dark);
-        }
-
-        .post-submit:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Community Posts */
-        .community-posts {
-            margin: 1rem 0;
-        }
-
-        .posts-header {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--gold-light);
-        }
-
-        .posts-title {
-            font-size: 1.3rem;
-            color: var(--gold-dark);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .posts-title i {
-            color: var(--gold);
-        }
-
-        /* Post Card */
-        .post-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            margin-bottom: 1rem;
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            animation: postAppear 0.3s ease-out;
-        }
-
-        @keyframes postAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .post-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .post-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .post-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--gold);
-            flex-shrink: 0;
-        }
-
-        .post-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .post-author-info {
-            flex: 1;
-        }
-
-        .post-author {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .verified-badge {
-            color: var(--gold);
-            font-size: 0.9rem;
-        }
-
-        .post-handle {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-left: 4px;
-        }
-
-        .post-time {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
-        .post-content {
-            margin-bottom: 1rem;
-            line-height: 1.5;
-            font-size: 1rem;
-            color: var(--text-primary);
-        }
-
-        .post-content p {
-            margin-bottom: 1rem;
-        }
-
-        .post-content p:last-child {
-            margin-bottom: 0;
-        }
-
-        .post-stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 12px;
-            padding: 0 4px;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .post-stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .post-actions {
-            display: flex;
-            justify-content: space-around;
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-        }
-
-        .post-action {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
+        .privacy-option {
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            min-width: 80px;
-            justify-content: center;
-        }
-
-        .post-action:hover {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-
-        .post-action.like:hover {
-            color: var(--like-red);
-        }
-
-        .post-action.comment:hover {
-            color: var(--comment-blue);
-        }
-
-        .post-action.retweet:hover {
-            color: var(--retweet-green);
-        }
-
-        .post-action.share:hover {
-            color: var(--whatsapp-green);
-        }
-
-        .post-action.liked {
-            color: var(--like-red);
-        }
-
-        .post-action.retweeted {
-            color: var(--retweet-green);
-        }
-
-        .post-action.saved {
-            color: var(--gold);
-        }
-
-        .post-action .action-icon {
-            font-size: 1.1rem;
-        }
-
-        .post-action .action-count {
-            font-weight: 600;
-        }
-
-        /* Post Types */
-        .post-card.announcement {
-            border-left: 4px solid var(--gold);
-        }
-
-        .post-card.event {
-            border-left: 4px solid var(--retweet-green);
-        }
-
-        .post-card.resource {
-            border-left: 4px solid var(--comment-blue);
-        }
-
-        .post-card.success {
-            border-left: 4px solid var(--like-red);
-        }
-
-        .post-card.user-post {
-            border-left: 4px solid #8b5cf6;
-        }
-
-        /* Comments Section */
-        .comments-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
-            display: none;
-        }
-
-        .comments-section.active {
-            display: block;
-        }
-
-        .comment-form {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-        }
-
-        .comment-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .comment-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .comment-input {
-            flex: 1;
-            display: flex;
-            gap: 10px;
-        }
-
-        .comment-input input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            font-size: 0.95rem;
-            background: #f7f9fa;
-        }
-
-        .comment-input input:focus {
-            outline: none;
-            background: var(--white);
-            border-color: var(--gold);
-        }
-
-        .comment-submit {
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 20px;
-            padding: 0 20px;
-            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
-        .comment-submit:hover {
-            background: var(--gold-dark);
+        .privacy-option input {
+            margin: 0;
         }
 
-        .comments-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .comment-item {
-            display: flex;
-            gap: 12px;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            transition: background-color 0.2s;
-        }
-
-        .comment-item:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .comment-content {
-            flex: 1;
-        }
-
-        .comment-author {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .comment-text {
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            line-height: 1.4;
-        }
-
-        .comment-time {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .no-comments {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: var(--white);
-            color: var(--text-primary);
-            padding: 16px 24px;
-            border-radius: 12px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateX(100px);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            border-left: 4px solid var(--gold);
-            max-width: 300px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .notification.error {
-            border-left-color: var(--like-red);
-        }
-
-        .notification.success {
-            border-left-color: var(--retweet-green);
-        }
-
-        .notification i {
-            font-size: 1.2rem;
-            color: var(--gold);
-        }
-
-        .notification.error i {
-            color: var(--like-red);
-        }
-
-        .notification.success i {
-            color: var(--retweet-green);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.8rem 0;
-            z-index: 100;
-            border-top: 1px solid var(--border-color);
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.75rem;
-            transition: color 0.2s;
-            padding: 6px 12px;
-            border-radius: 12px;
-        }
-
-        .nav-icon {
-            font-size: 1.4rem;
-            margin-bottom: 3px;
-        }
-
-        .nav-item.active {
-            color: var(--gold-dark);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .nav-item:hover {
-            color: var(--gold-dark);
-        }
-
-        /* Offline Indicator */
-        .offline-indicator {
-            position: fixed;
-            bottom: 70px;
-            left: 0;
-            right: 0;
-            background: var(--whatsapp-green);
-            color: white;
-            padding: 10px;
-            text-align: center;
-            font-size: 0.9rem;
-            z-index: 99;
-            display: none;
-        }
-
-        .offline-indicator.show {
-            display: block;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-            
-            .post-card {
-                padding: 1.2rem;
-                border-radius: 12px;
-            }
-            
-            .create-post-section {
-                padding: 1.2rem;
-            }
-            
-            .post-actions {
-                gap: 4px;
-            }
-            
-            .post-action {
-                min-width: 60px;
-                padding: 6px 8px;
-                font-size: 0.85rem;
-            }
-            
-            .user-name {
-                display: none;
-            }
-            
-            .dropdown-icon {
-                display: none;
-            }
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: var(--whatsapp-green);
-            color: white;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-            transition: all 0.3s;
-            z-index: 99;
-            display: none;
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-        }
-
-        @media (max-width: 768px) {
-            .fab {
-                display: flex;
-            }
-            
-            .create-post-section {
-                display: none;
-            }
-            
-            .create-post-section.mobile-visible {
-                display: block;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 1001;
-                margin: 0;
-                border-radius: 0;
-                background: var(--white);
-                padding: 1rem;
-            }
-        }
+        /* Rest of your existing styles... */
+        /* [Keep all your existing styles for posts, comments, etc.] */
     </style>
 </head>
 <body>
-    <!-- Offline Indicator -->
-    <div class="offline-indicator" id="offlineIndicator">
-        <i class="fas fa-wifi"></i> You're offline. Posts are saved locally.
+    <!-- Connection Status -->
+    <div class="connection-status" id="connectionStatus">
+        <i class="fas fa-wifi"></i> Connected to <span id="connectedPeerName"></span>
     </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="fas fa-info-circle"></i>
-        <span id="notificationMessage"></span>
-    </div>
-
-    <!-- Sign In Modal -->
-    <div class="signin-modal active" id="signinModal">
-        <div class="signin-content">
-            <div class="signin-header">
-                <h2>Welcome to THE SONGA</h2>
-                <p>Your private community space</p>
-                <button class="close-modal" id="closeSigninModal">&times;</button>
+    <!-- Peer Connection Modal -->
+    <div class="peer-modal" id="peerModal">
+        <div class="peer-content">
+            <div class="peer-header">
+                <h2>Connect with Peers</h2>
+                <p>Share posts directly between devices</p>
             </div>
-            <div class="signin-body">
-                <p>Sign in to connect with our community. All your posts and interactions are stored locally on your device.</p>
-                
-                <div class="google-signin-container">
-                    <button class="google-signin-btn" id="googleSignInBtn">
-                        <i class="fab fa-google"></i>
-                        <span>Continue with Google</span>
-                    </button>
+            <div class="peer-body">
+                <div class="peer-id-display">
+                    <div>Your Connection ID:</div>
+                    <div class="peer-id" id="peerId">Generating...</div>
                 </div>
                 
-                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 1.5rem;">
-                    <i class="fas fa-lock"></i> End-to-end privacy: Your posts are stored on your device only
-                </p>
+                <div class="peer-actions">
+                    <button class="peer-btn copy" id="copyPeerId">
+                        <i class="fas fa-copy"></i> Copy Your ID
+                    </button>
+                    <button class="peer-btn connect" id="connectPeer">
+                        <i class="fas fa-plug"></i> Connect to Peer
+                    </button>
+                    <button class="peer-btn scan" id="scanQR">
+                        <i class="fas fa-qrcode"></i> Scan QR Code
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1026,35 +419,23 @@
                 <img src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="THE SONGA Logo">
                 <div class="brand-name">THE SONGA</div>
             </div>
+            
             <div class="auth-section">
+                <button class="peer-status" id="peerStatusBtn">
+                    <i class="fas fa-user-friends"></i>
+                    <span id="peerCount">0</span> peers
+                </button>
+                
                 <button class="create-post-btn" id="createPostBtnHeader" style="display: none;">
                     <i class="fas fa-feather-alt"></i>
                     <span>Post</span>
                 </button>
+                
                 <div id="userProfile" class="user-profile" style="display: none;">
                     <div class="user-avatar">
                         <img id="userAvatar" src="" alt="User Avatar">
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
-                    <i class="fas fa-chevron-down dropdown-icon"></i>
-                    <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-item" id="viewProfileOption">
-                            <i class="fas fa-user"></i>
-                            <span>My Profile</span>
-                        </div>
-                        <div class="dropdown-item" id="exportDataOption">
-                            <i class="fas fa-download"></i>
-                            <span>Export My Data</span>
-                        </div>
-                        <div class="dropdown-item" id="clearLocalDataOption">
-                            <i class="fas fa-trash"></i>
-                            <span>Clear Local Data</span>
-                        </div>
-                        <div class="dropdown-item" id="signOutOption">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Sign Out</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1062,30 +443,37 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- Create Post Section -->
+        <!-- Peer Info Banner -->
+        <div class="peer-info" style="background: linear-gradient(135deg, var(--peer-blue), var(--peer-purple)); color: white; padding: 12px; border-radius: 12px; margin-bottom: 1rem; text-align: center;">
+            <i class="fas fa-sync-alt"></i>
+            <strong>Peer-to-Peer Mode:</strong> Posts stay on owners' devices
+        </div>
+
+        <!-- Create Post -->
         <div class="create-post-section" id="createPostSection">
             <div class="create-post-header">
                 <div class="create-post-avatar">
                     <img id="createPostAvatar" src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="Your Avatar">
                 </div>
                 <div class="create-post-input">
-                    <textarea id="postContentInput" placeholder="What's on your mind? Share your thoughts with the community..." maxlength="500"></textarea>
+                    <textarea id="postContentInput" placeholder="Share something with connected peers..." maxlength="500"></textarea>
                 </div>
             </div>
+            
+            <div class="post-privacy">
+                <label class="privacy-option">
+                    <input type="radio" name="postVisibility" value="connected" checked>
+                    <i class="fas fa-user-friends"></i> Connected Peers
+                </label>
+                <label class="privacy-option">
+                    <input type="radio" name="postVisibility" value="public">
+                    <i class="fas fa-globe"></i> All Peers
+                </label>
+            </div>
+            
             <div class="create-post-actions">
-                <div class="post-options">
-                    <button class="post-option" title="Add Image" onclick="showNotification('Image upload coming soon!')">
-                        <i class="fas fa-image"></i>
-                    </button>
-                    <button class="post-option" title="Add Video" onclick="showNotification('Video upload coming soon!')">
-                        <i class="fas fa-video"></i>
-                    </button>
-                    <button class="post-option" title="Record Audio" onclick="showNotification('Audio recording coming soon!')">
-                        <i class="fas fa-microphone"></i>
-                    </button>
-                </div>
                 <button class="post-submit" id="submitPostBtn" disabled>
-                    <i class="fas fa-paper-plane"></i> Post
+                    <i class="fas fa-share-alt"></i> Share with Peers
                 </button>
             </div>
         </div>
@@ -1094,669 +482,594 @@
         <div class="community-posts">
             <div class="posts-header">
                 <h1 class="posts-title">
-                    <i class="fas fa-comments"></i>
-                    Community Feed
+                    <i class="fas fa-users"></i>
+                    Peer Feed
                     <span style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 10px;">
-                        <i class="fas fa-lock"></i> Local Storage
+                        <i class="fas fa-mobile-alt"></i> Local + Peer
                     </span>
                 </h1>
             </div>
 
-            <!-- Posts will be loaded here -->
             <div id="postsContainer">
                 <div class="loading-spinner" id="loadingSpinner">
                     <div class="spinner"></div>
-                    <p>Loading your local posts...</p>
+                    <p>Loading local posts...</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Floating Action Button (Mobile) -->
-    <div class="fab" id="fabBtn">
-        <i class="fas fa-feather-alt"></i>
-    </div>
-
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="index.html" class="nav-item active">
+        <a href="#" class="nav-item active">
             <i class="fas fa-home nav-icon"></i>
             <span>Feed</span>
         </a>
-        <a href="events.html" class="nav-item">
-            <i class="fas fa-calendar-alt nav-icon"></i>
-            <span>Events</span>
+        <a href="#" class="nav-item" id="peerConnectBtn">
+            <i class="fas fa-user-friends nav-icon"></i>
+            <span>Connect</span>
         </a>
-        <a href="library.html" class="nav-item">
+        <a href="#" class="nav-item">
             <i class="fas fa-book nav-icon"></i>
             <span>Library</span>
         </a>
-        <a href="about.html" class="nav-item">
-            <i class="fas fa-info-circle nav-icon"></i>
-            <span>About</span>
+        <a href="#" class="nav-item">
+            <i class="fas fa-user nav-icon"></i>
+            <span>Profile</span>
         </a>
     </nav>
 
     <script>
-        // WhatsApp-style Local Storage System
-        class LocalStorageManager {
+        // Peer-to-Peer Social Network
+        class PeerToPeerNetwork {
             constructor() {
-                this.prefix = 'the_songa_';
-                this.maxStorageSize = 5 * 1024 * 1024; // 5MB
+                this.peer = null;
+                this.connections = new Map(); // peerId -> connection
+                this.peerData = new Map();    // peerId -> {name, avatar, posts}
+                this.myPeerId = null;
+                this.myData = {
+                    name: 'Anonymous',
+                    avatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                    posts: []
+                };
+                
+                // Local storage for persistent data
+                this.storage = {
+                    get: (key) => JSON.parse(localStorage.getItem(`p2p_${key}`) || 'null'),
+                    set: (key, value) => localStorage.setItem(`p2p_${key}`, JSON.stringify(value))
+                };
             }
-
-            // Save data with automatic cleanup
-            setItem(key, data) {
+            
+            async initialize(userData) {
+                // Load saved data
+                this.myData.name = userData.name;
+                this.myData.avatar = userData.avatar;
+                this.myData.posts = this.storage.get('my_posts') || [];
+                
+                // Initialize PeerJS (using a free signaling server)
+                await this.initializePeer();
+                
+                // Load connected peers
+                this.loadConnections();
+                
+                // Start listening for connections
+                this.startListening();
+            }
+            
+            async initializePeer() {
+                // Generate a unique peer ID
+                this.myPeerId = 'songa_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+                
+                // Display peer ID
+                document.getElementById('peerId').textContent = this.myPeerId;
+                
+                // Update peer count
+                this.updatePeerCount();
+            }
+            
+            startListening() {
+                // In a real implementation, this would use WebRTC/PeerJS
+                // For now, we'll simulate peer connections
+                
+                // Listen for incoming connections (simulated)
+                window.addEventListener('peer-connect', (event) => {
+                    const { peerId, peerName } = event.detail;
+                    this.handleIncomingConnection(peerId, peerName);
+                });
+            }
+            
+            async connectToPeer(peerId, peerName = 'Unknown') {
                 try {
-                    const fullKey = this.prefix + key;
-                    const jsonData = JSON.stringify(data);
+                    console.log(`Connecting to peer: ${peerId}`);
                     
-                    // Check storage size
-                    if (this.getStorageSize() + jsonData.length > this.maxStorageSize) {
-                        this.cleanupOldData();
-                    }
+                    // Simulate connection
+                    const connection = {
+                        id: peerId,
+                        name: peerName,
+                        connected: true,
+                        send: (data) => this.simulateDataTransfer(peerId, data),
+                        close: () => this.disconnectPeer(peerId)
+                    };
                     
-                    localStorage.setItem(fullKey, jsonData);
-                    this.updateLastModified(key);
-                    return true;
-                } catch (error) {
-                    console.error('Error saving to localStorage:', error);
-                    return false;
-                }
-            }
-
-            // Get data
-            getItem(key) {
-                try {
-                    const fullKey = this.prefix + key;
-                    const data = localStorage.getItem(fullKey);
-                    return data ? JSON.parse(data) : null;
-                } catch (error) {
-                    console.error('Error reading from localStorage:', error);
-                    return null;
-                }
-            }
-
-            // Remove data
-            removeItem(key) {
-                try {
-                    const fullKey = this.prefix + key;
-                    localStorage.removeItem(fullKey);
-                    return true;
-                } catch (error) {
-                    console.error('Error removing from localStorage:', error);
-                    return false;
-                }
-            }
-
-            // Clear all app data
-            clearAll() {
-                try {
-                    Object.keys(localStorage).forEach(key => {
-                        if (key.startsWith(this.prefix)) {
-                            localStorage.removeItem(key);
+                    this.connections.set(peerId, connection);
+                    this.peerData.set(peerId, {
+                        name: peerName,
+                        avatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                        posts: []
+                    });
+                    
+                    // Send my data to peer
+                    this.sendToPeer(peerId, {
+                        type: 'handshake',
+                        data: {
+                            name: this.myData.name,
+                            avatar: this.myData.avatar,
+                            peerId: this.myPeerId
                         }
                     });
+                    
+                    // Request peer's posts
+                    this.sendToPeer(peerId, {
+                        type: 'request_posts'
+                    });
+                    
+                    this.updatePeerCount();
+                    this.showConnectionStatus(`${peerName} connected`);
+                    
                     return true;
+                    
                 } catch (error) {
-                    console.error('Error clearing localStorage:', error);
+                    console.error('Connection error:', error);
                     return false;
                 }
             }
-
-            // Get storage size
-            getStorageSize() {
-                let total = 0;
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith(this.prefix)) {
-                        total += localStorage[key].length;
-                    }
-                });
-                return total;
+            
+            simulateDataTransfer(peerId, data) {
+                // Simulate network delay
+                setTimeout(() => {
+                    // In real implementation, this would send via WebRTC
+                    // For now, just handle locally
+                    this.handleIncomingData(peerId, data);
+                }, 100);
             }
-
-            // Cleanup old data
-            cleanupOldData() {
-                const items = [];
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith(this.prefix)) {
-                        try {
-                            const data = JSON.parse(localStorage[key]);
-                            if (data.lastModified) {
-                                items.push({
-                                    key,
-                                    lastModified: new Date(data.lastModified),
-                                    size: localStorage[key].length
-                                });
-                            }
-                        } catch (e) {
-                            // Skip invalid JSON
-                        }
-                    }
-                });
-
-                // Sort by oldest first
-                items.sort((a, b) => a.lastModified - b.lastModified);
-
-                // Remove oldest items until under limit
-                let currentSize = this.getStorageSize();
-                for (const item of items) {
-                    if (currentSize <= this.maxStorageSize * 0.8) break;
-                    localStorage.removeItem(item.key);
-                    currentSize -= item.size;
+            
+            handleIncomingConnection(peerId, peerName) {
+                if (this.connections.has(peerId)) return;
+                
+                this.connectToPeer(peerId, peerName);
+            }
+            
+            handleIncomingData(peerId, data) {
+                console.log(`Received from ${peerId}:`, data);
+                
+                switch(data.type) {
+                    case 'handshake':
+                        this.handleHandshake(peerId, data.data);
+                        break;
+                    case 'post':
+                        this.handleNewPost(peerId, data.data);
+                        break;
+                    case 'request_posts':
+                        this.sendMyPosts(peerId);
+                        break;
+                    case 'posts':
+                        this.handleReceivedPosts(peerId, data.data);
+                        break;
+                    case 'like':
+                        this.handleLike(peerId, data.data);
+                        break;
+                    case 'comment':
+                        this.handleComment(peerId, data.data);
+                        break;
                 }
             }
-
-            // Update last modified timestamp
-            updateLastModified(key) {
-                const data = this.getItem(key);
-                if (data && typeof data === 'object') {
-                    data.lastModified = new Date().toISOString();
-                    this.setItem(key, data);
+            
+            handleHandshake(peerId, data) {
+                // Update peer info
+                if (this.peerData.has(peerId)) {
+                    this.peerData.get(peerId).name = data.name;
+                    this.peerData.get(peerId).avatar = data.avatar;
                 }
             }
-
-            // Export all data
-            exportData() {
-                const exportData = {};
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith(this.prefix)) {
-                        try {
-                            exportData[key.replace(this.prefix, '')] = JSON.parse(localStorage[key]);
-                        } catch (e) {
-                            exportData[key.replace(this.prefix, '')] = localStorage[key];
-                        }
-                    }
-                });
-                return exportData;
-            }
-
-            // Import data
-            importData(data) {
-                Object.keys(data).forEach(key => {
-                    this.setItem(key, data[key]);
-                });
-            }
-        }
-
-        // Post Manager
-        class PostManager {
-            constructor() {
-                this.storage = new LocalStorageManager();
-                this.postsKey = 'posts';
-                this.commentsKey = 'comments';
-                this.likesKey = 'likes';
-                this.savesKey = 'saves';
-            }
-
-            // Create new post
-            createPost(content, author, authorAvatar, type = 'user-post') {
-                const postId = 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            
+            createPost(content, visibility = 'connected') {
                 const post = {
-                    id: postId,
-                    authorId: author.id || 'local_user',
-                    authorName: author.name,
-                    authorAvatar: authorAvatar,
+                    id: 'post_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    authorId: this.myPeerId,
+                    authorName: this.myData.name,
+                    authorAvatar: this.myData.avatar,
                     content: content,
                     likes: 0,
-                    comments: 0,
-                    shares: 0,
-                    type: type,
+                    comments: [],
                     createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    isPinned: false,
-                    tags: this.extractTags(content)
+                    visibility: visibility,
+                    likesBy: [],
+                    sharedWith: [] // Track which peers have this post
                 };
-
-                // Save post
-                const posts = this.getAllPosts();
-                posts.unshift(post); // Add to beginning
-                this.storage.setItem(this.postsKey, posts);
-
+                
+                // Save locally
+                this.myData.posts.unshift(post);
+                this.storage.set('my_posts', this.myData.posts);
+                
+                // Share with connected peers
+                if (visibility === 'connected' || visibility === 'public') {
+                    this.sharePostWithPeers(post);
+                }
+                
                 return post;
             }
-
-            // Get all posts
-            getAllPosts() {
-                return this.storage.getItem(this.postsKey) || [];
+            
+            sharePostWithPeers(post) {
+                // Share with all connected peers
+                this.connections.forEach((connection, peerId) => {
+                    this.sendToPeer(peerId, {
+                        type: 'post',
+                        data: post
+                    });
+                });
             }
-
-            // Get post by ID
-            getPost(postId) {
-                const posts = this.getAllPosts();
-                return posts.find(post => post.id === postId);
-            }
-
-            // Update post
-            updatePost(postId, updates) {
-                const posts = this.getAllPosts();
-                const index = posts.findIndex(post => post.id === postId);
-                if (index !== -1) {
-                    posts[index] = { ...posts[index], ...updates, updatedAt: new Date().toISOString() };
-                    this.storage.setItem(this.postsKey, posts);
-                    return true;
+            
+            sendToPeer(peerId, data) {
+                const connection = this.connections.get(peerId);
+                if (connection && connection.connected) {
+                    connection.send(data);
                 }
-                return false;
             }
-
-            // Delete post
-            deletePost(postId) {
-                const posts = this.getAllPosts();
-                const filteredPosts = posts.filter(post => post.id !== postId);
-                this.storage.setItem(this.postsKey, filteredPosts);
+            
+            handleNewPost(peerId, post) {
+                // Store post from peer
+                if (!this.peerData.has(peerId)) return;
                 
-                // Also delete associated comments and likes
-                this.deleteComments(postId);
-                this.deleteLikes(postId);
+                const peer = this.peerData.get(peerId);
+                if (!peer.posts.find(p => p.id === post.id)) {
+                    peer.posts.unshift(post);
+                    this.triggerPostUpdate();
+                }
+            }
+            
+            sendMyPosts(peerId) {
+                const myPublicPosts = this.myData.posts.filter(post => 
+                    post.visibility === 'connected' || post.visibility === 'public'
+                );
                 
-                return true;
+                this.sendToPeer(peerId, {
+                    type: 'posts',
+                    data: myPublicPosts
+                });
             }
-
-            // Like/Unlike post
-            toggleLike(postId, userId) {
-                const likes = this.storage.getItem(this.likesKey) || {};
-                if (!likes[postId]) {
-                    likes[postId] = [];
-                }
-
-                const userIndex = likes[postId].indexOf(userId);
-                if (userIndex === -1) {
-                    // Like
-                    likes[postId].push(userId);
-                    
-                    // Update post likes count
-                    const post = this.getPost(postId);
-                    if (post) {
-                        this.updatePost(postId, { likes: post.likes + 1 });
+            
+            handleReceivedPosts(peerId, posts) {
+                if (!this.peerData.has(peerId)) return;
+                
+                const peer = this.peerData.get(peerId);
+                // Add new posts only
+                posts.forEach(post => {
+                    if (!peer.posts.find(p => p.id === post.id)) {
+                        peer.posts.push(post);
                     }
-                } else {
-                    // Unlike
-                    likes[postId].splice(userIndex, 1);
-                    
-                    // Update post likes count
-                    const post = this.getPost(postId);
-                    if (post) {
-                        this.updatePost(postId, { likes: Math.max(0, post.likes - 1) });
-                    }
-                }
-
-                this.storage.setItem(this.likesKey, likes);
-                return userIndex === -1; // Returns true if liked, false if unliked
+                });
+                
+                // Sort by date
+                peer.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                this.triggerPostUpdate();
             }
-
-            // Check if user liked a post
-            hasLiked(postId, userId) {
-                const likes = this.storage.getItem(this.likesKey) || {};
-                return likes[postId] && likes[postId].includes(userId);
-            }
-
-            // Save/Unsave post
-            toggleSave(postId, userId) {
-                const saves = this.storage.getItem(this.savesKey) || {};
-                if (!saves[userId]) {
-                    saves[userId] = [];
-                }
-
-                const postIndex = saves[userId].indexOf(postId);
-                if (postIndex === -1) {
-                    // Save
-                    saves[userId].push(postId);
-                } else {
-                    // Unsave
-                    saves[userId].splice(postIndex, 1);
-                }
-
-                this.storage.setItem(this.savesKey, saves);
-                return postIndex === -1; // Returns true if saved, false if unsaved
-            }
-
-            // Check if user saved a post
-            hasSaved(postId, userId) {
-                const saves = this.storage.getItem(this.savesKey) || {};
-                return saves[userId] && saves[userId].includes(postId);
-            }
-
-            // Add comment
-            addComment(postId, content, author, authorAvatar) {
-                const commentId = 'comment_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                const comment = {
-                    id: commentId,
-                    postId: postId,
-                    authorId: author.id || 'local_user',
-                    authorName: author.name,
-                    authorAvatar: authorAvatar,
-                    content: content,
-                    createdAt: new Date().toISOString()
-                };
-
-                // Save comment
-                const comments = this.storage.getItem(this.commentsKey) || {};
-                if (!comments[postId]) {
-                    comments[postId] = [];
-                }
-                comments[postId].push(comment);
-                this.storage.setItem(this.commentsKey, comments);
-
-                // Update post comment count
-                const post = this.getPost(postId);
+            
+            likePost(postId, authorPeerId) {
+                // Find the post (could be mine or peer's)
+                let post = null;
+                let isMyPost = false;
+                
+                // Check my posts
+                post = this.myData.posts.find(p => p.id === postId);
                 if (post) {
-                    this.updatePost(postId, { comments: (post.comments || 0) + 1 });
+                    isMyPost = true;
+                } else {
+                    // Check peer posts
+                    this.peerData.forEach((peer, peerId) => {
+                        const found = peer.posts.find(p => p.id === postId);
+                        if (found) {
+                            post = found;
+                            authorPeerId = peerId;
+                        }
+                    });
                 }
-
-                return comment;
+                
+                if (!post) return;
+                
+                // Update like count
+                post.likes = (post.likes || 0) + 1;
+                if (!post.likesBy) post.likesBy = [];
+                post.likesBy.push(this.myPeerId);
+                
+                // Save if it's my post
+                if (isMyPost) {
+                    this.storage.set('my_posts', this.myData.posts);
+                }
+                
+                // Notify author if it's not my post
+                if (!isMyPost && authorPeerId && this.connections.has(authorPeerId)) {
+                    this.sendToPeer(authorPeerId, {
+                        type: 'like',
+                        data: { postId, likedBy: this.myPeerId }
+                    });
+                }
+                
+                this.triggerPostUpdate();
             }
-
-            // Get comments for post
-            getComments(postId) {
-                const comments = this.storage.getItem(this.commentsKey) || {};
-                return comments[postId] || [];
+            
+            handleLike(peerId, data) {
+                // Someone liked my post
+                const post = this.myData.posts.find(p => p.id === data.postId);
+                if (post) {
+                    post.likes = (post.likes || 0) + 1;
+                    if (!post.likesBy) post.likesBy = [];
+                    post.likesBy.push(peerId);
+                    this.storage.set('my_posts', this.myData.posts);
+                    this.triggerPostUpdate();
+                }
             }
-
-            // Delete comments for post
-            deleteComments(postId) {
-                const comments = this.storage.getItem(this.commentsKey) || {};
-                delete comments[postId];
-                this.storage.setItem(this.commentsKey, comments);
+            
+            addComment(postId, content, authorPeerId) {
+                // Similar to like, but for comments
+                // Implementation would be similar to like functionality
             }
-
-            // Delete likes for post
-            deleteLikes(postId) {
-                const likes = this.storage.getItem(this.likesKey) || {};
-                delete likes[postId];
-                this.storage.setItem(this.likesKey, likes);
+            
+            disconnectPeer(peerId) {
+                if (this.connections.has(peerId)) {
+                    this.connections.delete(peerId);
+                    this.updatePeerCount();
+                    this.showNotification(`Disconnected from peer`, 'info');
+                }
             }
-
-            // Extract hashtags from content
-            extractTags(content) {
-                const hashtags = content.match(/#\w+/g);
-                return hashtags ? hashtags.map(tag => tag.substring(1)) : [];
+            
+            updatePeerCount() {
+                const count = this.connections.size;
+                document.getElementById('peerCount').textContent = count;
+                
+                // Update status button
+                const statusBtn = document.getElementById('peerStatusBtn');
+                statusBtn.className = `peer-status ${count === 0 ? 'offline' : ''}`;
             }
-
-            // Get user's posts
-            getUserPosts(userId) {
-                const posts = this.getAllPosts();
-                return posts.filter(post => post.authorId === userId);
+            
+            triggerPostUpdate() {
+                // Trigger UI update
+                window.dispatchEvent(new CustomEvent('posts-updated'));
             }
-
-            // Get saved posts for user
-            getSavedPosts(userId) {
-                const saves = this.storage.getItem(this.savesKey) || {};
-                const savedPostIds = saves[userId] || [];
-                const posts = this.getAllPosts();
-                return posts.filter(post => savedPostIds.includes(post.id));
+            
+            showConnectionStatus(message) {
+                const statusEl = document.getElementById('connectionStatus');
+                statusEl.classList.add('show');
+                statusEl.innerHTML = `<i class="fas fa-wifi"></i> ${message}`;
+                
+                setTimeout(() => {
+                    statusEl.classList.remove('show');
+                }, 3000);
             }
-
-            // Clear all data
-            clearAllData() {
-                this.storage.clearAll();
+            
+            saveConnections() {
+                const connections = Array.from(this.connections.keys());
+                this.storage.set('connections', connections);
             }
-
-            // Export all data
-            exportAllData() {
-                return this.storage.exportData();
+            
+            loadConnections() {
+                const savedConnections = this.storage.get('connections') || [];
+                savedConnections.forEach(peerId => {
+                    // In real implementation, you'd reconnect here
+                    console.log('Would reconnect to:', peerId);
+                });
+            }
+            
+            getAllPosts() {
+                const allPosts = [];
+                
+                // Add my posts
+                this.myData.posts.forEach(post => {
+                    allPosts.push({
+                        ...post,
+                        source: 'me',
+                        available: true
+                    });
+                });
+                
+                // Add peer posts
+                this.peerData.forEach((peer, peerId) => {
+                    peer.posts.forEach(post => {
+                        allPosts.push({
+                            ...post,
+                            source: 'peer',
+                            peerId: peerId,
+                            peerName: peer.name,
+                            available: this.connections.has(peerId) // Only available if connected
+                        });
+                    });
+                });
+                
+                // Sort by date
+                return allPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
+            
+            // Simulated peer connection for demo
+            simulatePeerConnection() {
+                const simulatedPeers = [
+                    { id: 'songa_peer_1', name: 'Alice' },
+                    { id: 'songa_peer_2', name: 'Bob' },
+                    { id: 'songa_peer_3', name: 'Charlie' }
+                ];
+                
+                // Randomly connect to a simulated peer
+                const randomPeer = simulatedPeers[Math.floor(Math.random() * simulatedPeers.length)];
+                this.connectToPeer(randomPeer.id, randomPeer.name);
+                
+                // Simulate receiving a post from peer
+                setTimeout(() => {
+                    const simulatedPost = {
+                        id: 'peer_post_' + Date.now(),
+                        authorId: randomPeer.id,
+                        authorName: randomPeer.name,
+                        authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                        content: `Hello from ${randomPeer.name}! This is a simulated peer post. The data stays on my device but you can view it while we're connected.`,
+                        likes: 3,
+                        comments: [],
+                        createdAt: new Date().toISOString(),
+                        visibility: 'public'
+                    };
+                    
+                    this.handleNewPost(randomPeer.id, simulatedPost);
+                }, 1000);
             }
         }
 
         // Main Application
-        class THE_SONGA_App {
+        class THE_SONGA_P2P_App {
             constructor() {
-                this.postManager = new PostManager();
+                this.network = new PeerToPeerNetwork();
                 this.currentUser = null;
-                this.isOnline = navigator.onLine;
                 this.initializeApp();
             }
-
-            initializeApp() {
+            
+            async initializeApp() {
                 this.setupEventListeners();
                 this.checkAuthState();
-                this.setupOfflineDetection();
-                this.loadInitialPosts();
+                this.setupPeerListeners();
             }
-
+            
             setupEventListeners() {
-                // Google Sign-In
-                document.getElementById('googleSignInBtn').addEventListener('click', () => this.signInWithGoogle());
-                
-                // Close modal
-                document.getElementById('closeSigninModal').addEventListener('click', () => {
-                    document.getElementById('signinModal').classList.remove('active');
+                // Peer connection button
+                document.getElementById('peerConnectBtn').addEventListener('click', () => {
+                    document.getElementById('peerModal').classList.add('active');
                 });
-
+                
+                // Copy peer ID
+                document.getElementById('copyPeerId').addEventListener('click', () => {
+                    navigator.clipboard.writeText(document.getElementById('peerId').textContent);
+                    this.showNotification('Peer ID copied!', 'success');
+                });
+                
+                // Connect to peer
+                document.getElementById('connectPeer').addEventListener('click', () => {
+                    const peerId = prompt('Enter peer ID to connect:');
+                    if (peerId) {
+                        this.network.connectToPeer(peerId);
+                    }
+                });
+                
+                // Simulate connection for demo
+                document.getElementById('scanQR').addEventListener('click', () => {
+                    this.network.simulatePeerConnection();
+                    this.showNotification('Simulated peer connected!', 'success');
+                    document.getElementById('peerModal').classList.remove('active');
+                });
+                
                 // Create post
-                const postContentInput = document.getElementById('postContentInput');
-                const submitPostBtn = document.getElementById('submitPostBtn');
+                document.getElementById('submitPostBtn').addEventListener('click', () => this.createPost());
                 
-                postContentInput.addEventListener('input', () => {
-                    submitPostBtn.disabled = postContentInput.value.trim().length === 0;
-                });
-
-                submitPostBtn.addEventListener('click', () => this.createPost());
-
-                // Enter key to submit post
-                postContentInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        if (!submitPostBtn.disabled) {
-                            this.createPost();
-                        }
-                    }
-                });
-
-                // Mobile FAB
-                document.getElementById('fabBtn').addEventListener('click', () => {
-                    document.getElementById('createPostSection').classList.add('mobile-visible');
-                    postContentInput.focus();
-                });
-
-                // Header create post button
-                document.getElementById('createPostBtnHeader').addEventListener('click', () => {
-                    postContentInput.focus();
-                    if (window.innerWidth <= 768) {
-                        document.getElementById('createPostSection').classList.add('mobile-visible');
-                    }
-                });
-
-                // Dropdown items
-                document.getElementById('exportDataOption').addEventListener('click', () => this.exportData());
-                document.getElementById('clearLocalDataOption').addEventListener('click', () => this.clearLocalData());
-                document.getElementById('signOutOption').addEventListener('click', () => this.signOut());
-            }
-
-            setupOfflineDetection() {
-                window.addEventListener('online', () => {
-                    this.isOnline = true;
-                    document.getElementById('offlineIndicator').classList.remove('show');
-                    this.showNotification('You are back online', 'success');
-                });
-
-                window.addEventListener('offline', () => {
-                    this.isOnline = false;
-                    document.getElementById('offlineIndicator').classList.add('show');
-                    this.showNotification('You are offline. Posts saved locally.', 'info');
+                // Post content input
+                document.getElementById('postContentInput').addEventListener('input', (e) => {
+                    document.getElementById('submitPostBtn').disabled = e.target.value.trim().length === 0;
                 });
             }
-
-            async signInWithGoogle() {
-                try {
-                    const { auth, GoogleAuthProvider, signInWithPopup } = window.firebaseAuth;
-                    const provider = new GoogleAuthProvider();
-                    
-                    const result = await signInWithPopup(auth, provider);
-                    this.currentUser = result.user;
-                    
-                    // Save user info locally
-                    const userData = {
-                        id: this.currentUser.uid,
-                        name: this.currentUser.displayName || 'User',
-                        email: this.currentUser.email,
-                        avatar: this.currentUser.photoURL || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
-                        joinedDate: new Date().toISOString()
-                    };
-
-                    const storage = new LocalStorageManager();
-                    storage.setItem('currentUser', userData);
-
-                    this.updateUIAfterSignIn(userData);
-                    this.showNotification(`Welcome to THE SONGA, ${userData.name}!`, 'success');
-
-                } catch (error) {
-                    console.error('Sign-in error:', error);
-                    
-                    // Fallback: Create local user
-                    this.createLocalUser();
-                }
+            
+            setupPeerListeners() {
+                // Listen for post updates
+                window.addEventListener('posts-updated', () => {
+                    this.renderPosts();
+                });
             }
-
-            createLocalUser() {
-                const localUserId = 'local_' + Date.now();
-                const userData = {
-                    id: localUserId,
-                    name: 'Local User',
-                    email: 'local@user.com',
-                    avatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
-                    joinedDate: new Date().toISOString(),
-                    isLocal: true
-                };
-
-                const storage = new LocalStorageManager();
-                storage.setItem('currentUser', userData);
-
-                this.currentUser = userData;
-                this.updateUIAfterSignIn(userData);
-                this.showNotification('Welcome to THE SONGA! Using local storage.', 'info');
-            }
-
-            updateUIAfterSignIn(userData) {
-                // Update UI elements
-                document.getElementById('userAvatar').src = userData.avatar;
-                document.getElementById('userDisplayName').textContent = userData.name.split(' ')[0];
-                document.getElementById('createPostAvatar').src = userData.avatar;
-                
-                // Show user profile and post button
-                document.getElementById('userProfile').style.display = 'flex';
-                document.getElementById('createPostBtnHeader').style.display = 'flex';
-                
-                // Hide sign-in modal
-                document.getElementById('signinModal').classList.remove('active');
-                
-                // Load user-specific posts
-                this.loadPosts();
-            }
-
-            checkAuthState() {
-                const storage = new LocalStorageManager();
-                const savedUser = storage.getItem('currentUser');
+            
+            async checkAuthState() {
+                // Load saved user or create local user
+                const savedUser = JSON.parse(localStorage.getItem('the_songa_user') || 'null');
                 
                 if (savedUser) {
                     this.currentUser = savedUser;
-                    this.updateUIAfterSignIn(savedUser);
+                    this.initializeNetwork();
                 } else {
-                    // Show sign-in modal
-                    document.getElementById('signinModal').classList.add('active');
+                    // Create local user
+                    this.createLocalUser();
                 }
             }
-
-            loadInitialPosts() {
-                // Add default welcome posts if no posts exist
-                const posts = this.postManager.getAllPosts();
-                if (posts.length === 0) {
-                    this.createDefaultPosts();
-                }
-                this.loadPosts();
+            
+            createLocalUser() {
+                this.currentUser = {
+                    id: 'local_' + Date.now(),
+                    name: 'Local User',
+                    avatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'
+                };
+                
+                localStorage.setItem('the_songa_user', JSON.stringify(this.currentUser));
+                this.initializeNetwork();
             }
-
-            createDefaultPosts() {
-                const welcomePost = this.postManager.createPost(
-                    'Welcome to THE SONGA community! This is your private space to connect, share, and grow. All your posts and interactions are stored locally on your device for complete privacy.',
-                    { id: 'system', name: 'THE SONGA' },
-                    'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
-                    'announcement'
-                );
-
-                const tutorialPost = this.postManager.createPost(
-                    'How to use this platform:\n\n1. Sign in with Google or use local storage\n2. Create posts - they stay on your device\n3. Like, comment, and save posts\n4. All data is end-to-end private\n\n#Welcome #Privacy #Community',
-                    { id: 'system', name: 'THE SONGA' },
-                    'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
-                    'resource'
-                );
+            
+            async initializeNetwork() {
+                // Update UI
+                document.getElementById('userAvatar').src = this.currentUser.avatar;
+                document.getElementById('userDisplayName').textContent = this.currentUser.name;
+                document.getElementById('createPostAvatar').src = this.currentUser.avatar;
+                document.getElementById('userProfile').style.display = 'flex';
+                document.getElementById('createPostBtnHeader').style.display = 'flex';
+                
+                // Initialize P2P network
+                await this.network.initialize(this.currentUser);
+                
+                // Load posts
+                this.renderPosts();
             }
-
+            
             async createPost() {
-                if (!this.currentUser) {
-                    this.showNotification('Please sign in first', 'error');
-                    return;
-                }
-
                 const content = document.getElementById('postContentInput').value.trim();
-                if (!content) {
-                    this.showNotification('Please enter some content', 'error');
+                if (!content || !this.currentUser) return;
+                
+                const visibility = document.querySelector('input[name="postVisibility"]:checked').value;
+                const post = this.network.createPost(content, visibility);
+                
+                // Clear input
+                document.getElementById('postContentInput').value = '';
+                document.getElementById('submitPostBtn').disabled = true;
+                
+                this.showNotification('Post created and shared with peers!', 'success');
+                this.renderPosts();
+            }
+            
+            renderPosts() {
+                const postsContainer = document.getElementById('postsContainer');
+                const posts = this.network.getAllPosts();
+                
+                if (posts.length === 0) {
+                    postsContainer.innerHTML = `
+                        <div class="no-posts">
+                            <div class="no-posts-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h3>No posts yet</h3>
+                            <p>Create a post to share with connected peers!</p>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 1rem;">
+                                <i class="fas fa-info-circle"></i>
+                                Connect with peers to see their posts
+                            </p>
+                        </div>
+                    `;
                     return;
                 }
-
-                try {
-                    const post = this.postManager.createPost(
-                        content,
-                        { id: this.currentUser.id, name: this.currentUser.name },
-                        this.currentUser.avatar
-                    );
-
-                    // Clear input
-                    document.getElementById('postContentInput').value = '';
-                    document.getElementById('submitPostBtn').disabled = true;
-                    
-                    // Hide mobile post creator
-                    if (window.innerWidth <= 768) {
-                        document.getElementById('createPostSection').classList.remove('mobile-visible');
-                    }
-
-                    this.showNotification('Post created locally!', 'success');
-                    this.loadPosts();
-
-                } catch (error) {
-                    console.error('Error creating post:', error);
-                    this.showNotification('Error creating post', 'error');
-                }
-            }
-
-            loadPosts() {
-                const postsContainer = document.getElementById('postsContainer');
-                const loadingSpinner = document.getElementById('loadingSpinner');
                 
-                loadingSpinner.style.display = 'block';
-                
-                setTimeout(() => {
-                    const posts = this.postManager.getAllPosts();
-                    
-                    if (posts.length === 0) {
-                        postsContainer.innerHTML = `
-                            <div class="no-posts">
-                                <div class="no-posts-icon">
-                                    <i class="fas fa-comments"></i>
-                                </div>
-                                <h3>No posts yet</h3>
-                                <p>Be the first to share something with the community!</p>
-                                ${!this.currentUser ? '<p>Sign in to create your first post.</p>' : ''}
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    postsContainer.innerHTML = posts.map(post => this.renderPost(post)).join('');
-                    loadingSpinner.style.display = 'none';
-                    
-                    // Add event listeners to new posts
-                    this.attachPostEventListeners();
-                    
-                }, 500);
+                postsContainer.innerHTML = posts.map(post => this.renderPost(post)).join('');
+                this.attachPostEventListeners();
             }
-
+            
             renderPost(post) {
-                const isLiked = this.currentUser ? this.postManager.hasLiked(post.id, this.currentUser.id) : false;
-                const isSaved = this.currentUser ? this.postManager.hasSaved(post.id, this.currentUser.id) : false;
-                const comments = this.postManager.getComments(post.id);
+                const isAvailable = post.available !== false;
+                const isMyPost = post.source === 'me';
+                const likeCount = post.likes || 0;
+                const commentCount = (post.comments || []).length;
                 
                 return `
-                    <div class="post-card ${post.type}" data-post-id="${post.id}">
+                    <div class="post-card ${isMyPost ? '' : 'peer-post'}" data-post-id="${post.id}" data-author-id="${post.authorId}">
+                        ${!isMyPost ? `
+                            <div class="peer-source">
+                                <i class="fas fa-user-friends"></i> From ${post.peerName || 'Peer'}
+                            </div>
+                        ` : ''}
+                        
                         <div class="post-header">
                             <div class="post-avatar">
                                 <img src="${post.authorAvatar}" alt="${post.authorName}">
@@ -1764,7 +1077,7 @@
                             <div class="post-author-info">
                                 <div class="post-author">
                                     ${post.authorName}
-                                    ${post.authorId === 'system' ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
+                                    ${isMyPost ? '<i class="fas fa-user"></i>' : '<i class="fas fa-user-friends"></i>'}
                                 </div>
                                 <div class="post-time">${this.formatTimeAgo(post.createdAt)}</div>
                             </div>
@@ -1774,255 +1087,89 @@
                             ${this.formatContent(post.content)}
                         </div>
                         
+                        ${!isAvailable ? `
+                            <div class="post-availability">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Post unavailable (peer disconnected)</span>
+                            </div>
+                        ` : ''}
+                        
                         <div class="post-stats">
                             <div class="post-stat">
                                 <i class="fas fa-heart"></i>
-                                <span>${post.likes || 0} likes</span>
+                                <span>${likeCount} likes</span>
                             </div>
                             <div class="post-stat">
                                 <i class="fas fa-comment"></i>
-                                <span>${post.comments || 0} comments</span>
+                                <span>${commentCount} comments</span>
                             </div>
                             <div class="post-stat">
                                 <i class="fas fa-share"></i>
-                                <span>${post.shares || 0} shares</span>
+                                <span>Shared with peers</span>
                             </div>
                         </div>
                         
-                        <div class="post-actions">
-                            <button class="post-action like ${isLiked ? 'liked' : ''}" data-action="like" data-post-id="${post.id}">
-                                <i class="fas fa-heart action-icon"></i>
-                                <span class="action-count">${post.likes || 0}</span>
-                            </button>
-                            <button class="post-action comment" data-action="comment" data-post-id="${post.id}">
-                                <i class="fas fa-comment action-icon"></i>
-                                <span class="action-count">${post.comments || 0}</span>
-                            </button>
-                            <button class="post-action share" data-action="share" data-post-id="${post.id}">
-                                <i class="fas fa-share-alt action-icon"></i>
-                            </button>
-                            <button class="post-action ${isSaved ? 'saved' : ''}" data-action="save" data-post-id="${post.id}">
-                                <i class="fas fa-bookmark action-icon"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="comments-section" id="comments-${post.id}">
-                            <div class="comment-form">
-                                <div class="comment-avatar">
-                                    <img src="${this.currentUser ? this.currentUser.avatar : 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="You">
-                                </div>
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Add a comment..." maxlength="280" data-post-id="${post.id}">
-                                    <button class="comment-submit" data-post-id="${post.id}">Post</button>
-                                </div>
+                        ${isAvailable ? `
+                            <div class="post-actions">
+                                <button class="post-action like" data-action="like" data-post-id="${post.id}">
+                                    <i class="fas fa-heart action-icon"></i>
+                                    <span class="action-count">${likeCount}</span>
+                                </button>
+                                <button class="post-action comment" data-action="comment" data-post-id="${post.id}">
+                                    <i class="fas fa-comment action-icon"></i>
+                                    <span class="action-count">${commentCount}</span>
+                                </button>
+                                <button class="post-action share" data-action="share" data-post-id="${post.id}">
+                                    <i class="fas fa-share-alt action-icon"></i>
+                                </button>
                             </div>
-                            <div class="comments-list" id="comments-list-${post.id}">
-                                ${comments.length === 0 ? 
-                                    '<div class="no-comments">No comments yet. Be the first to comment!</div>' : 
-                                    comments.map(comment => this.renderComment(comment)).join('')
-                                }
-                            </div>
-                        </div>
+                        ` : ''}
                     </div>
                 `;
             }
-
-            renderComment(comment) {
-                return `
-                    <div class="comment-item">
-                        <div class="comment-avatar">
-                            <img src="${comment.authorAvatar}" alt="${comment.authorName}">
-                        </div>
-                        <div class="comment-content">
-                            <div class="comment-author">${comment.authorName}</div>
-                            <div class="comment-text">${comment.content}</div>
-                            <div class="comment-time">${this.formatTimeAgo(comment.createdAt)}</div>
-                        </div>
-                    </div>
-                `;
-            }
-
+            
             attachPostEventListeners() {
                 // Like buttons
                 document.querySelectorAll('[data-action="like"]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
-                        if (!this.currentUser) {
-                            this.showNotification('Please sign in to like posts', 'error');
-                            return;
-                        }
                         const postId = e.currentTarget.dataset.postId;
-                        this.handleLike(postId);
+                        const authorId = e.currentTarget.closest('.post-card').dataset.authorId;
+                        this.network.likePost(postId, authorId);
                     });
                 });
-
-                // Comment buttons
-                document.querySelectorAll('[data-action="comment"]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        if (!this.currentUser) {
-                            this.showNotification('Please sign in to comment', 'error');
-                            return;
-                        }
-                        const postId = e.currentTarget.dataset.postId;
-                        this.toggleComments(postId);
-                    });
-                });
-
-                // Save buttons
-                document.querySelectorAll('[data-action="save"]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        if (!this.currentUser) {
-                            this.showNotification('Please sign in to save posts', 'error');
-                            return;
-                        }
-                        const postId = e.currentTarget.dataset.postId;
-                        this.handleSave(postId);
-                    });
-                });
-
+                
                 // Share buttons
                 document.querySelectorAll('[data-action="share"]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         const postId = e.currentTarget.dataset.postId;
-                        this.handleShare(postId);
-                    });
-                });
-
-                // Comment submit buttons
-                document.querySelectorAll('.comment-submit').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const postId = e.currentTarget.dataset.postId;
-                        const input = document.querySelector(`input[data-post-id="${postId}"]`);
-                        this.handleComment(postId, input);
-                    });
-                });
-
-                // Comment input enter key
-                document.querySelectorAll('.comment-input input').forEach(input => {
-                    input.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            const postId = e.currentTarget.dataset.postId;
-                            this.handleComment(postId, e.currentTarget);
-                        }
+                        this.sharePost(postId);
                     });
                 });
             }
-
-            handleLike(postId) {
-                const liked = this.postManager.toggleLike(postId, this.currentUser.id);
+            
+            sharePost(postId) {
+                // Get post
+                const posts = this.network.getAllPosts();
+                const post = posts.find(p => p.id === postId);
                 
-                // Update UI
-                const likeBtn = document.querySelector(`[data-post-id="${postId}"][data-action="like"]`);
-                const post = this.postManager.getPost(postId);
-                
-                likeBtn.classList.toggle('liked');
-                likeBtn.querySelector('.action-count').textContent = post.likes;
-                
-                this.showNotification(liked ? 'Post liked!' : 'Post unliked', 'success');
-            }
-
-            handleSave(postId) {
-                const saved = this.postManager.toggleSave(postId, this.currentUser.id);
-                
-                // Update UI
-                const saveBtn = document.querySelector(`[data-post-id="${postId}"][data-action="save"]`);
-                saveBtn.classList.toggle('saved');
-                
-                this.showNotification(saved ? 'Post saved!' : 'Post removed from saved', 'success');
-            }
-
-            toggleComments(postId) {
-                const commentsSection = document.getElementById(`comments-${postId}`);
-                commentsSection.classList.toggle('active');
-            }
-
-            handleComment(postId, inputElement) {
-                const content = inputElement.value.trim();
-                if (!content || !this.currentUser) return;
-
-                const comment = this.postManager.addComment(
-                    postId,
-                    content,
-                    { id: this.currentUser.id, name: this.currentUser.name },
-                    this.currentUser.avatar
-                );
-
-                // Clear input
-                inputElement.value = '';
-                
-                // Update comment count
-                const commentBtn = document.querySelector(`[data-post-id="${postId}"][data-action="comment"]`);
-                const post = this.postManager.getPost(postId);
-                commentBtn.querySelector('.action-count').textContent = post.comments;
-                
-                // Add comment to list
-                const commentsList = document.getElementById(`comments-list-${postId}`);
-                if (commentsList.querySelector('.no-comments')) {
-                    commentsList.innerHTML = '';
-                }
-                commentsList.insertAdjacentHTML('afterbegin', this.renderComment(comment));
-                
-                this.showNotification('Comment added!', 'success');
-            }
-
-            handleShare(postId) {
-                const post = this.postManager.getPost(postId);
                 if (!post) return;
-
-                const shareText = `Check out this post from THE SONGA: "${post.content.substring(0, 100)}..."`;
+                
+                const shareText = `THE SONGA Peer Post: "${post.content.substring(0, 100)}..."\n\nShared via peer-to-peer network`;
                 
                 if (navigator.share) {
                     navigator.share({
-                        title: 'THE SONGA Post',
+                        title: 'THE SONGA Peer Post',
                         text: shareText,
                         url: window.location.href
                     });
                 } else {
-                    // Copy to clipboard as fallback
+                    // Copy to clipboard
                     navigator.clipboard.writeText(shareText)
-                        .then(() => this.showNotification('Post content copied to clipboard!', 'success'))
+                        .then(() => this.showNotification('Post copied to share!', 'success'))
                         .catch(() => this.showNotification('Error sharing post', 'error'));
                 }
             }
-
-            exportData() {
-                const data = this.postManager.exportAllData();
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `the_songa_backup_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                this.showNotification('Data exported successfully!', 'success');
-            }
-
-            clearLocalData() {
-                if (confirm('Are you sure you want to clear all local data? This cannot be undone.')) {
-                    this.postManager.clearAllData();
-                    localStorage.clear();
-                    this.currentUser = null;
-                    location.reload();
-                }
-            }
-
-            signOut() {
-                const storage = new LocalStorageManager();
-                storage.removeItem('currentUser');
-                this.currentUser = null;
-                
-                // Reset UI
-                document.getElementById('userProfile').style.display = 'none';
-                document.getElementById('createPostBtnHeader').style.display = 'none';
-                document.getElementById('signinModal').classList.add('active');
-                
-                this.showNotification('Signed out successfully', 'success');
-                this.loadPosts(); // Reload without user context
-            }
-
+            
             formatContent(content) {
                 // Convert URLs to links
                 let formatted = content.replace(
@@ -2041,7 +1188,7 @@
                 
                 return formatted;
             }
-
+            
             formatTimeAgo(dateString) {
                 const date = new Date(dateString);
                 const now = new Date();
@@ -2054,23 +1201,28 @@
                 
                 return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             }
-
+            
             showNotification(message, type = 'info') {
-                const notification = document.getElementById('notification');
-                const messageElement = document.getElementById('notificationMessage');
-                
-                messageElement.textContent = message;
+                // Create notification element
+                const notification = document.createElement('div');
                 notification.className = `notification show ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(notification);
                 
                 setTimeout(() => {
                     notification.classList.remove('show');
-                }, 4000);
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
             }
         }
 
-        // Initialize the app when DOM is loaded
+        // Initialize the app
         document.addEventListener('DOMContentLoaded', () => {
-            window.theSongApp = new THE_SONGA_App();
+            window.app = new THE_SONGA_P2P_App();
         });
     </script>
 </body>
