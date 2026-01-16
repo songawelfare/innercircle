@@ -3,27 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>THE SONGA WELFARE - Community</title>
-    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    <title>THE SONGA - Community</title>
+    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Sign-In API -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#D4AF37">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
-    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, get, set, update, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
+            authDomain: "the-songa-77b1b.firebaseapp.com",
+            projectId: "the-songa-77b1b",
+            storageBucket: "the-songa-77b1b.firebasestorage.app",
+            messagingSenderId: "123922889572",
+            appId: "1:123922889572:web:482b2a624930baaf92d871",
+            databaseURL: "https://the-songa-77b1b-default-rtdb.firebaseio.com/"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        window.firebase = {
+            database,
+            auth,
+            ref,
+            get,
+            set,
+            update,
+            push,
+            onValue,
+            remove,
+            onAuthStateChanged
+        };
+    </script>
     
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         }
 
         :root {
@@ -35,9 +61,14 @@
             --gray: #f5f5f5;
             --dark-gray: #333333;
             --light-gray: #e0e0e0;
-            --accent: #25D366;
-            --whatsapp-green: #25D366;
-            --whatsapp-dark: #128C7E;
+            --card-bg: #ffffff;
+            --border-color: #e1e8ed;
+            --text-primary: #0f1419;
+            --text-secondary: #536471;
+            --like-red: #f91880;
+            --retweet-green: #00ba7c;
+            --comment-blue: #1d9bf0;
+            --share-blue: #1d9bf0;
         }
 
         html {
@@ -45,22 +76,21 @@
         }
 
         body {
-            background-color: var(--white);
-            color: var(--black);
+            background-color: #f0f2f5;
+            color: var(--text-primary);
             line-height: 1.6;
             padding-bottom: 70px;
         }
 
-        /* Header Styles */
+        /* Header Styles - Twitter-like */
         header {
-            background-color: var(--white);
-            color: var(--black);
-            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1rem;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid var(--light-gray);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
             height: 60px;
         }
 
@@ -69,29 +99,34 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .logo {
             display: flex;
             align-items: center;
+            gap: 12px;
         }
 
         .logo img {
-            height: 40px;
-            width: auto;
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .brand-name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-left: 10px;
+            font-weight: 700;
+            font-size: 1.3rem;
             color: var(--gold-dark);
         }
 
+        /* Auth Section */
         .auth-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             position: relative;
         }
 
@@ -99,18 +134,24 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: var(--gold-light);
+            padding: 8px 12px;
+            border-radius: 50px;
+            background: var(--white);
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            position: relative;
+            transition: background-color 0.2s;
+        }
+
+        .user-profile:hover {
+            background-color: rgba(0, 0, 0, 0.03);
         }
 
         .user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             overflow: hidden;
+            border: 2px solid var(--gold);
         }
 
         .user-avatar img {
@@ -121,23 +162,50 @@
 
         .user-name {
             font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--black);
+            font-size: 0.95rem;
+            color: var(--text-primary);
         }
 
-        /* User Profile Dropdown */
+        .dropdown-icon {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Create Post Button */
+        .create-post-btn {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-post-btn:hover {
+            background-color: var(--gold-dark);
+            transform: scale(1.05);
+        }
+
+        /* User Dropdown */
         .user-dropdown {
             position: absolute;
             top: 100%;
             right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            min-width: 180px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
             z-index: 1000;
             display: none;
-            margin-top: 5px;
+            margin-top: 8px;
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .user-dropdown.active {
@@ -145,13 +213,15 @@
         }
 
         .dropdown-item {
-            padding: 12px 16px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: background-color 0.2s;
-            border-bottom: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
         }
 
         .dropdown-item:last-child {
@@ -159,13 +229,14 @@
         }
 
         .dropdown-item:hover {
-            background-color: var(--gold-light);
+            background-color: rgba(0, 0, 0, 0.03);
         }
 
         .dropdown-item i {
             width: 20px;
             text-align: center;
             color: var(--gold-dark);
+            font-size: 1.1rem;
         }
 
         /* Sign In Modal */
@@ -188,23 +259,23 @@
 
         .signin-content {
             background-color: white;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
+            animation: modalAppear 0.3s ease-out;
         }
 
         @keyframes modalAppear {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
         .signin-header {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
         }
 
@@ -214,12 +285,12 @@
         }
 
         .signin-body {
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
         }
 
         .google-signin-container {
-            margin: 1.5rem 0;
+            margin: 2rem 0;
         }
 
         .close-modal {
@@ -229,63 +300,186 @@
             background: rgba(0, 0, 0, 0.2);
             border: none;
             color: var(--black);
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            transition: background-color 0.2s;
         }
 
-        /* Main Content */
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content - Social Media Feed */
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 1rem;
         }
 
-        /* Community Posts */
+        /* Create Post Section */
+        .create-post-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .create-post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--gold);
+            flex-shrink: 0;
+        }
+
+        .create-post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .create-post-input {
+            flex: 1;
+        }
+
+        .create-post-input textarea {
+            width: 100%;
+            border: none;
+            font-size: 1.1rem;
+            resize: none;
+            min-height: 60px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f7f9fa;
+            color: var(--text-primary);
+        }
+
+        .create-post-input textarea:focus {
+            outline: none;
+            background: #eff1f2;
+        }
+
+        .create-post-input textarea::placeholder {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .create-post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .post-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-option {
+            background: none;
+            border: none;
+            color: var(--gold-dark);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: background-color 0.2s;
+        }
+
+        .post-option:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .post-submit {
+            background-color: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .post-submit:hover {
+            background-color: var(--gold-dark);
+        }
+
+        .post-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Community Posts Feed */
         .community-posts {
             margin: 1rem 0;
         }
 
         .posts-header {
-            display: flex;
-            justify-content: between;
-            align-items: center;
             margin-bottom: 1.5rem;
-            padding: 1rem 0;
+            padding-bottom: 1rem;
             border-bottom: 2px solid var(--gold-light);
         }
 
         .posts-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: var(--gold-dark);
-            font-weight: 600;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        .posts-title i {
+            color: var(--gold);
+        }
+
+        /* Post Card - Twitter Style */
         .post-card {
-            background: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 1rem;
             padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            animation: postAppear 0.3s ease-out;
+        }
+
+        @keyframes postAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .post-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .post-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            margin-bottom: 1rem;
+            margin-bottom: 12px;
         }
 
         .post-avatar {
@@ -294,6 +488,7 @@
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid var(--gold);
+            flex-shrink: 0;
         }
 
         .post-avatar img {
@@ -307,30 +502,44 @@
         }
 
         .post-author {
-            font-weight: 600;
-            color: var(--gold-dark);
-            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .verified-badge {
+            color: var(--gold);
+            font-size: 0.9rem;
+        }
+
+        .post-handle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-left: 4px;
         }
 
         .post-time {
-            font-size: 0.8rem;
-            color: var(--dark-gray);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
             margin-top: 2px;
         }
 
         .post-content {
             margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .post-content h3 {
-            color: var(--gold-dark);
-            margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            line-height: 1.5;
+            font-size: 1rem;
+            color: var(--text-primary);
         }
 
         .post-content p {
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-content p:last-child {
+            margin-bottom: 0;
         }
 
         .post-content ul, .post-content ol {
@@ -344,58 +553,337 @@
 
         .post-image {
             width: 100%;
-            border-radius: 8px;
+            border-radius: 12px;
             margin: 1rem 0;
             overflow: hidden;
+            max-height: 400px;
+            background: #000;
         }
 
         .post-image img {
             width: 100%;
             height: auto;
-            border-radius: 8px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 12px;
+            padding: 0 4px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .post-actions {
             display: flex;
-            gap: 1rem;
-            border-top: 1px solid var(--light-gray);
-            padding-top: 1rem;
+            justify-content: space-around;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
         }
 
         .post-action {
             background: none;
             border: none;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            transition: color 0.3s;
+            gap: 8px;
+            transition: all 0.2s;
             padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 500;
+            font-size: 0.9rem;
+            min-width: 80px;
+            justify-content: center;
         }
 
         .post-action:hover {
-            background: var(--gray);
-            color: var(--gold-dark);
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .post-action.like:hover {
+            color: var(--like-red);
+        }
+
+        .post-action.comment:hover {
+            color: var(--comment-blue);
+        }
+
+        .post-action.retweet:hover {
+            color: var(--retweet-green);
+        }
+
+        .post-action.share:hover {
+            color: var(--share-blue);
         }
 
         .post-action.liked {
-            color: #e74c3c;
+            color: var(--like-red);
         }
 
-        .welcome-post {
+        .post-action.retweeted {
+            color: var(--retweet-green);
+        }
+
+        .post-action.saved {
+            color: var(--gold);
+        }
+
+        .post-action .action-icon {
+            font-size: 1.1rem;
+        }
+
+        .post-action .action-count {
+            font-weight: 600;
+        }
+
+        /* Post Types */
+        .post-card.announcement {
             border-left: 4px solid var(--gold);
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         }
 
-        .event-post {
-            border-left: 4px solid var(--accent);
+        .post-card.event {
+            border-left: 4px solid var(--retweet-green);
         }
 
-        .resource-post {
-            border-left: 4px solid #3498db;
+        .post-card.resource {
+            border-left: 4px solid var(--comment-blue);
+        }
+
+        .post-card.success {
+            border-left: 4px solid var(--like-red);
+        }
+
+        .post-card.user-post {
+            border-left: 4px solid #8b5cf6;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .comments-section.active {
+            display: block;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-input {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.95rem;
+            background: #f7f9fa;
+        }
+
+        .comment-input input:focus {
+            outline: none;
+            background: var(--white);
+            border-color: var(--gold);
+        }
+
+        .comment-submit {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 20px;
+            padding: 0 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .comment-submit:hover {
+            background: var(--gold-dark);
+        }
+
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .comment-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .comment-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .comment-time {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+
+        .comment-action {
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .comment-action:hover {
+            color: var(--gold-dark);
+        }
+
+        .comment-action.like:hover {
+            color: var(--like-red);
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* No Posts Message */
+        .no-posts {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .no-posts-icon {
+            font-size: 3rem;
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: var(--white);
+            color: var(--text-primary);
+            padding: 16px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid var(--gold);
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-left-color: var(--like-red);
+        }
+
+        .notification.success {
+            border-left-color: var(--retweet-green);
+        }
+
+        .notification i {
+            font-size: 1.2rem;
+            color: var(--gold);
+        }
+
+        .notification.error i {
+            color: var(--like-red);
+        }
+
+        .notification.success i {
+            color: var(--retweet-green);
         }
 
         /* Bottom Navigation */
@@ -409,102 +897,175 @@
             justify-content: space-around;
             padding: 0.8rem 0;
             z-index: 100;
-            border-top: 1px solid var(--light-gray);
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--dark-gray);
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.3s;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+            padding: 6px 12px;
+            border-radius: 12px;
         }
 
         .nav-icon {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 3px;
         }
 
         .nav-item.active {
             color: var(--gold-dark);
+            background: rgba(212, 175, 55, 0.1);
         }
 
         .nav-item:hover {
             color: var(--gold-dark);
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: var(--black);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 4px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s;
-            max-width: 300px;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .notification.error {
-            background: #e74c3c;
-        }
-
-        .notification.success {
-            background: var(--gold);
-            color: var(--black);
-        }
-
         /* Responsive Design */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .post-card {
+                padding: 1.2rem;
+                border-radius: 12px;
+            }
+            
+            .create-post-section {
+                padding: 1.2rem;
+            }
+            
+            .post-actions {
+                gap: 4px;
+            }
+            
+            .post-action {
+                min-width: 60px;
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+            
             .user-name {
                 display: none;
             }
             
-            .post-avatar {
-                width: 40px;
-                height: 40px;
+            .dropdown-icon {
+                display: none;
             }
             
-            .post-card {
-                padding: 1rem;
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .post-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .post-author-info {
+                width: 100%;
             }
             
             .post-actions {
-                gap: 0.5rem;
+                flex-wrap: wrap;
+                gap: 8px;
             }
             
             .post-action {
-                padding: 6px 8px;
-                font-size: 0.8rem;
+                flex: 1;
+                min-width: auto;
+                justify-content: center;
+            }
+            
+            .brand-name {
+                font-size: 1.1rem;
+            }
+            
+            .logo img {
+                height: 32px;
+                width: 32px;
+            }
+        }
+
+        /* Floating Action Button for Mobile */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: var(--gold);
+            color: var(--black);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s;
+            z-index: 99;
+            display: none;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .fab {
+                display: flex;
+            }
+            
+            .create-post-section {
+                display: none;
+            }
+            
+            .create-post-section.mobile-visible {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1001;
+                margin: 0;
+                border-radius: 0;
+                background: var(--white);
+                padding: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <!-- Notification -->
-    <div class="notification" id="notification"></div>
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notificationMessage"></span>
+    </div>
 
     <!-- Sign In Modal -->
     <div class="signin-modal active" id="signinModal">
         <div class="signin-content">
             <div class="signin-header">
-                <h2>Welcome to THE SONGA WELFARE</h2>
-                <p>Member Community Portal</p>
+                <h2>Welcome to THE SONGA</h2>
+                <p>Join our community of growth and connection</p>
                 <button class="close-modal" id="closeSigninModal">&times;</button>
             </div>
             <div class="signin-body">
-                <p>Sign in to access our exclusive community feed and connect with fellow members.</p>
+                <p>Sign in to connect with our community, share insights, and grow together.</p>
                 
                 <div class="google-signin-container">
                     <div id="g_id_onload"
@@ -516,7 +1077,7 @@
                     </div>
                     <div class="g_id_signin"
                          data-type="standard"
-                         data-shape="rectangular"
+                         data-shape="pill"
                          data-theme="outline"
                          data-text="signin_with"
                          data-size="large"
@@ -524,8 +1085,8 @@
                     </div>
                 </div>
                 
-                <p style="font-size: 0.9rem; color: var(--dark-gray); margin-top: 1rem;">
-                    By signing in, you agree to our community guidelines and membership terms.
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 1.5rem;">
+                    By signing in, you agree to our community guidelines and terms of service.
                 </p>
             </div>
         </div>
@@ -535,15 +1096,20 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
-                <div class="brand-name">THE SONGA™</div>
+                <img src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="THE SONGA Logo">
+                <div class="brand-name">THE SONGA</div>
             </div>
             <div class="auth-section">
+                <button class="create-post-btn" id="createPostBtnHeader">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>Post</span>
+                </button>
                 <div id="userProfile" class="user-profile" style="display: none;">
                     <div class="user-avatar">
                         <img id="userAvatar" src="" alt="User Avatar">
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
                     <div class="user-dropdown" id="userDropdown">
                         <div class="dropdown-item" id="viewProfileOption">
                             <i class="fas fa-user"></i>
@@ -552,6 +1118,10 @@
                         <div class="dropdown-item" id="membershipOption">
                             <i class="fas fa-crown"></i>
                             <span>Membership Status</span>
+                        </div>
+                        <div class="dropdown-item" id="notificationsOption">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
                         </div>
                         <div class="dropdown-item" id="settingsOption">
                             <i class="fas fa-cog"></i>
@@ -569,185 +1139,57 @@
 
     <!-- Main Content - Social Media Feed -->
     <main class="container">
+        <!-- Create Post Section -->
+        <div class="create-post-section" id="createPostSection">
+            <div class="create-post-header">
+                <div class="create-post-avatar">
+                    <img id="createPostAvatar" src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="Your Avatar">
+                </div>
+                <div class="create-post-input">
+                    <textarea id="postContentInput" placeholder="What's on your mind? Share your thoughts with the community..." maxlength="500"></textarea>
+                </div>
+            </div>
+            <div class="create-post-actions">
+                <div class="post-options">
+                    <button class="post-option" title="Add Image">
+                        <i class="fas fa-image"></i>
+                    </button>
+                    <button class="post-option" title="Add Emoji">
+                        <i class="fas fa-smile"></i>
+                    </button>
+                    <button class="post-option" title="Add Hashtag">
+                        <i class="fas fa-hashtag"></i>
+                    </button>
+                </div>
+                <button class="post-submit" id="submitPostBtn" disabled>
+                    <i class="fas fa-paper-plane"></i> Post
+                </button>
+            </div>
+        </div>
+
+        <!-- Community Posts -->
         <div class="community-posts">
             <div class="posts-header">
-                <h1 class="posts-title">Community Feed</h1>
+                <h1 class="posts-title">
+                    <i class="fas fa-users"></i>
+                    Community Feed
+                </h1>
             </div>
 
-            <!-- Welcome Post -->
-            <div class="post-card welcome-post">
-                <div class="post-header">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Admin Avatar">
-                    </div>
-                    <div class="post-author-info">
-                        <div class="post-author">THE SONGA WELFARE</div>
-                        <div class="post-time">Just now</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h3>🎉 Welcome to Our Community!</h3>
-                    <p>We're thrilled to have you as part of THE SONGA WELFARE family. This is your space to connect, learn, and grow with like-minded individuals.</p>
-                    
-                    <p><strong>What to expect in our community:</strong></p>
-                    <ul>
-                        <li>📚 Exclusive educational content and resources</li>
-                        <li>🎯 Practical financial strategies and insights</li>
-                        <li>🤝 Networking with ambitious members</li>
-                        <li>💡 Regular updates and announcements</li>
-                        <li>🌟 Member success stories and spotlights</li>
-                    </ul>
-                    
-                    <p>Make sure to engage with posts you find valuable and connect with fellow members in the comments!</p>
-                    
-                    <p style="font-style: italic; margin-top: 1rem;">Welcome aboard!<br>- The SONGA WELFARE Team</p>
-                </div>
-                <div class="post-actions">
-                    <button class="post-action">
-                        <i class="fas fa-heart"></i> <span>24</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-comment"></i> <span>8</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-share"></i> <span>Share</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-bookmark"></i> <span>Save</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Event Announcement Post -->
-            <div class="post-card event-post">
-                <div class="post-header">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Admin Avatar">
-                    </div>
-                    <div class="post-author-info">
-                        <div class="post-author">THE SONGA WELFARE</div>
-                        <div class="post-time">2 hours ago</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h3>📅 Wealth Building Workshop - This Saturday!</h3>
-                    <p>Join us for an exclusive members-only workshop where we'll dive deep into practical wealth creation strategies.</p>
-                    
-                    <p><strong>Workshop Highlights:</strong></p>
-                    <ul>
-                        <li>Investment strategies for beginners</li>
-                        <li>Passive income opportunities</li>
-                        <li>Wealth preservation techniques</li>
-                        <li>Q&A with financial experts</li>
-                    </ul>
-                    
-                    <p><strong>Date:</strong> This Saturday, 2:00 PM<br>
-                    <strong>Location:</strong> Members Portal → Events Section</p>
-                    
-                    <p>Limited spots available! Make sure to RSVP in the Events section.</p>
-                </div>
-                <div class="post-actions">
-                    <button class="post-action">
-                        <i class="fas fa-heart"></i> <span>18</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-comment"></i> <span>5</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-share"></i> <span>Share</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-bookmark"></i> <span>Save</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Resource Post -->
-            <div class="post-card resource-post">
-                <div class="post-header">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Admin Avatar">
-                    </div>
-                    <div class="post-author-info">
-                        <div class="post-author">THE SONGA WELFARE</div>
-                        <div class="post-time">1 day ago</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h3>📖 New Resource: Financial Independence Guide</h3>
-                    <p>We've just added a comprehensive guide to achieving financial independence to our resource library!</p>
-                    
-                    <p>This 50-page guide covers:</p>
-                    <ul>
-                        <li>Setting realistic financial goals</li>
-                        <li>Budgeting and expense tracking</li>
-                        <li>Investment fundamentals</li>
-                        <li>Debt management strategies</li>
-                        <li>Building multiple income streams</li>
-                    </ul>
-                    
-                    <p>Access it now in the Library section of your member portal. Perfect for both beginners and those looking to optimize their financial strategy.</p>
-                </div>
-                <div class="post-actions">
-                    <button class="post-action">
-                        <i class="fas fa-heart"></i> <span>32</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-comment"></i> <span>12</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-share"></i> <span>Share</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-bookmark"></i> <span>Save</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Community Update Post -->
-            <div class="post-card">
-                <div class="post-header">
-                    <div class="post-avatar">
-                        <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="Admin Avatar">
-                    </div>
-                    <div class="post-author-info">
-                        <div class="post-author">THE SONGA WELFARE</div>
-                        <div class="post-time">3 days ago</div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <h3>🌟 Community Spotlight: Member Success Stories</h3>
-                    <p>We're excited to share that several of our members have reached significant financial milestones this month!</p>
-                    
-                    <p><strong>Recent Successes:</strong></p>
-                    <ul>
-                        <li>Sarah M. paid off $15,000 in student loans</li>
-                        <li>James K. started his first investment portfolio</li>
-                        <li>The Johnson family built their emergency fund</li>
-                        <li>Michael T. launched his side business</li>
-                    </ul>
-                    
-                    <p>Remember, every journey starts with a single step. Celebrate your wins, no matter how small, and keep pushing forward!</p>
-                    
-                    <p>Want to share your success story? Reach out to us - we'd love to feature you in our next community update!</p>
-                </div>
-                <div class="post-actions">
-                    <button class="post-action">
-                        <i class="fas fa-heart"></i> <span>45</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-comment"></i> <span>22</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-share"></i> <span>Share</span>
-                    </button>
-                    <button class="post-action">
-                        <i class="fas fa-bookmark"></i> <span>Save</span>
-                    </button>
+            <!-- Posts will be loaded here -->
+            <div id="postsContainer">
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Loading posts...</p>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Floating Action Button (Mobile) -->
+    <div class="fab" id="fabBtn">
+        <i class="fas fa-feather-alt"></i>
+    </div>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -770,187 +1212,880 @@
     </nav>
 
     <script>
-        // DOM Elements
-        const signinModal = document.getElementById('signinModal');
-        const userProfile = document.getElementById('userProfile');
-        const userAvatar = document.getElementById('userAvatar');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const userDropdown = document.getElementById('userDropdown');
-        const notification = document.getElementById('notification');
-
-        // User state
-        let currentUser = null;
-        let dropdownOpen = false;
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = `notification show ${type}`;
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
-        }
-
-        // Check if user is signed in
-        function checkAuthStatus() {
-            const storedUser = localStorage.getItem('the_songa_welfare_user');
-            if (storedUser) {
-                currentUser = JSON.parse(storedUser);
-                updateUIForMember();
-                signinModal.classList.remove('active');
-            } else {
-                signinModal.classList.add('active');
+        // Wait for Firebase to load
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Wait for Firebase SDK
+            while (!window.firebase) {
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
-        }
-
-        // Update UI for signed-in members
-        function updateUIForMember() {
-            userProfile.style.display = 'flex';
             
-            if (currentUser) {
-                userAvatar.src = currentUser.picture;
-                userDisplayName.textContent = currentUser.firstName;
+            const { 
+                database, auth, ref, get, set, update, push, onValue, remove, onAuthStateChanged 
+            } = window.firebase;
+
+            // Global state
+            let currentUser = null;
+            let dropdownOpen = false;
+            let postsData = {};
+            let likedPosts = new Set();
+            let retweetedPosts = new Set();
+            let savedPosts = new Set();
+            let activeComments = null;
+
+            // DOM Elements
+            const signinModal = document.getElementById('signinModal');
+            const userProfile = document.getElementById('userProfile');
+            const userAvatar = document.getElementById('userAvatar');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const userDropdown = document.getElementById('userDropdown');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            const postsContainer = document.getElementById('postsContainer');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const postContentInput = document.getElementById('postContentInput');
+            const submitPostBtn = document.getElementById('submitPostBtn');
+            const createPostAvatar = document.getElementById('createPostAvatar');
+            const createPostBtnHeader = document.getElementById('createPostBtnHeader');
+            const createPostSection = document.getElementById('createPostSection');
+            const fabBtn = document.getElementById('fabBtn');
+
+            // Initialize
+            init();
+
+            async function init() {
+                setupEventListeners();
+                checkAuthState();
             }
-        }
 
-        // Google Sign-In Handler
-        function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
-            
-            const userData = parseJwt(response.credential);
-            console.log('User data:', userData);
-            
-            currentUser = {
-                id: userData.sub,
-                email: userData.email,
-                firstName: userData.given_name,
-                lastName: userData.family_name,
-                fullName: userData.name,
-                picture: userData.picture,
-                emailVerified: userData.email_verified
-            };
-            
-            localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
-            updateUIForMember();
-            signinModal.classList.remove('active');
-            
-            showNotification(`Welcome to the community, ${currentUser.firstName}!`, 'success');
-        }
+            function setupEventListeners() {
+                // Post content input
+                postContentInput.addEventListener('input', function() {
+                    submitPostBtn.disabled = this.value.trim().length === 0;
+                });
 
-        // Parse JWT token
-        function parseJwt(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (error) {
-                console.error('Error parsing JWT:', error);
-                return {};
+                // Submit post
+                submitPostBtn.addEventListener('click', createPost);
+
+                // Enter key to submit post
+                postContentInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        if (!submitPostBtn.disabled) {
+                            createPost();
+                        }
+                    }
+                });
+
+                // Header create post button
+                createPostBtnHeader.addEventListener('click', function() {
+                    postContentInput.focus();
+                    if (window.innerWidth <= 768) {
+                        createPostSection.classList.add('mobile-visible');
+                    }
+                });
+
+                // Mobile FAB
+                fabBtn.addEventListener('click', function() {
+                    createPostSection.classList.add('mobile-visible');
+                    postContentInput.focus();
+                });
+
+                // Close mobile post creator
+                createPostSection.addEventListener('click', function(e) {
+                    if (e.target === this && window.innerWidth <= 768) {
+                        this.classList.remove('mobile-visible');
+                    }
+                });
+
+                // Close mobile post creator with escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && window.innerWidth <= 768) {
+                        createPostSection.classList.remove('mobile-visible');
+                    }
+                });
             }
-        }
 
-        // Sign out user
-        function signOut() {
-            currentUser = null;
-            localStorage.removeItem('the_songa_welfare_user');
-            closeDropdown();
-            signinModal.classList.add('active');
-            showNotification('Signed out successfully', 'success');
-        }
+            function checkAuthState() {
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        currentUser = user;
+                        await loadUserProfile();
+                        updateUIForMember();
+                        signinModal.classList.remove('active');
+                        loadPosts();
+                    } else {
+                        currentUser = null;
+                        signinModal.classList.add('active');
+                        showDefaultPosts();
+                    }
+                });
+            }
 
-        // Toggle dropdown
-        function toggleDropdown() {
-            dropdownOpen = !dropdownOpen;
-            if (dropdownOpen) {
-                userDropdown.classList.add('active');
-            } else {
+            async function loadUserProfile() {
+                try {
+                    const userRef = ref(database, `users/${currentUser.uid}`);
+                    const snapshot = await get(userRef);
+                    
+                    if (snapshot.exists()) {
+                        const userData = snapshot.val();
+                        updateUserProfileUI(userData);
+                        
+                        // Load user interactions
+                        if (userData.likedPosts) {
+                            likedPosts = new Set(userData.likedPosts);
+                        }
+                        if (userData.retweetedPosts) {
+                            retweetedPosts = new Set(userData.retweetedPosts);
+                        }
+                        if (userData.savedPosts) {
+                            savedPosts = new Set(userData.savedPosts);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading user profile:', error);
+                }
+            }
+
+            function updateUserProfileUI(userData) {
+                userAvatar.src = userData.profilePicture || getDefaultAvatar();
+                userDisplayName.textContent = userData.firstName || currentUser.displayName || 'Member';
+                createPostAvatar.src = userData.profilePicture || getDefaultAvatar();
+            }
+
+            function getDefaultAvatar() {
+                return 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp';
+            }
+
+            function updateUIForMember() {
+                userProfile.style.display = 'flex';
+                createPostBtnHeader.style.display = 'flex';
+                
+                // Add user dropdown event listeners
+                userProfile.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleDropdown();
+                });
+                
+                // Dropdown option event listeners
+                document.getElementById('viewProfileOption').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Profile feature coming soon!');
+                    closeDropdown();
+                });
+                
+                document.getElementById('membershipOption').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Your membership is active and in good standing.');
+                    closeDropdown();
+                });
+                
+                document.getElementById('notificationsOption').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Notifications feature coming soon!');
+                    closeDropdown();
+                });
+                
+                document.getElementById('settingsOption').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification('Settings feature coming soon!');
+                    closeDropdown();
+                });
+                
+                document.getElementById('signOutOption').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    signOut();
+                    closeDropdown();
+                });
+                
+                // Close dropdown when clicking elsewhere
+                document.addEventListener('click', function() {
+                    closeDropdown();
+                });
+                
+                userDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+
+            function toggleDropdown() {
+                dropdownOpen = !dropdownOpen;
+                if (dropdownOpen) {
+                    userDropdown.classList.add('active');
+                } else {
+                    userDropdown.classList.remove('active');
+                }
+            }
+
+            function closeDropdown() {
+                dropdownOpen = false;
                 userDropdown.classList.remove('active');
             }
-        }
 
-        // Close dropdown
-        function closeDropdown() {
-            dropdownOpen = false;
-            userDropdown.classList.remove('active');
-        }
+            async function signOut() {
+                try {
+                    await auth.signOut();
+                    currentUser = null;
+                    userProfile.style.display = 'none';
+                    createPostBtnHeader.style.display = 'none';
+                    likedPosts.clear();
+                    retweetedPosts.clear();
+                    savedPosts.clear();
+                    showDefaultPosts();
+                    showNotification('Signed out successfully', 'success');
+                } catch (error) {
+                    console.error('Sign out error:', error);
+                    showNotification('Error signing out', 'error');
+                }
+            }
 
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthStatus();
-            
-            userProfile.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleDropdown();
-            });
-            
-            document.addEventListener('click', function() {
-                closeDropdown();
-            });
-            
-            userDropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
+            async function createPost() {
+                const content = postContentInput.value.trim();
+                
+                if (!content || !currentUser) {
+                    showNotification('Please sign in and enter post content', 'error');
+                    return;
+                }
 
-        // Dropdown option event listeners
-        document.getElementById('viewProfileOption').addEventListener('click', function() {
-            showNotification('Profile page coming soon!');
-            closeDropdown();
-        });
+                try {
+                    submitPostBtn.disabled = true;
+                    submitPostBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
 
-        document.getElementById('membershipOption').addEventListener('click', function() {
-            showNotification('Your membership is active and in good standing.');
-            closeDropdown();
-        });
+                    // Get user data
+                    const userRef = ref(database, `users/${currentUser.uid}`);
+                    const userSnapshot = await get(userRef);
+                    const userData = userSnapshot.val();
 
-        document.getElementById('settingsOption').addEventListener('click', function() {
-            showNotification('Settings page coming soon!');
-            closeDropdown();
-        });
+                    const postData = {
+                        authorId: currentUser.uid,
+                        authorName: userData?.firstName ? `${userData.firstName} ${userData.lastName || ''}`.trim() : 'Member',
+                        authorAvatar: userData?.profilePicture || getDefaultAvatar(),
+                        content: content,
+                        likes: 0,
+                        comments: 0,
+                        retweets: 0,
+                        shares: 0,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                        isPinned: false,
+                        status: 'published',
+                        type: 'user-post',
+                        category: 'general',
+                        tags: extractHashtags(content)
+                    };
 
-        document.getElementById('signOutOption').addEventListener('click', function() {
-            signOut();
-            closeDropdown();
-        });
+                    // Save to Firebase
+                    const newPostRef = push(ref(database, 'communityPosts'));
+                    await set(newPostRef, { id: newPostRef.key, ...postData });
 
-        // Post action buttons (like, comment, share) - Read only for members
-        document.querySelectorAll('.post-action').forEach(button => {
-            button.addEventListener('click', function() {
-                const action = this.querySelector('i').className;
-                if (action.includes('fa-heart')) {
-                    this.classList.toggle('liked');
-                    const span = this.querySelector('span');
-                    let count = parseInt(span.textContent) || 0;
+                    // Clear input
+                    postContentInput.value = '';
+                    submitPostBtn.disabled = true;
                     
-                    if (this.classList.contains('liked')) {
-                        span.textContent = count + 1;
-                        this.innerHTML = '<i class="fas fa-heart" style="color: #e74c3c;"></i> <span>' + (count + 1) + '</span>';
-                        showNotification('Liked!');
-                    } else {
-                        span.textContent = count - 1;
-                        this.innerHTML = '<i class="fas fa-heart"></i> <span>' + (count - 1) + '</span>';
+                    // Hide mobile post creator
+                    if (window.innerWidth <= 768) {
+                        createPostSection.classList.remove('mobile-visible');
                     }
-                } else if (action.includes('fa-comment')) {
-                    showNotification('Comments are view-only. Contact admin for discussions.');
-                } else if (action.includes('fa-share')) {
-                    showNotification('Post shared to your clipboard!');
-                } else if (action.includes('fa-bookmark')) {
-                    this.classList.toggle('saved');
-                    if (this.classList.contains('saved')) {
-                        this.innerHTML = '<i class="fas fa-bookmark" style="color: var(--gold);"></i> <span>Saved</span>';
-                        showNotification('Post saved!');
-                    } else {
-                        this.innerHTML = '<i class="fas fa-bookmark"></i> <span>Save</span>';
+
+                    showNotification('Post published successfully!', 'success');
+                    
+                    // Reload posts
+                    loadPosts();
+
+                } catch (error) {
+                    console.error('Error creating post:', error);
+                    showNotification('Error creating post', 'error');
+                } finally {
+                    submitPostBtn.disabled = false;
+                    submitPostBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Post';
+                }
+            }
+
+            function extractHashtags(content) {
+                const hashtags = content.match(/#\w+/g);
+                return hashtags ? hashtags.map(tag => tag.substring(1)) : [];
+            }
+
+            async function loadPosts() {
+                try {
+                    loadingSpinner.style.display = 'block';
+                    postsContainer.innerHTML = '<div class="loading-spinner" id="loadingSpinner"><div class="spinner"></div><p>Loading posts...</p></div>';
+
+                    const postsRef = ref(database, 'communityPosts');
+                    const snapshot = await get(postsRef);
+                    const posts = snapshot.val() || {};
+
+                    // Convert to array and sort by date
+                    const postsArray = Object.entries(posts)
+                        .map(([id, post]) => ({ id, ...post }))
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                    if (postsArray.length === 0) {
+                        showNoPostsMessage();
+                        return;
                     }
+
+                    // Render posts
+                    renderPosts(postsArray);
+                    postsData = posts;
+
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                    showNotification('Error loading posts', 'error');
+                    showDefaultPosts();
+                } finally {
+                    loadingSpinner.style.display = 'none';
+                }
+            }
+
+            function renderPosts(postsArray) {
+                postsContainer.innerHTML = '';
+                
+                postsArray.forEach(post => {
+                    const postElement = createPostElement(post);
+                    postsContainer.appendChild(postElement);
+                });
+            }
+
+            function createPostElement(post) {
+                const postCard = document.createElement('div');
+                postCard.className = `post-card ${post.type || 'general'}`;
+                postCard.dataset.postId = post.id;
+
+                const isLiked = likedPosts.has(post.id);
+                const isRetweeted = retweetedPosts.has(post.id);
+                const isSaved = savedPosts.has(post.id);
+                const isAdminPost = post.authorName === 'THE SONGA';
+
+                // Format time
+                const timeAgo = getTimeAgo(post.createdAt);
+                
+                // Create post HTML
+                postCard.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">
+                            <img src="${post.authorAvatar || getDefaultAvatar()}" alt="${post.authorName}">
+                        </div>
+                        <div class="post-author-info">
+                            <div class="post-author">
+                                ${post.authorName}
+                                ${isAdminPost ? '<i class="fas fa-check-circle verified-badge"></i>' : ''}
+                                <span class="post-handle">@${post.authorName.toLowerCase().replace(/\s+/g, '')}</span>
+                            </div>
+                            <div class="post-time">${timeAgo}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-content">
+                        ${formatPostContent(post.content)}
+                    </div>
+                    
+                    <div class="post-stats">
+                        <div class="post-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>${post.likes || 0} likes</span>
+                        </div>
+                        <div class="post-stat">
+                            <i class="fas fa-comment"></i>
+                            <span>${post.comments || 0} comments</span>
+                        </div>
+                        <div class="post-stat">
+                            <i class="fas fa-retweet"></i>
+                            <span>${post.retweets || 0} retweets</span>
+                        </div>
+                        <div class="post-stat">
+                            <i class="fas fa-share"></i>
+                            <span>${post.shares || 0} shares</span>
+                        </div>
+                    </div>
+                    
+                    <div class="post-actions">
+                        <button class="post-action like ${isLiked ? 'liked' : ''}" data-action="like">
+                            <i class="fas fa-heart action-icon"></i>
+                            <span class="action-count">${post.likes || 0}</span>
+                        </button>
+                        <button class="post-action comment" data-action="comment">
+                            <i class="fas fa-comment action-icon"></i>
+                            <span class="action-count">${post.comments || 0}</span>
+                        </button>
+                        <button class="post-action retweet ${isRetweeted ? 'retweeted' : ''}" data-action="retweet">
+                            <i class="fas fa-retweet action-icon"></i>
+                            <span class="action-count">${post.retweets || 0}</span>
+                        </button>
+                        <button class="post-action share" data-action="share">
+                            <i class="fas fa-share-alt action-icon"></i>
+                        </button>
+                        <button class="post-action ${isSaved ? 'saved' : ''}" data-action="save">
+                            <i class="fas fa-bookmark action-icon"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="comments-section" id="comments-${post.id}">
+                        <div class="comment-form">
+                            <div class="comment-avatar">
+                                <img src="${currentUser ? (userAvatar.src || getDefaultAvatar()) : getDefaultAvatar()}" alt="You">
+                            </div>
+                            <div class="comment-input">
+                                <input type="text" placeholder="Add a comment..." maxlength="280">
+                                <button class="comment-submit">Post</button>
+                            </div>
+                        </div>
+                        <div class="comments-list" id="comments-list-${post.id}">
+                            <div class="no-comments">No comments yet. Be the first to comment!</div>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listeners
+                const likeBtn = postCard.querySelector('[data-action="like"]');
+                const commentBtn = postCard.querySelector('[data-action="comment"]');
+                const retweetBtn = postCard.querySelector('[data-action="retweet"]');
+                const shareBtn = postCard.querySelector('[data-action="share"]');
+                const saveBtn = postCard.querySelector('[data-action="save"]');
+                const commentSubmitBtn = postCard.querySelector('.comment-submit');
+                const commentInput = postCard.querySelector('.comment-input input');
+
+                likeBtn.addEventListener('click', () => handleLike(post.id));
+                commentBtn.addEventListener('click', () => toggleComments(post.id));
+                retweetBtn.addEventListener('click', () => handleRetweet(post.id));
+                shareBtn.addEventListener('click', () => handleShare(post.id));
+                saveBtn.addEventListener('click', () => handleSave(post.id));
+                
+                commentSubmitBtn.addEventListener('click', () => handleComment(post.id, commentInput));
+                commentInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleComment(post.id, commentInput);
+                    }
+                });
+
+                return postCard;
+            }
+
+            function formatPostContent(content) {
+                // Convert URLs to links
+                let formatted = content.replace(
+                    /(https?:\/\/[^\s]+)/g,
+                    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+                );
+                
+                // Convert hashtags
+                formatted = formatted.replace(
+                    /#(\w+)/g,
+                    '<a href="#" class="hashtag">#$1</a>'
+                );
+                
+                // Convert mentions
+                formatted = formatted.replace(
+                    /@(\w+)/g,
+                    '<a href="#" class="mention">@$1</a>'
+                );
+                
+                // Convert newlines to <br>
+                formatted = formatted.replace(/\n/g, '<br>');
+                
+                return formatted;
+            }
+
+            function getTimeAgo(dateString) {
+                const date = new Date(dateString);
+                const now = new Date();
+                const seconds = Math.floor((now - date) / 1000);
+                
+                if (seconds < 60) return 'Just now';
+                if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+                if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+                if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
+                
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+
+            async function handleLike(postId) {
+                if (!currentUser) {
+                    showNotification('Please sign in to like posts', 'error');
+                    return;
+                }
+
+                try {
+                    const postRef = ref(database, `communityPosts/${postId}`);
+                    const postSnapshot = await get(postRef);
+                    const post = postSnapshot.val();
+
+                    const isLiked = likedPosts.has(postId);
+                    const newLikes = isLiked ? (post.likes || 1) - 1 : (post.likes || 0) + 1;
+
+                    // Update post likes
+                    await update(postRef, { likes: newLikes });
+
+                    // Update user's liked posts
+                    const userRef = ref(database, `users/${currentUser.uid}/likedPosts`);
+                    if (isLiked) {
+                        likedPosts.delete(postId);
+                        // Remove from Firebase
+                        const userLikesSnapshot = await get(userRef);
+                        const userLikes = userLikesSnapshot.val() || [];
+                        const updatedLikes = userLikes.filter(id => id !== postId);
+                        await set(userRef, updatedLikes);
+                    } else {
+                        likedPosts.add(postId);
+                        // Add to Firebase
+                        const userLikesSnapshot = await get(userRef);
+                        const userLikes = userLikesSnapshot.val() || [];
+                        userLikes.push(postId);
+                        await set(userRef, userLikes);
+                    }
+
+                    // Update UI
+                    const likeBtn = document.querySelector(`[data-post-id="${postId}"] [data-action="like"]`);
+                    const likeCount = likeBtn.querySelector('.action-count');
+                    
+                    likeBtn.classList.toggle('liked');
+                    likeCount.textContent = newLikes;
+                    
+                    // Update stats
+                    const stats = likeBtn.closest('.post-card').querySelector('.post-stats');
+                    stats.querySelector('.post-stat:nth-child(1) span').textContent = `${newLikes} likes`;
+
+                    showNotification(isLiked ? 'Post unliked' : 'Post liked!', 'success');
+
+                } catch (error) {
+                    console.error('Error liking post:', error);
+                    showNotification('Error updating like', 'error');
+                }
+            }
+
+            async function handleRetweet(postId) {
+                if (!currentUser) {
+                    showNotification('Please sign in to retweet posts', 'error');
+                    return;
+                }
+
+                try {
+                    const postRef = ref(database, `communityPosts/${postId}`);
+                    const postSnapshot = await get(postRef);
+                    const post = postSnapshot.val();
+
+                    const isRetweeted = retweetedPosts.has(postId);
+                    const newRetweets = isRetweeted ? (post.retweets || 1) - 1 : (post.retweets || 0) + 1;
+
+                    // Update post retweets
+                    await update(postRef, { retweets: newRetweets });
+
+                    // Update user's retweeted posts
+                    const userRef = ref(database, `users/${currentUser.uid}/retweetedPosts`);
+                    if (isRetweeted) {
+                        retweetedPosts.delete(postId);
+                        const userRetweetsSnapshot = await get(userRef);
+                        const userRetweets = userRetweetsSnapshot.val() || [];
+                        const updatedRetweets = userRetweets.filter(id => id !== postId);
+                        await set(userRef, updatedRetweets);
+                    } else {
+                        retweetedPosts.add(postId);
+                        const userRetweetsSnapshot = await get(userRef);
+                        const userRetweets = userRetweetsSnapshot.val() || [];
+                        userRetweets.push(postId);
+                        await set(userRef, userRetweets);
+                    }
+
+                    // Update UI
+                    const retweetBtn = document.querySelector(`[data-post-id="${postId}"] [data-action="retweet"]`);
+                    const retweetCount = retweetBtn.querySelector('.action-count');
+                    
+                    retweetBtn.classList.toggle('retweeted');
+                    retweetCount.textContent = newRetweets;
+                    
+                    // Update stats
+                    const stats = retweetBtn.closest('.post-card').querySelector('.post-stats');
+                    stats.querySelector('.post-stat:nth-child(3) span').textContent = `${newRetweets} retweets`;
+
+                    showNotification(isRetweeted ? 'Retweet removed' : 'Post retweeted!', 'success');
+
+                } catch (error) {
+                    console.error('Error retweeting post:', error);
+                    showNotification('Error retweeting post', 'error');
+                }
+            }
+
+            async function handleSave(postId) {
+                if (!currentUser) {
+                    showNotification('Please sign in to save posts', 'error');
+                    return;
+                }
+
+                try {
+                    const isSaved = savedPosts.has(postId);
+
+                    // Update user's saved posts
+                    const userRef = ref(database, `users/${currentUser.uid}/savedPosts`);
+                    if (isSaved) {
+                        savedPosts.delete(postId);
+                        const userSavedSnapshot = await get(userRef);
+                        const userSaved = userSavedSnapshot.val() || [];
+                        const updatedSaved = userSaved.filter(id => id !== postId);
+                        await set(userRef, updatedSaved);
+                    } else {
+                        savedPosts.add(postId);
+                        const userSavedSnapshot = await get(userRef);
+                        const userSaved = userSavedSnapshot.val() || [];
+                        userSaved.push(postId);
+                        await set(userRef, userSaved);
+                    }
+
+                    // Update UI
+                    const saveBtn = document.querySelector(`[data-post-id="${postId}"] [data-action="save"]`);
+                    saveBtn.classList.toggle('saved');
+
+                    showNotification(isSaved ? 'Post removed from saved' : 'Post saved!', 'success');
+
+                } catch (error) {
+                    console.error('Error saving post:', error);
+                    showNotification('Error saving post', 'error');
+                }
+            }
+
+            function handleShare(postId) {
+                if (!currentUser) {
+                    showNotification('Please sign in to share posts', 'error');
+                    return;
+                }
+
+                const post = postsData[postId];
+                if (!post) return;
+
+                const shareUrl = `${window.location.origin}/post.html?id=${postId}`;
+                const shareText = `Check out this post from THE SONGA: "${post.content.substring(0, 100)}..."`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'THE SONGA Post',
+                        text: shareText,
+                        url: shareUrl
+                    });
+                } else {
+                    // Fallback to clipboard
+                    navigator.clipboard.writeText(shareUrl)
+                        .then(() => showNotification('Link copied to clipboard!', 'success'))
+                        .catch(() => showNotification('Error copying link', 'error'));
+                }
+            }
+
+            function toggleComments(postId) {
+                if (!currentUser) {
+                    showNotification('Please sign in to comment', 'error');
+                    return;
+                }
+
+                const commentsSection = document.getElementById(`comments-${postId}`);
+                
+                // Close other comment sections
+                if (activeComments && activeComments !== commentsSection) {
+                    activeComments.classList.remove('active');
+                }
+                
+                // Toggle current section
+                commentsSection.classList.toggle('active');
+                
+                if (commentsSection.classList.contains('active')) {
+                    activeComments = commentsSection;
+                    loadComments(postId);
+                } else {
+                    activeComments = null;
+                }
+            }
+
+            async function loadComments(postId) {
+                try {
+                    const commentsRef = ref(database, `comments/${postId}`);
+                    const snapshot = await get(commentsRef);
+                    const comments = snapshot.val() || {};
+
+                    const commentsList = document.getElementById(`comments-list-${postId}`);
+                    
+                    if (Object.keys(comments).length === 0) {
+                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first to comment!</div>';
+                        return;
+                    }
+
+                    const commentsArray = Object.entries(comments)
+                        .map(([id, comment]) => ({ id, ...comment }))
+                        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                    commentsList.innerHTML = commentsArray.map(comment => `
+                        <div class="comment-item">
+                            <div class="comment-avatar">
+                                <img src="${comment.authorAvatar || getDefaultAvatar()}" alt="${comment.authorName}">
+                            </div>
+                            <div class="comment-content">
+                                <div class="comment-author">${comment.authorName}</div>
+                                <div class="comment-text">${comment.content}</div>
+                                <div class="comment-time">${getTimeAgo(comment.createdAt)}</div>
+                                <div class="comment-actions">
+                                    <span class="comment-action like">Like</span>
+                                    <span class="comment-action reply">Reply</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+
+                } catch (error) {
+                    console.error('Error loading comments:', error);
+                }
+            }
+
+            async function handleComment(postId, inputElement) {
+                if (!currentUser) {
+                    showNotification('Please sign in to comment', 'error');
+                    return;
+                }
+
+                const content = inputElement.value.trim();
+                if (!content) return;
+
+                try {
+                    // Get user data
+                    const userRef = ref(database, `users/${currentUser.uid}`);
+                    const userSnapshot = await get(userRef);
+                    const userData = userSnapshot.val();
+
+                    const commentData = {
+                        authorId: currentUser.uid,
+                        authorName: userData?.firstName ? `${userData.firstName} ${userData.lastName || ''}`.trim() : 'Member',
+                        authorAvatar: userData?.profilePicture || getDefaultAvatar(),
+                        content: content,
+                        createdAt: new Date().toISOString(),
+                        likes: 0
+                    };
+
+                    // Save comment
+                    const commentRef = push(ref(database, `comments/${postId}`));
+                    await set(commentRef, { id: commentRef.key, ...commentData });
+
+                    // Update post comment count
+                    const postRef = ref(database, `communityPosts/${postId}`);
+                    const postSnapshot = await get(postRef);
+                    const post = postSnapshot.val();
+                    const newComments = (post.comments || 0) + 1;
+                    await update(postRef, { comments: newComments });
+
+                    // Update UI
+                    inputElement.value = '';
+                    
+                    // Update comment count in post
+                    const commentBtn = document.querySelector(`[data-post-id="${postId}"] [data-action="comment"]`);
+                    const commentCount = commentBtn.querySelector('.action-count');
+                    commentCount.textContent = newComments;
+                    
+                    // Update stats
+                    const stats = commentBtn.closest('.post-card').querySelector('.post-stats');
+                    stats.querySelector('.post-stat:nth-child(2) span').textContent = `${newComments} comments`;
+
+                    // Reload comments
+                    loadComments(postId);
+
+                    showNotification('Comment posted!', 'success');
+
+                } catch (error) {
+                    console.error('Error posting comment:', error);
+                    showNotification('Error posting comment', 'error');
+                }
+            }
+
+            function showNoPostsMessage() {
+                postsContainer.innerHTML = `
+                    <div class="no-posts">
+                        <div class="no-posts-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>No posts yet</h3>
+                        <p>Be the first to share something with the community!</p>
+                        ${!currentUser ? '<p>Sign in to create your first post.</p>' : ''}
+                    </div>
+                `;
+            }
+
+            function showDefaultPosts() {
+                // Show default posts when not signed in
+                const defaultPosts = [
+                    {
+                        id: 'welcome',
+                        authorName: 'THE SONGA',
+                        authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                        content: 'Welcome to THE SONGA community! This is your space to connect, learn, and grow with like-minded individuals. Sign in to join the conversation and share your thoughts.',
+                        likes: 24,
+                        comments: 8,
+                        retweets: 3,
+                        shares: 2,
+                        createdAt: new Date().toISOString(),
+                        type: 'announcement'
+                    },
+                    {
+                        id: 'event',
+                        authorName: 'THE SONGA',
+                        authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                        content: 'Join us for our upcoming Wealth Building Workshop this Saturday! Learn practical strategies for financial growth and connect with fellow members. #Finance #Workshop',
+                        likes: 18,
+                        comments: 5,
+                        retweets: 2,
+                        shares: 1,
+                        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                        type: 'event'
+                    },
+                    {
+                        id: 'resource',
+                        authorName: 'THE SONGA',
+                        authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                        content: 'New resource alert! We\'ve added "Atomic Habits" to our digital library. This book can help you build good habits and break bad ones. Check it out in our library section! #PersonalGrowth #Books',
+                        likes: 32,
+                        comments: 12,
+                        retweets: 5,
+                        shares: 3,
+                        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+                        type: 'resource'
+                    }
+                ];
+
+                renderPosts(defaultPosts);
+            }
+
+            function showNotification(message, type = 'info') {
+                notificationMessage.textContent = message;
+                notification.className = `notification show ${type}`;
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 4000);
+            }
+
+            // Google Sign-In Handler
+            window.handleGoogleSignIn = function(response) {
+                console.log('Google Sign-In response:', response);
+                
+                // In a real implementation, you would:
+                // 1. Send the credential to your backend
+                // 2. Create/update user in Firebase
+                // 3. Sign in the user
+                
+                // For now, show a success message
+                showNotification('Google sign-in successful! Loading your profile...', 'success');
+                
+                // Simulate authentication
+                setTimeout(() => {
+                    // This would be replaced with actual Firebase auth
+                    signinModal.classList.remove('active');
+                    showNotification('Welcome to THE SONGA!', 'success');
+                }, 1500);
+            };
+
+            // Close sign-in modal
+            document.getElementById('closeSigninModal').addEventListener('click', function() {
+                signinModal.classList.remove('active');
+            });
+
+            // Close modal when clicking outside
+            signinModal.addEventListener('click', function(e) {
+                if (e.target === signinModal) {
+                    signinModal.classList.remove('active');
                 }
             });
         });
-
-        // Global function for Google Sign-In callback
-        window.handleGoogleSignIn = handleGoogleSignIn;
     </script>
 </body>
 </html>
