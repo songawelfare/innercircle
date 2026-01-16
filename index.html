@@ -40,8 +40,6 @@
             --shadow: rgba(0, 0, 0, 0.1);
             --shadow-heavy: rgba(0, 0, 0, 0.2);
             --modal-overlay: rgba(0, 0, 0, 0.85);
-            --message-bg-sent: var(--gold-light);
-            --message-bg-received: var(--gray);
         }
 
         html {
@@ -187,9 +185,9 @@
             top: 100%;
             right: 0;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px var(--shadow);
-            min-width: 220px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px var(--shadow);
+            min-width: 200px;
             z-index: 1000;
             display: none;
             margin-top: 5px;
@@ -214,14 +212,13 @@
         }
 
         .dropdown-item {
-            padding: 14px 18px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             cursor: pointer;
             transition: background-color 0.2s;
             border-bottom: 1px solid var(--light-gray);
-            font-weight: 500;
         }
 
         .dropdown-item:last-child {
@@ -236,19 +233,6 @@
             width: 20px;
             text-align: center;
             color: var(--gold-dark);
-            font-size: 1rem;
-        }
-
-        .dropdown-badge {
-            margin-left: auto;
-            background: var(--gold);
-            color: var(--black);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            min-width: 20px;
-            text-align: center;
         }
 
         /* Membership Badge */
@@ -262,7 +246,7 @@
             margin-left: 5px;
         }
 
-        /* Sign In Modal */
+        /* Sign In Modal - FIXED */
         .signin-modal {
             display: none;
             position: fixed;
@@ -376,450 +360,6 @@
             line-height: 1.4;
         }
 
-        /* Post Detail Modal */
-        .post-detail-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--white);
-            z-index: 2000;
-            overflow-y: auto;
-        }
-
-        .post-detail-modal.active {
-            display: block;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .post-detail-header {
-            position: sticky;
-            top: 0;
-            background: var(--white);
-            padding: 1rem;
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            z-index: 10;
-            backdrop-filter: blur(10px);
-        }
-
-        .post-detail-back {
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: var(--gold-dark);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .post-detail-back:hover {
-            background: var(--gold-light);
-        }
-
-        .post-detail-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--gold-dark);
-        }
-
-        .post-detail-content {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
-
-        .post-detail-card {
-            background: var(--white);
-            border-bottom: 1px solid var(--light-gray);
-            padding: 1.5rem 1rem;
-        }
-
-        .post-detail-card .post-content h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        .post-detail-card .post-content p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-
-        .post-detail-card .post-actions {
-            border-top: 1px solid var(--light-gray);
-            padding-top: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .post-detail-card .post-action {
-            padding: 12px 16px;
-            font-size: 1rem;
-        }
-
-        .post-detail-comments {
-            padding: 1rem;
-            background: var(--white);
-        }
-
-        .post-detail-comments .comment-form {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: var(--comment-bg);
-            border-radius: 12px;
-        }
-
-        .post-detail-comments .comments-list {
-            max-height: none;
-            overflow-y: visible;
-        }
-
-        /* Messaging Modal */
-        .messaging-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--white);
-            z-index: 4000;
-        }
-
-        .messaging-modal.active {
-            display: block;
-        }
-
-        .messaging-header {
-            position: sticky;
-            top: 0;
-            background: var(--white);
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--light-gray);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 10;
-        }
-
-        .messaging-header h2 {
-            font-size: 1.4rem;
-            color: var(--gold-dark);
-            font-weight: 700;
-        }
-
-        .close-messaging-modal {
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: var(--gold-dark);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .close-messaging-modal:hover {
-            background: var(--gold-light);
-        }
-
-        .messaging-container {
-            display: flex;
-            height: calc(100vh - 80px);
-        }
-
-        .conversations-sidebar {
-            width: 350px;
-            border-right: 1px solid var(--light-gray);
-            background: var(--gray);
-            overflow-y: auto;
-        }
-
-        .conversations-header {
-            padding: 1.5rem;
-            background: var(--white);
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .conversations-header h3 {
-            font-size: 1.2rem;
-            color: var(--gold-dark);
-            margin-bottom: 1rem;
-        }
-
-        .new-conversation-btn {
-            width: 100%;
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .new-conversation-btn:hover {
-            background: var(--gold-dark);
-            transform: translateY(-2px);
-        }
-
-        .conversations-list {
-            padding: 1rem;
-        }
-
-        .conversation-item {
-            padding: 1rem;
-            background: var(--white);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid var(--light-gray);
-        }
-
-        .conversation-item:hover {
-            background: var(--gold-light);
-            transform: translateX(5px);
-        }
-
-        .conversation-item.active {
-            background: var(--gold-light);
-            border-color: var(--gold);
-        }
-
-        .conversation-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
-        }
-
-        .conversation-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .conversation-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .conversation-info {
-            flex: 1;
-        }
-
-        .conversation-name {
-            font-weight: 600;
-            color: var(--gold-dark);
-            font-size: 1rem;
-        }
-
-        .conversation-time {
-            font-size: 0.8rem;
-            color: var(--dark-gray);
-        }
-
-        .conversation-preview {
-            font-size: 0.9rem;
-            color: var(--dark-gray);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .unread-badge {
-            background: var(--gold);
-            color: var(--black);
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-left: auto;
-        }
-
-        .chat-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--white);
-        }
-
-        .chat-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--light-gray);
-            background: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .chat-header-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .chat-header-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .chat-header-info {
-            flex: 1;
-        }
-
-        .chat-header-name {
-            font-weight: 700;
-            color: var(--gold-dark);
-            font-size: 1.1rem;
-        }
-
-        .chat-header-status {
-            font-size: 0.85rem;
-            color: var(--dark-gray);
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            position: relative;
-            animation: messageAppear 0.3s ease-out;
-        }
-
-        @keyframes messageAppear {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.sent {
-            background: var(--message-bg-sent);
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-
-        .message.received {
-            background: var(--message-bg-received);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message-text {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--dark-gray);
-            margin-top: 4px;
-            text-align: right;
-        }
-
-        .chat-input-container {
-            padding: 1.5rem;
-            border-top: 1px solid var(--light-gray);
-            background: var(--white);
-        }
-
-        .chat-input-form {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .chat-input {
-            flex: 1;
-            padding: 12px 18px;
-            border: 2px solid var(--light-gray);
-            border-radius: 25px;
-            font-size: 0.95rem;
-            outline: none;
-            background: var(--gray);
-            transition: all 0.3s ease;
-        }
-
-        .chat-input:focus {
-            border-color: var(--gold);
-            background: var(--white);
-        }
-
-        .send-message-btn {
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .send-message-btn:hover {
-            background: var(--gold-dark);
-            transform: scale(1.1);
-        }
-
-        .send-message-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .no-conversation-selected {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--dark-gray);
-            padding: 2rem;
-        }
-
         /* Create Post Modal */
         .modal {
             display: none;
@@ -829,7 +369,7 @@
             width: 100%;
             height: 100%;
             background-color: var(--modal-overlay);
-            z-index: 5000;
+            z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -850,6 +390,309 @@
             animation: modalAppear 0.4s ease-out;
         }
 
+        .modal-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 1.8rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .modal-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: var(--black);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: calc(90vh - 200px);
+            overflow-y: auto;
+        }
+
+        .post-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--gold-dark);
+            font-size: 0.95rem;
+        }
+
+        .post-title-input,
+        .post-content-input {
+            padding: 14px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+
+        .post-title-input {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .post-content-input {
+            min-height: 140px;
+            line-height: 1.5;
+        }
+
+        .post-title-input:focus,
+        .post-content-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .post-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .category-option {
+            padding: 8px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-option:hover {
+            background: var(--gold-light);
+            border-color: var(--gold-light);
+        }
+
+        .category-option.selected {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+            font-weight: 600;
+        }
+
+        .tags-input {
+            padding: 12px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .tags-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        .tags-hint {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            margin-top: 5px;
+        }
+
+        /* Media Upload Section */
+        .media-upload {
+            border: 2px dashed var(--light-gray);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-upload:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .media-upload.dragover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.01);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-bottom: 1rem;
+        }
+
+        .upload-btn {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            border: 2px solid var(--gold);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        #mediaFile {
+            display: none;
+        }
+
+        .media-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .media-preview.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .preview-container {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .preview-video {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .remove-media {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-media:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--light-gray);
+            background: var(--gray);
+        }
+
+        .post-submit-btn {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            min-width: 140px;
+        }
+
+        .post-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .post-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .char-count {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
         /* Image Modal */
         .image-modal {
             display: none;
@@ -859,7 +702,7 @@
             width: 100%;
             height: 100%;
             background-color: var(--modal-overlay);
-            z-index: 6000;
+            z-index: 4000;
             justify-content: center;
             align-items: center;
             padding: 20px;
@@ -868,6 +711,59 @@
         .image-modal.active {
             display: flex;
             animation: fadeIn 0.3s ease-out;
+        }
+
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .image-modal-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: rotate(90deg);
+        }
+
+        /* Video Player */
+        .video-player {
+            width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--black);
+        }
+
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         /* Main Content */
@@ -944,7 +840,7 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Post Card - Clickable */
+        /* Post Card */
         .post-card {
             background: var(--white);
             border: 1px solid var(--light-gray);
@@ -954,7 +850,6 @@
             box-shadow: 0 4px 15px var(--shadow);
             transition: all 0.3s ease;
             position: relative;
-            cursor: pointer;
         }
 
         .post-card:hover {
@@ -962,13 +857,524 @@
             box-shadow: 0 12px 25px var(--shadow);
         }
 
-        .post-card .post-content h3 {
-            cursor: pointer;
-            transition: color 0.3s ease;
+        .post-card.pinned {
+            border: 3px solid var(--gold);
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
         }
 
-        .post-card .post-content h3:hover {
+        .pinned-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold-dark);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .pinned-indicator i {
             color: var(--gold);
+            font-size: 1rem;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.2rem;
+        }
+
+        .post-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--gold);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .post-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-author-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-author {
+            font-weight: 700;
+            color: var(--gold-dark);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .post-author:hover {
+            text-decoration: underline;
+        }
+
+        .post-time {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        .post-content {
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+        }
+
+        .post-content h3 {
+            color: var(--gold-dark);
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .post-content p {
+            margin-bottom: 1rem;
+            white-space: pre-line;
+            font-size: 1.05rem;
+        }
+
+        .post-content ul, .post-content ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .post-media {
+            width: 100%;
+            border-radius: 12px;
+            margin: 1.2rem 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .post-media img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            max-height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .post-media:hover img {
+            transform: scale(1.03);
+        }
+
+        .post-video {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 1.2rem 0;
+        }
+
+        .post-video video {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 1.2rem 0;
+        }
+
+        .post-tag {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-tag:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(212, 175, 55, 0.2);
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 1.2rem;
+            margin-top: 0.8rem;
+        }
+
+        .post-action {
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            flex: 1;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .post-action:hover {
+            background: var(--gray);
+            color: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+
+        .post-action.liked {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .post-action.saved {
+            color: var(--gold-dark);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .post-action.active {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+        }
+
+        .post-type-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .post-category-announcement {
+            border-left: 4px solid var(--gold);
+        }
+
+        .post-category-event {
+            border-left: 4px solid var(--accent);
+        }
+
+        .post-category-resource {
+            border-left: 4px solid #3498db;
+        }
+
+        .post-category-discussion {
+            border-left: 4px solid #9b59b6;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--light-gray);
+            display: none;
+        }
+
+        .comments-section.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comments-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+        }
+
+        .comments-title {
+            font-size: 1.1rem;
+            color: var(--gold-dark);
+            font-weight: 700;
+        }
+
+        .close-comments {
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 1.4rem;
+            padding: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .close-comments:hover {
+            color: var(--gold-dark);
+            transform: rotate(90deg);
+        }
+
+        .comments-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 1.2rem;
+            padding-right: 5px;
+        }
+
+        .comment-item {
+            background: var(--comment-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            animation: commentAppear 0.3s ease-out;
+        }
+
+        @keyframes commentAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comment-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--gold-dark);
+        }
+
+        .comment-time {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-left: auto;
+        }
+
+        .comment-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--black);
+            margin-bottom: 8px;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .comment-action {
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .comment-action:hover {
+            color: var(--gold-dark);
+        }
+
+        .comment-action.liked {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        /* Reply Section */
+        .replies-section {
+            margin-top: 12px;
+            margin-left: 48px;
+            border-left: 2px solid var(--light-gray);
+            padding-left: 16px;
+        }
+
+        .reply-item {
+            background: var(--reply-bg);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            animation: commentAppear 0.3s ease-out;
+        }
+
+        .reply-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            margin-left: 48px;
+            align-items: center;
+        }
+
+        .reply-input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            outline: none;
+            background: var(--reply-bg);
+            transition: all 0.3s ease;
+        }
+
+        .reply-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .reply-submit {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .reply-submit:hover {
+            background: var(--gold-dark);
+            transform: scale(1.1);
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--light-gray);
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.95rem;
+            background: var(--comment-bg);
+            transition: all 0.3s ease;
+        }
+
+        .comment-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .comment-submit {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .comment-submit:hover {
+            background: var(--gold-dark);
+            transform: scale(1.1);
+        }
+
+        /* Loading and Empty States */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gold-dark);
+        }
+
+        .loading-spinner {
+            border: 4px solid var(--gold-light);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--dark-gray);
+        }
+
+        .empty-state i {
+            font-size: 3.5rem;
+            color: var(--gold-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--gold-dark);
         }
 
         /* Bottom Navigation */
@@ -1039,7 +1445,7 @@
             color: white;
             padding: 14px 24px;
             border-radius: 12px;
-            z-index: 7000;
+            z-index: 1000;
             opacity: 0;
             transform: translateY(-20px);
             transition: all 0.3s ease;
@@ -1076,6 +1482,23 @@
                 display: none;
             }
             
+            .post-avatar {
+                width: 44px;
+                height: 44px;
+            }
+            
+            .post-card {
+                padding: 1.2rem;
+            }
+            
+            .post-action span:not(.post-action i + span) {
+                display: none;
+            }
+            
+            .post-action {
+                padding: 10px;
+            }
+            
             .create-post-btn {
                 bottom: 70px;
                 right: 15px;
@@ -1083,29 +1506,37 @@
                 height: 56px;
             }
             
-            .messaging-container {
-                flex-direction: column;
+            .replies-section {
+                margin-left: 32px;
             }
             
-            .conversations-sidebar {
-                width: 100%;
-                height: 40%;
-                border-right: none;
-                border-bottom: 1px solid var(--light-gray);
+            .reply-form {
+                margin-left: 32px;
             }
             
-            .chat-container {
-                height: 60%;
+            .signin-content,
+            .modal-content {
+                margin: 10px;
+                max-height: 85vh;
             }
             
-            .message {
-                max-width: 85%;
+            .signin-body,
+            .modal-body {
+                padding: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
             .brand-subtitle {
                 display: none;
+            }
+            
+            .post-author {
+                font-size: 1.1rem;
+            }
+            
+            .post-content h3 {
+                font-size: 1.2rem;
             }
             
             .bottom-nav {
@@ -1120,21 +1551,37 @@
             .nav-icon {
                 font-size: 1.2rem;
             }
+            
+            .modal-footer {
+                padding: 1.2rem;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .post-submit-btn {
+                width: 100%;
+            }
+            
+            .signin-header,
+            .modal-header {
+                padding: 1.5rem;
+            }
         }
 
         /* Scrollbar Styling */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         ::-webkit-scrollbar-track {
             background: var(--light-gray);
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb {
             background: var(--gold);
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -1146,7 +1593,7 @@
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
-    <!-- Sign In Modal -->
+    <!-- Sign In Modal - Fixed Styling -->
     <div class="signin-modal" id="signinModal">
         <div class="signin-content">
             <div class="signin-header">
@@ -1182,79 +1629,70 @@
         </div>
     </div>
 
-    <!-- Post Detail Modal -->
-    <div class="post-detail-modal" id="postDetailModal">
-        <div class="post-detail-header">
-            <button class="post-detail-back" id="postDetailBack">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <h1 class="post-detail-title">Post</h1>
-        </div>
-        <div class="post-detail-content">
-            <!-- Post content will be loaded here -->
-        </div>
-    </div>
-
-    <!-- Messaging Modal -->
-    <div class="messaging-modal" id="messagingModal">
-        <div class="messaging-header">
-            <h2>Messages</h2>
-            <button class="close-messaging-modal" id="closeMessagingModal">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="messaging-container">
-            <div class="conversations-sidebar">
-                <div class="conversations-header">
-                    <h3>Conversations</h3>
-                    <button class="new-conversation-btn" id="newConversationBtn">
-                        <i class="fas fa-plus"></i>
-                        New Message
-                    </button>
-                </div>
-                <div class="conversations-list" id="conversationsList">
-                    <!-- Conversations will be loaded here -->
-                </div>
-            </div>
-            <div class="chat-container" id="chatContainer">
-                <div class="no-conversation-selected" id="noConversationSelected">
-                    <div>
-                        <i class="fas fa-comments" style="font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem;"></i>
-                        <h3>Select a conversation</h3>
-                        <p>Choose a conversation from the sidebar or start a new one</p>
-                    </div>
-                </div>
-                
-                <div class="chat-active" id="chatActive" style="display: none;">
-                    <div class="chat-header" id="chatHeader">
-                        <div class="chat-header-avatar">
-                            <img id="chatUserAvatar" src="" alt="User Avatar">
-                        </div>
-                        <div class="chat-header-info">
-                            <div class="chat-header-name" id="chatUserName"></div>
-                            <div class="chat-header-status" id="chatUserStatus"></div>
-                        </div>
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <!-- Messages will be loaded here -->
-                    </div>
-                    <div class="chat-input-container">
-                        <form class="chat-input-form" id="chatInputForm">
-                            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." autocomplete="off">
-                            <button type="submit" class="send-message-btn" id="sendMessageBtn">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Create Post Modal -->
     <div class="modal" id="createPostModal">
-        <!-- Create post modal content from previous implementation -->
-        <!-- (Keeping structure but removing content for brevity) -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Post</h2>
+                <p>Share your thoughts with the community</p>
+                <button class="close-modal" id="closeCreatePostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="post-form" id="postForm">
+                    <div class="form-group">
+                        <label for="postTitle">Post Title</label>
+                        <input type="text" id="postTitle" class="post-title-input" placeholder="Enter post title..." maxlength="100">
+                        <div class="char-count" id="titleCharCount">0/100 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postContent">Post Content</label>
+                        <textarea id="postContent" class="post-content-input" placeholder="What's on your mind?"></textarea>
+                        <div class="char-count" id="contentCharCount">0/5000 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Category</label>
+                        <div class="post-categories">
+                            <span class="category-option selected" data-category="announcement">Announcement</span>
+                            <span class="category-option" data-category="event">Event</span>
+                            <span class="category-option" data-category="resource">Resource</span>
+                            <span class="category-option" data-category="discussion">Discussion</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postTags">Tags (comma separated)</label>
+                        <input type="text" id="postTags" class="tags-input" placeholder="finance, wealth, community">
+                        <p class="tags-hint">Add up to 5 tags to help others find your post</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Media Upload (Optional)</label>
+                        <div class="media-upload" id="mediaUpload">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Click or drag to upload media</div>
+                            <div class="upload-hint">Supports images (JPG, PNG) and videos (MP4, MOV) up to 10MB</div>
+                            <div class="upload-btn">Choose File</div>
+                            <input type="file" id="mediaFile" accept="image/*,video/*">
+                        </div>
+                        
+                        <div class="media-preview" id="mediaPreview">
+                            <div class="preview-container">
+                                <img id="previewImage" class="preview-image" src="" alt="Preview">
+                                <video id="previewVideo" class="preview-video" controls style="display: none;"></video>
+                                <button type="button" class="remove-media" id="removeMedia">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="post-submit-btn" id="submitPostBtn" disabled>Publish Post</button>
+            </div>
+        </div>
     </div>
 
     <!-- Image Modal -->
@@ -1293,11 +1731,6 @@
                         <div class="dropdown-item" id="viewProfileOption">
                             <i class="fas fa-user"></i>
                             <span>My Profile</span>
-                        </div>
-                        <div class="dropdown-item" id="inboxOption">
-                            <i class="fas fa-inbox"></i>
-                            <span>Inbox</span>
-                            <span class="dropdown-badge" id="inboxBadge" style="display: none;">0</span>
                         </div>
                         <div class="dropdown-item" id="membershipOption">
                             <i class="fas fa-crown"></i>
@@ -1394,23 +1827,17 @@
         let realtimeListener = null;
         let commentListeners = {};
         let replyListeners = {};
-        let messageListeners = {};
-        let conversationListeners = null;
         let selectedCategory = 'announcement';
         let replyingToCommentId = null;
         let selectedMedia = {
-            type: null,
+            type: null, // 'image' or 'video'
             dataUrl: null,
             name: null,
             size: 0
         };
-        let activeConversation = null;
-        let activePostId = null;
 
         // DOM Elements
         const signinModal = document.getElementById('signinModal');
-        const postDetailModal = document.getElementById('postDetailModal');
-        const messagingModal = document.getElementById('messagingModal');
         const createPostModal = document.getElementById('createPostModal');
         const imageModal = document.getElementById('imageModal');
         const userProfile = document.getElementById('userProfile');
@@ -1420,23 +1847,19 @@
         const postsContainer = document.getElementById('postsContainer');
         const newPostsIndicator = document.getElementById('newPostsIndicator');
         const createPostBtn = document.getElementById('createPostBtn');
-        const postDetailBack = document.getElementById('postDetailBack');
-        const postDetailContent = document.querySelector('.post-detail-content');
-        const closeMessagingModal = document.getElementById('closeMessagingModal');
-        const inboxOption = document.getElementById('inboxOption');
-        const inboxBadge = document.getElementById('inboxBadge');
-        const conversationsList = document.getElementById('conversationsList');
-        const newConversationBtn = document.getElementById('newConversationBtn');
-        const chatContainer = document.getElementById('chatContainer');
-        const noConversationSelected = document.getElementById('noConversationSelected');
-        const chatActive = document.getElementById('chatActive');
-        const chatMessages = document.getElementById('chatMessages');
-        const chatInput = document.getElementById('chatInput');
-        const chatInputForm = document.getElementById('chatInputForm');
-        const sendMessageBtn = document.getElementById('sendMessageBtn');
-        const chatUserAvatar = document.getElementById('chatUserAvatar');
-        const chatUserName = document.getElementById('chatUserName');
-        const chatUserStatus = document.getElementById('chatUserStatus');
+        const submitPostBtn = document.getElementById('submitPostBtn');
+        const postTitleInput = document.getElementById('postTitle');
+        const postContentInput = document.getElementById('postContent');
+        const postTagsInput = document.getElementById('postTags');
+        const modalImage = document.getElementById('modalImage');
+        const mediaFileInput = document.getElementById('mediaFile');
+        const mediaUpload = document.getElementById('mediaUpload');
+        const mediaPreview = document.getElementById('mediaPreview');
+        const previewImage = document.getElementById('previewImage');
+        const previewVideo = document.getElementById('previewVideo');
+        const removeMediaBtn = document.getElementById('removeMedia');
+        const titleCharCount = document.getElementById('titleCharCount');
+        const contentCharCount = document.getElementById('contentCharCount');
 
         // Check authentication status on page load
         function checkAuthStatus() {
@@ -1447,7 +1870,6 @@
                 signinModal.classList.remove('active');
                 fetchUserData(currentUser.uid);
                 setupRealtimePosts();
-                setupConversationListener();
             } else {
                 signinModal.classList.add('active');
             }
@@ -1512,7 +1934,6 @@
                         membershipStatus: "active",
                         membershipTier: "explorer",
                         bookmarkedPosts: [],
-                        unreadMessages: 0,
                         isAdmin: false,
                         status: "active"
                     };
@@ -1530,7 +1951,6 @@
                 updateUserBadges();
                 signinModal.classList.remove('active');
                 setupRealtimePosts();
-                setupConversationListener();
                 
             } catch (error) {
                 console.error('Error in Google Sign-In:', error);
@@ -1569,12 +1989,6 @@
                     membershipBadge.textContent = currentUserData.membershipTier.toUpperCase();
                     membershipBadge.style.display = 'inline-block';
                 }
-                
-                // Update inbox badge
-                if (currentUserData.unreadMessages && currentUserData.unreadMessages > 0) {
-                    inboxBadge.textContent = currentUserData.unreadMessages;
-                    inboxBadge.style.display = 'inline-block';
-                }
             }
         }
 
@@ -1595,25 +2009,6 @@
                 day: 'numeric',
                 year: postTime.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
             });
-        }
-
-        // Format time for messages
-        function formatMessageTime(timestamp) {
-            const now = new Date();
-            const messageTime = new Date(timestamp);
-            const diffInHours = Math.floor((now - messageTime) / (1000 * 60 * 60));
-            
-            if (diffInHours < 24) {
-                return messageTime.toLocaleTimeString('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit'
-                });
-            } else {
-                return messageTime.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                });
-            }
         }
 
         // Get post category class
@@ -1690,6 +2085,10 @@
                     lastFetchTime = new Date();
                     renderPosts(publishedPosts);
                     
+                    // Setup real-time comments for each post
+                    publishedPosts.forEach(post => {
+                        setupRealtimeComments(post.id);
+                    });
                 } else {
                     // No posts, load sample posts
                     loadSamplePosts();
@@ -1697,7 +2096,62 @@
             });
         }
 
-        // Render posts in main feed
+        // Setup real-time comments for a post
+        function setupRealtimeComments(postId) {
+            if (commentListeners[postId]) {
+                database.ref(`comments/${postId}`).off('value', commentListeners[postId]);
+            }
+            
+            commentListeners[postId] = database.ref(`comments/${postId}`).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const comments = Object.keys(snapshot.val()).map(key => ({
+                        id: key,
+                        ...snapshot.val()[key]
+                    }));
+                    
+                    // Update comments count in post actions
+                    const postElement = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+                    if (postElement) {
+                        const commentBtn = postElement.querySelector('[data-action="comment"] span');
+                        if (commentBtn) {
+                            commentBtn.textContent = comments.length;
+                        }
+                    }
+                    
+                    // Update comments section if open
+                    const commentsSection = document.getElementById(`commentsSection-${postId}`);
+                    if (commentsSection) {
+                        renderComments(postId, comments);
+                    }
+                }
+            });
+        }
+
+        // Setup real-time replies for a comment
+        function setupRealtimeReplies(postId, commentId) {
+            const replyKey = `${postId}_${commentId}`;
+            
+            if (replyListeners[replyKey]) {
+                database.ref(`replies/${postId}/${commentId}`).off('value', replyListeners[replyKey]);
+            }
+            
+            replyListeners[replyKey] = database.ref(`replies/${postId}/${commentId}`).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const replies = Object.keys(snapshot.val()).map(key => ({
+                        id: key,
+                        ...snapshot.val()[key]
+                    }));
+                    
+                    // Update replies section if exists
+                    const repliesSection = document.getElementById(`repliesSection-${commentId}`);
+                    if (repliesSection) {
+                        renderReplies(commentId, replies);
+                    }
+                }
+            });
+        }
+
+        // Render posts
         function renderPosts(postsArray) {
             if (!postsArray || postsArray.length === 0) {
                 postsContainer.innerHTML = `
@@ -1749,7 +2203,7 @@
                 }
                 
                 return `
-                    <div class="post-card ${postClass} ${isPinned ? 'pinned' : ''}" data-post-id="${post.id}" onclick="openPostDetail('${post.id}')">
+                    <div class="post-card ${postClass} ${isPinned ? 'pinned' : ''}" data-post-id="${post.id}">
                         ${isPinned ? `
                             <div class="pinned-indicator">
                                 <i class="fas fa-thumbtack"></i>
@@ -1758,11 +2212,11 @@
                         ` : ''}
                         
                         <div class="post-header">
-                            <div class="post-avatar" onclick="event.stopPropagation(); viewProfile('${post.authorId}')">
+                            <div class="post-avatar" onclick="viewProfile('${post.authorId}')">
                                 <img src="${post.authorAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="${post.authorName}">
                             </div>
                             <div class="post-author-info">
-                                <div class="post-author" onclick="event.stopPropagation(); viewProfile('${post.authorId}')">
+                                <div class="post-author" onclick="viewProfile('${post.authorId}')">
                                     ${post.authorName}
                                     ${typeIndicator}
                                 </div>
@@ -1771,228 +2225,93 @@
                         </div>
                         <div class="post-content">
                             <h3>${post.title || ''}</h3>
-                            ${post.content ? `<p>${post.content.substring(0, 200)}${post.content.length > 200 ? '...' : ''}</p>` : ''}
+                            ${post.content ? `<p>${post.content}</p>` : ''}
                             ${mediaHtml}
                             ${tagsHtml}
                         </div>
                         <div class="post-actions">
-                            <button class="post-action ${hasLiked ? 'liked' : ''}" data-action="like" data-post-id="${post.id}" onclick="event.stopPropagation(); handlePostAction('${post.id}', 'like')">
+                            <button class="post-action ${hasLiked ? 'liked' : ''}" data-action="like" data-post-id="${post.id}">
                                 <i class="fas fa-heart"></i>
                                 <span>${likes}</span>
                             </button>
-                            <button class="post-action" data-action="comment" data-post-id="${post.id}" onclick="event.stopPropagation(); openPostDetail('${post.id}')">
+                            <button class="post-action" data-action="comment" data-post-id="${post.id}">
                                 <i class="fas fa-comment"></i>
                                 <span>${comments}</span>
                             </button>
-                            <button class="post-action" data-action="share" data-post-id="${post.id}" onclick="event.stopPropagation(); handlePostAction('${post.id}', 'share')">
+                            <button class="post-action" data-action="share" data-post-id="${post.id}">
                                 <i class="fas fa-share"></i>
                                 <span>${shares}</span>
                             </button>
-                            <button class="post-action ${hasBookmarked ? 'saved' : ''}" data-action="save" data-post-id="${post.id}" onclick="event.stopPropagation(); handlePostAction('${post.id}', 'save')">
+                            <button class="post-action ${hasBookmarked ? 'saved' : ''}" data-action="save" data-post-id="${post.id}">
                                 <i class="fas fa-bookmark"></i>
                                 <span>${bookmarks}</span>
                             </button>
+                        </div>
+                        
+                        <!-- Comments Section -->
+                        <div class="comments-section" id="commentsSection-${post.id}">
+                            <div class="comments-header">
+                                <h4 class="comments-title">Comments</h4>
+                                <button class="close-comments" onclick="toggleComments('${post.id}')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="comments-list" id="commentsList-${post.id}">
+                                <div class="loading" style="padding: 1rem;">
+                                    <div class="loading-spinner" style="width: 20px; height: 20px;"></div>
+                                </div>
+                            </div>
+                            ${currentUser ? `
+                                <div class="comment-form">
+                                    <input type="text" class="comment-input" id="commentInput-${post.id}" placeholder="Write a comment..." onkeypress="handleCommentKeypress(event, '${post.id}')">
+                                    <button class="comment-submit" onclick="submitComment('${post.id}')">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            ` : `
+                                <div style="text-align: center; padding: 1rem; color: var(--dark-gray);">
+                                    <i class="fas fa-sign-in-alt"></i> Sign in to comment
+                                </div>
+                            `}
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Open post detail view
-        async function openPostDetail(postId) {
-            activePostId = postId;
+        // Render comments
+        async function renderComments(postId, commentsArray) {
+            const commentsList = document.getElementById(`commentsList-${postId}`);
+            if (!commentsList) return;
             
-            try {
-                // Fetch post data
-                const postRef = database.ref(`communityPosts/${postId}`);
-                const snapshot = await postRef.once('value');
-                
-                if (!snapshot.exists()) {
-                    showNotification('Post not found', 'error');
-                    return;
-                }
-                
-                const post = { id: postId, ...snapshot.val() };
-                
-                // Setup real-time comments for this post
-                setupRealtimeComments(postId);
-                
-                // Render post detail
-                renderPostDetail(post);
-                
-                // Show modal
-                postDetailModal.classList.add('active');
-                document.body.classList.add('modal-open');
-                
-            } catch (error) {
-                console.error('Error opening post detail:', error);
-                showNotification('Error loading post', 'error');
-            }
-        }
-
-        // Render post detail
-        async function renderPostDetail(post) {
-            const likes = post.likes || 0;
-            const comments = post.comments || 0;
-            const shares = post.shares || 0;
-            const bookmarks = post.bookmarks || 0;
-            const postClass = getPostCategoryClass(post.category);
-            const typeIndicator = getPostCategoryIndicator(post.category);
-            const isPinned = post.isPinned || false;
-            const hasLiked = hasUserLikedPost(post);
-            const hasBookmarked = hasUserBookmarkedPost(post.id);
-            
-            const tagsHtml = post.tags && post.tags.length > 0 ? `
-                <div class="post-tags">
-                    ${post.tags.map(tag => `<span class="post-tag" onclick="searchByTag('${tag}')">#${tag}</span>`).join('')}
-                </div>
-            ` : '';
-            
-            // Check if post has media
-            let mediaHtml = '';
-            if (post.mediaDataUrl) {
-                if (post.mediaType === 'image') {
-                    mediaHtml = `
-                        <div class="post-media" onclick="openImageModal('${post.mediaDataUrl}')">
-                            <img src="${post.mediaDataUrl}" alt="Post image" loading="lazy">
-                        </div>
-                    `;
-                } else if (post.mediaType === 'video') {
-                    mediaHtml = `
-                        <div class="post-video">
-                            <video controls>
-                                <source src="${post.mediaDataUrl}" type="${post.mediaMimeType || 'video/mp4'}">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                    `;
-                }
-            }
-            
-            // Load comments
-            const commentsSnapshot = await database.ref(`comments/${post.id}`).once('value');
-            const commentsList = commentsSnapshot.exists() ? 
-                Object.keys(commentsSnapshot.val()).map(key => ({
-                    id: key,
-                    ...commentsSnapshot.val()[key]
-                })) : [];
-            
-            const commentsHtml = renderCommentsList(commentsList, post.id);
-            
-            postDetailContent.innerHTML = `
-                <div class="post-detail-card ${postClass} ${isPinned ? 'pinned' : ''}">
-                    ${isPinned ? `
-                        <div class="pinned-indicator">
-                            <i class="fas fa-thumbtack"></i>
-                            <span>Pinned Post</span>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="post-header">
-                        <div class="post-avatar" onclick="viewProfile('${post.authorId}')">
-                            <img src="${post.authorAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="${post.authorName}">
-                        </div>
-                        <div class="post-author-info">
-                            <div class="post-author" onclick="viewProfile('${post.authorId}')">
-                                ${post.authorName}
-                                ${typeIndicator}
-                            </div>
-                            <div class="post-time">${formatTime(post.createdAt)}</div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <h3>${post.title || ''}</h3>
-                        ${post.content ? `<p>${post.content}</p>` : ''}
-                        ${mediaHtml}
-                        ${tagsHtml}
-                    </div>
-                    <div class="post-actions">
-                        <button class="post-action ${hasLiked ? 'liked' : ''}" data-action="like" data-post-id="${post.id}" onclick="handlePostAction('${post.id}', 'like')">
-                            <i class="fas fa-heart"></i>
-                            <span>${likes}</span>
-                        </button>
-                        <button class="post-action" data-action="comment" data-post-id="${post.id}">
-                            <i class="fas fa-comment"></i>
-                            <span>${comments}</span>
-                        </button>
-                        <button class="post-action" data-action="share" data-post-id="${post.id}" onclick="handlePostAction('${post.id}', 'share')">
-                            <i class="fas fa-share"></i>
-                            <span>${shares}</span>
-                        </button>
-                        <button class="post-action ${hasBookmarked ? 'saved' : ''}" data-action="save" data-post-id="${post.id}" onclick="handlePostAction('${post.id}', 'save')">
-                            <i class="fas fa-bookmark"></i>
-                            <span>${bookmarks}</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="post-detail-comments">
-                    <div class="comments-section active">
-                        <div class="comment-form">
-                            <input type="text" class="comment-input" id="postDetailCommentInput-${post.id}" placeholder="Write a comment..." onkeypress="handleCommentKeypress(event, '${post.id}', true)">
-                            <button class="comment-submit" onclick="submitComment('${post.id}', true)">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div class="comments-list" id="postDetailCommentsList-${post.id}">
-                            ${commentsHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            // Setup real-time replies for each comment
-            commentsList.forEach(comment => {
-                setupRealtimeReplies(post.id, comment.id);
-            });
-        }
-
-        // Setup real-time comments for a post
-        function setupRealtimeComments(postId) {
-            if (commentListeners[postId]) {
-                database.ref(`comments/${postId}`).off('value', commentListeners[postId]);
-            }
-            
-            commentListeners[postId] = database.ref(`comments/${postId}`).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const comments = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    
-                    // Update comments count in post detail
-                    if (activePostId === postId) {
-                        const commentBtn = document.querySelector(`[data-post-id="${postId}"][data-action="comment"] span`);
-                        if (commentBtn) {
-                            commentBtn.textContent = comments.length;
-                        }
-                        
-                        const commentsList = document.getElementById(`postDetailCommentsList-${postId}`);
-                        if (commentsList) {
-                            commentsList.innerHTML = renderCommentsList(comments, postId);
-                        }
-                    }
-                }
-            });
-        }
-
-        // Render comments list
-        function renderCommentsList(commentsArray, postId) {
             if (!commentsArray || commentsArray.length === 0) {
-                return `
+                commentsList.innerHTML = `
                     <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
                         <i class="fas fa-comment-slash"></i>
                         <p>No comments yet. Be the first to comment!</p>
                     </div>
                 `;
+                return;
             }
             
             // Sort comments by timestamp (newest first)
             commentsArray.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             
-            return commentsArray.map(comment => {
+            // Load replies for each comment
+            const commentsWithReplies = await Promise.all(commentsArray.map(async comment => {
+                const repliesSnapshot = await database.ref(`replies/${postId}/${comment.id}`).once('value');
+                const replies = repliesSnapshot.exists() ? 
+                    Object.keys(repliesSnapshot.val()).map(key => ({
+                        id: key,
+                        ...repliesSnapshot.val()[key]
+                    })) : [];
+                return { ...comment, replies };
+            }));
+            
+            commentsList.innerHTML = commentsWithReplies.map(comment => {
                 const hasLiked = hasUserLikedComment(comment);
                 const likeCount = comment.likes || 0;
+                const replyCount = comment.replies ? comment.replies.length : 0;
                 
                 return `
                     <div class="comment-item" data-comment-id="${comment.id}">
@@ -2009,446 +2328,144 @@
                                 <i class="fas fa-heart"></i>
                                 <span>${likeCount}</span>
                             </button>
-                            <button class="comment-action" onclick="startReply('${postId}', '${comment.id}', '${comment.authorName}', true)">
+                            <button class="comment-action" onclick="startReply('${postId}', '${comment.id}', '${comment.authorName}')">
                                 <i class="fas fa-reply"></i>
                                 <span>Reply</span>
-                            </button>
-                            <button class="comment-action" onclick="sendMessageToUser('${comment.authorId}', '${comment.authorName}', '${comment.authorAvatar}')">
-                                <i class="fas fa-paper-plane"></i>
-                                <span>Message</span>
+                                ${replyCount > 0 ? `(${replyCount})` : ''}
                             </button>
                         </div>
                         
+                        <!-- Replies Section -->
+                        <div class="replies-section" id="repliesSection-${comment.id}">
+                            ${comment.replies && comment.replies.length > 0 ? comment.replies.map(reply => `
+                                <div class="reply-item" data-reply-id="${reply.id}">
+                                    <div class="comment-header">
+                                        <div class="comment-avatar">
+                                            <img src="${reply.authorAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="${reply.authorName}">
+                                        </div>
+                                        <div class="comment-author">${reply.authorName}</div>
+                                        <div class="comment-time">${formatTime(reply.createdAt)}</div>
+                                    </div>
+                                    <div class="comment-text">${reply.text}</div>
+                                </div>
+                            `).join('') : ''}
+                        </div>
+                        
                         <!-- Reply Form (hidden by default) -->
-                        <div class="reply-form" id="postDetailReplyForm-${comment.id}" style="display: none;">
-                            <input type="text" class="reply-input" id="postDetailReplyInput-${comment.id}" placeholder="Write a reply..." onkeypress="handleReplyKeypress(event, '${postId}', '${comment.id}', true)">
-                            <button class="reply-submit" onclick="submitReply('${postId}', '${comment.id}', true)">
+                        <div class="reply-form" id="replyForm-${comment.id}" style="display: none;">
+                            <input type="text" class="reply-input" id="replyInput-${comment.id}" placeholder="Write a reply..." onkeypress="handleReplyKeypress(event, '${postId}', '${comment.id}')">
+                            <button class="reply-submit" onclick="submitReply('${postId}', '${comment.id}')">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-
-        // Setup real-time replies for a comment
-        function setupRealtimeReplies(postId, commentId) {
-            const replyKey = `${postId}_${commentId}`;
             
-            if (replyListeners[replyKey]) {
-                database.ref(`replies/${postId}/${commentId}`).off('value', replyListeners[replyKey]);
-            }
-            
-            replyListeners[replyKey] = database.ref(`replies/${postId}/${commentId}`).on('value', (snapshot) => {
-                // Replies will be loaded when needed
+            // Setup real-time listeners for replies
+            commentsWithReplies.forEach(comment => {
+                setupRealtimeReplies(postId, comment.id);
             });
         }
 
-        // Close post detail
-        function closePostDetail() {
-            postDetailModal.classList.remove('active');
-            document.body.classList.remove('modal-open');
-            activePostId = null;
-        }
-
-        // Setup conversation listener
-        function setupConversationListener() {
-            if (!currentUser) return;
+        // Render replies
+        function renderReplies(commentId, repliesArray) {
+            const repliesSection = document.getElementById(`repliesSection-${commentId}`);
+            if (!repliesSection) return;
             
-            if (conversationListeners) {
-                database.ref(`conversations/${currentUser.uid}`).off('value', conversationListeners);
+            if (!repliesArray || repliesArray.length === 0) {
+                repliesSection.innerHTML = '';
+                return;
             }
             
-            conversationListeners = database.ref(`conversations/${currentUser.uid}`).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const conversations = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    
-                    renderConversations(conversations);
-                    
-                    // Update unread count
-                    const unreadCount = conversations.reduce((total, conv) => total + (conv.unreadCount || 0), 0);
-                    updateUnreadCount(unreadCount);
-                } else {
-                    conversationsList.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
-                            <i class="fas fa-comments"></i>
-                            <p>No conversations yet</p>
-                            <p>Start a new conversation to connect with others!</p>
+            // Sort replies by timestamp (oldest first for conversation flow)
+            repliesArray.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            
+            repliesSection.innerHTML = repliesArray.map(reply => `
+                <div class="reply-item" data-reply-id="${reply.id}">
+                    <div class="comment-header">
+                        <div class="comment-avatar">
+                            <img src="${reply.authorAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="${reply.authorName}">
                         </div>
-                    `;
-                    updateUnreadCount(0);
-                }
-            });
-        }
-
-        // Render conversations list
-        function renderConversations(conversationsArray) {
-            if (!conversationsArray || conversationsArray.length === 0) {
-                conversationsList.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
-                        <i class="fas fa-comments"></i>
-                        <p>No conversations yet</p>
-                        <p>Start a new conversation to connect with others!</p>
+                        <div class="comment-author">${reply.authorName}</div>
+                        <div class="comment-time">${formatTime(reply.createdAt)}</div>
                     </div>
-                `;
-                return;
-            }
-            
-            // Sort by last message time
-            conversationsArray.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
-            
-            conversationsList.innerHTML = conversationsArray.map(conv => {
-                const isActive = activeConversation && activeConversation.id === conv.id;
-                const unreadHtml = conv.unreadCount > 0 ? 
-                    `<span class="unread-badge">${conv.unreadCount}</span>` : '';
-                
-                return `
-                    <div class="conversation-item ${isActive ? 'active' : ''}" data-conversation-id="${conv.id}" onclick="openConversation('${conv.id}')">
-                        <div class="conversation-header">
-                            <div class="conversation-avatar">
-                                <img src="${conv.otherUserAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp'}" alt="${conv.otherUserName}">
-                            </div>
-                            <div class="conversation-info">
-                                <div class="conversation-name">${conv.otherUserName}</div>
-                                <div class="conversation-time">${formatTime(conv.lastMessageTime)}</div>
-                            </div>
-                            ${unreadHtml}
-                        </div>
-                        <div class="conversation-preview">${conv.lastMessageText || 'Start a conversation'}</div>
-                    </div>
-                `;
-            }).join('');
+                    <div class="comment-text">${reply.text}</div>
+                </div>
+            `).join('');
         }
 
-        // Update unread message count
-        function updateUnreadCount(count) {
-            if (currentUserData) {
-                // Update in Firebase
-                const userRef = database.ref(`users/${currentUser.uid}`);
-                userRef.update({ unreadMessages: count });
-                
-                // Update UI
-                if (count > 0) {
-                    inboxBadge.textContent = count;
-                    inboxBadge.style.display = 'inline-block';
-                } else {
-                    inboxBadge.style.display = 'none';
-                }
-            }
-        }
-
-        // Open messaging modal
-        function openMessagingModal() {
-            if (!currentUser) {
-                showNotification('Please sign in to access messages', 'error');
-                return;
-            }
+        // Toggle comments section
+        function toggleComments(postId) {
+            const commentsSection = document.getElementById(`commentsSection-${postId}`);
+            const commentBtn = document.querySelector(`[data-post-id="${postId}"][data-action="comment"]`);
             
-            messagingModal.classList.add('active');
-            document.body.classList.add('modal-open');
-            
-            // Reset active conversation
-            activeConversation = null;
-            noConversationSelected.style.display = 'flex';
-            chatActive.style.display = 'none';
-            
-            // Load conversations
-            setupConversationListener();
-        }
-
-        // Close messaging modal
-        function closeMessagingModal() {
-            messagingModal.classList.remove('active');
-            document.body.classList.remove('modal-open');
-            
-            // Clear active conversation
-            activeConversation = null;
-            
-            // Remove message listener
-            if (activeConversation && messageListeners[activeConversation.id]) {
-                database.ref(`messages/${activeConversation.id}`).off('value', messageListeners[activeConversation.id]);
-            }
-        }
-
-        // Open a conversation
-        async function openConversation(conversationId) {
-            try {
-                // Fetch conversation data
-                const convRef = database.ref(`conversations/${currentUser.uid}/${conversationId}`);
-                const snapshot = await convRef.once('value');
-                
-                if (!snapshot.exists()) {
-                    showNotification('Conversation not found', 'error');
-                    return;
-                }
-                
-                activeConversation = {
-                    id: conversationId,
-                    ...snapshot.val()
-                };
-                
-                // Mark as read
-                await convRef.update({ unreadCount: 0 });
-                
-                // Update UI
-                noConversationSelected.style.display = 'none';
-                chatActive.style.display = 'block';
-                
-                // Load user info
-                chatUserAvatar.src = activeConversation.otherUserAvatar || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp';
-                chatUserName.textContent = activeConversation.otherUserName;
-                chatUserStatus.textContent = 'Online';
-                
-                // Load messages
-                loadMessages(conversationId);
-                
-                // Setup real-time message listener
-                setupMessageListener(conversationId);
-                
-            } catch (error) {
-                console.error('Error opening conversation:', error);
-                showNotification('Error loading conversation', 'error');
-            }
-        }
-
-        // Load messages for a conversation
-        async function loadMessages(conversationId) {
-            try {
-                const messagesRef = database.ref(`messages/${conversationId}`);
-                const snapshot = await messagesRef.once('value');
-                
-                if (snapshot.exists()) {
-                    const messages = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    
-                    // Sort by timestamp
-                    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                    
-                    renderMessages(messages);
-                    
-                    // Scroll to bottom
-                    setTimeout(() => {
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }, 100);
-                } else {
-                    chatMessages.innerHTML = `
-                        <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
-                            <i class="fas fa-comment"></i>
-                            <p>No messages yet</p>
-                            <p>Send a message to start the conversation!</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading messages:', error);
-            }
-        }
-
-        // Setup real-time message listener
-        function setupMessageListener(conversationId) {
-            // Remove previous listener
-            if (messageListeners[conversationId]) {
-                database.ref(`messages/${conversationId}`).off('value', messageListeners[conversationId]);
-            }
-            
-            messageListeners[conversationId] = database.ref(`messages/${conversationId}`).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const messages = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    
-                    // Sort by timestamp
-                    messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                    
-                    renderMessages(messages);
-                    
-                    // Scroll to bottom
-                    setTimeout(() => {
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }, 100);
-                }
-            });
-        }
-
-        // Render messages
-        function renderMessages(messagesArray) {
-            if (!messagesArray || messagesArray.length === 0) {
-                chatMessages.innerHTML = `
-                    <div style="text-align: center; padding: 2rem; color: var(--dark-gray);">
-                        <i class="fas fa-comment"></i>
-                        <p>No messages yet</p>
-                        <p>Send a message to start the conversation!</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            chatMessages.innerHTML = messagesArray.map(msg => {
-                const isSent = msg.senderId === currentUser.uid;
-                return `
-                    <div class="message ${isSent ? 'sent' : 'received'}">
-                        <div class="message-text">${msg.text}</div>
-                        <div class="message-time">${formatMessageTime(msg.timestamp)}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Send a message
-        async function sendMessage(event) {
-            event.preventDefault();
-            
-            if (!currentUser || !activeConversation) {
-                showNotification('Please select a conversation first', 'error');
-                return;
-            }
-            
-            const messageText = chatInput.value.trim();
-            if (!messageText) {
-                showNotification('Please enter a message', 'error');
-                return;
-            }
-            
-            try {
-                const messageId = database.ref(`messages/${activeConversation.id}`).push().key;
-                const timestamp = new Date().toISOString();
-                
-                // Create message
-                const message = {
-                    id: messageId,
-                    conversationId: activeConversation.id,
-                    senderId: currentUser.uid,
-                    receiverId: activeConversation.otherUserId,
-                    text: messageText,
-                    timestamp: timestamp,
-                    read: false
-                };
-                
-                // Save message
-                await database.ref(`messages/${activeConversation.id}/${messageId}`).set(message);
-                
-                // Update conversation for sender
-                await database.ref(`conversations/${currentUser.uid}/${activeConversation.id}`).update({
-                    lastMessageText: messageText,
-                    lastMessageTime: timestamp,
-                    unreadCount: 0
+            if (commentsSection.classList.contains('active')) {
+                commentsSection.classList.remove('active');
+                commentBtn.classList.remove('active');
+                replyingToCommentId = null;
+            } else {
+                // Close all other comment sections
+                document.querySelectorAll('.comments-section.active').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.querySelectorAll('.post-action.active').forEach(btn => {
+                    btn.classList.remove('active');
                 });
                 
-                // Update conversation for receiver
-                const receiverConversation = {
-                    otherUserId: currentUser.uid,
-                    otherUserName: currentUser.fullName || currentUser.firstName,
-                    otherUserAvatar: currentUser.picture,
-                    lastMessageText: messageText,
-                    lastMessageTime: timestamp,
-                    unreadCount: (activeConversation.unreadCount || 0) + 1
-                };
+                commentsSection.classList.add('active');
+                commentBtn.classList.add('active');
                 
-                await database.ref(`conversations/${activeConversation.otherUserId}/${activeConversation.id}`).update(receiverConversation);
-                
-                // Clear input
-                chatInput.value = '';
-                
-                // Update receiver's unread count
-                const receiverRef = database.ref(`users/${activeConversation.otherUserId}`);
-                const receiverSnapshot = await receiverRef.once('value');
-                if (receiverSnapshot.exists()) {
-                    const receiverData = receiverSnapshot.val();
-                    const currentUnread = receiverData.unreadMessages || 0;
-                    await receiverRef.update({ unreadMessages: currentUnread + 1 });
-                }
-                
-            } catch (error) {
-                console.error('Error sending message:', error);
-                showNotification('Error sending message', 'error');
+                // Load comments if not already loaded
+                loadComments(postId);
             }
         }
 
-        // Start new conversation with a user
-        async function sendMessageToUser(userId, userName, userAvatar) {
+        // Load comments for a post
+        async function loadComments(postId) {
             try {
-                // Check if conversation already exists
-                const convRef = database.ref(`conversations/${currentUser.uid}`);
-                const snapshot = await convRef.once('value');
+                const commentsRef = database.ref(`comments/${postId}`);
+                const snapshot = await commentsRef.once('value');
                 
-                let existingConversationId = null;
                 if (snapshot.exists()) {
-                    const conversations = snapshot.val();
-                    existingConversationId = Object.keys(conversations).find(key => 
-                        conversations[key].otherUserId === userId
-                    );
-                }
-                
-                if (existingConversationId) {
-                    // Open existing conversation
-                    openConversation(existingConversationId);
+                    const comments = Object.keys(snapshot.val()).map(key => ({
+                        id: key,
+                        ...snapshot.val()[key]
+                    }));
+                    renderComments(postId, comments);
                 } else {
-                    // Create new conversation
-                    const conversationId = database.ref(`conversations/${currentUser.uid}`).push().key;
-                    
-                    // Create conversation for current user
-                    const conversation = {
-                        id: conversationId,
-                        otherUserId: userId,
-                        otherUserName: userName,
-                        otherUserAvatar: userAvatar,
-                        lastMessageText: '',
-                        lastMessageTime: new Date().toISOString(),
-                        unreadCount: 0
-                    };
-                    
-                    await database.ref(`conversations/${currentUser.uid}/${conversationId}`).set(conversation);
-                    
-                    // Create conversation for other user
-                    const otherConversation = {
-                        id: conversationId,
-                        otherUserId: currentUser.uid,
-                        otherUserName: currentUser.fullName || currentUser.firstName,
-                        otherUserAvatar: currentUser.picture,
-                        lastMessageText: '',
-                        lastMessageTime: new Date().toISOString(),
-                        unreadCount: 0
-                    };
-                    
-                    await database.ref(`conversations/${userId}/${conversationId}`).set(otherConversation);
-                    
-                    // Open the new conversation
-                    openConversation(conversationId);
+                    renderComments(postId, []);
                 }
-                
-                // Open messaging modal if not already open
-                if (!messagingModal.classList.contains('active')) {
-                    openMessagingModal();
-                }
-                
             } catch (error) {
-                console.error('Error starting conversation:', error);
-                showNotification('Error starting conversation', 'error');
+                console.error('Error loading comments:', error);
             }
         }
 
-        // Start new conversation from button
-        async function startNewConversation() {
-            // For now, we'll show a notification
-            // In a full implementation, you would show a user search modal
-            showNotification('Search for users to start a conversation', 'info');
+        // Start reply to a comment
+        function startReply(postId, commentId, authorName) {
+            // Hide all other reply forms
+            document.querySelectorAll('.reply-form').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            // Show this reply form
+            const replyForm = document.getElementById(`replyForm-${commentId}`);
+            const replyInput = document.getElementById(`replyInput-${commentId}`);
+            
+            replyForm.style.display = 'flex';
+            replyInput.placeholder = `Reply to ${authorName}...`;
+            replyInput.focus();
+            replyingToCommentId = commentId;
         }
 
-        // Handle comment submission (from post detail)
-        async function submitComment(postId, fromDetail = false) {
+        // Handle comment submission
+        async function submitComment(postId) {
             if (!currentUser) {
                 showNotification('Please sign in to comment', 'error');
                 return;
             }
             
-            const inputId = fromDetail ? `postDetailCommentInput-${postId}` : `commentInput-${postId}`;
-            const commentInput = document.getElementById(inputId);
+            const commentInput = document.getElementById(`commentInput-${postId}`);
             const commentText = commentInput.value.trim();
             
             if (!commentText) {
@@ -2493,14 +2510,13 @@
         }
 
         // Handle reply submission
-        async function submitReply(postId, commentId, fromDetail = false) {
+        async function submitReply(postId, commentId) {
             if (!currentUser) {
                 showNotification('Please sign in to reply', 'error');
                 return;
             }
             
-            const inputId = fromDetail ? `postDetailReplyInput-${commentId}` : `replyInput-${commentId}`;
-            const replyInput = document.getElementById(inputId);
+            const replyInput = document.getElementById(`replyInput-${commentId}`);
             const replyText = replyInput.value.trim();
             
             if (!replyText) {
@@ -2573,37 +2589,17 @@
             }
         }
 
-        // Start reply to a comment
-        function startReply(postId, commentId, authorName, fromDetail = false) {
-            const formId = fromDetail ? `postDetailReplyForm-${commentId}` : `replyForm-${commentId}`;
-            const inputId = fromDetail ? `postDetailReplyInput-${commentId}` : `replyInput-${commentId}`;
-            
-            // Hide all other reply forms
-            document.querySelectorAll('.reply-form').forEach(form => {
-                form.style.display = 'none';
-            });
-            
-            // Show this reply form
-            const replyForm = document.getElementById(formId);
-            const replyInput = document.getElementById(inputId);
-            
-            replyForm.style.display = 'flex';
-            replyInput.placeholder = `Reply to ${authorName}...`;
-            replyInput.focus();
-            replyingToCommentId = commentId;
-        }
-
         // Handle Enter key for comment submission
-        function handleCommentKeypress(event, postId, fromDetail = false) {
+        function handleCommentKeypress(event, postId) {
             if (event.key === 'Enter') {
-                submitComment(postId, fromDetail);
+                submitComment(postId);
             }
         }
 
         // Handle Enter key for reply submission
-        function handleReplyKeypress(event, postId, commentId, fromDetail = false) {
+        function handleReplyKeypress(event, postId, commentId) {
             if (event.key === 'Enter') {
-                submitReply(postId, commentId, fromDetail);
+                submitReply(postId, commentId);
             }
         }
 
@@ -2640,6 +2636,10 @@
                         likes: likes,
                         updatedAt: new Date().toISOString()
                     });
+                    break;
+                    
+                case 'comment':
+                    toggleComments(postId);
                     break;
                     
                 case 'share':
@@ -2696,81 +2696,229 @@
             }
         }
 
-        // View profile (placeholder)
-        function viewProfile(userId) {
-            showNotification('Profile view coming soon!');
-        }
-
-        // Search by tag
-        function searchByTag(tag) {
-            const searchInput = document.getElementById('searchInput');
-            searchInput.value = `#${tag}`;
-            showNotification(`Searching for posts tagged #${tag}`, 'success');
-        }
-
-        // Sign out user
-        function signOut() {
-            currentUser = null;
-            currentUserData = null;
-            localStorage.removeItem('the_songa_welfare_user');
+        // Handle media file selection
+        function handleMediaFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
             
-            // Remove all listeners
-            if (realtimeListener) {
-                database.ref('communityPosts').off('value', realtimeListener);
-                realtimeListener = null;
+            // Check file size (10MB limit)
+            const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+            if (file.size > maxSize) {
+                showNotification('File size must be less than 10MB', 'error');
+                return;
             }
             
-            Object.keys(commentListeners).forEach(postId => {
-                database.ref(`comments/${postId}`).off('value', commentListeners[postId]);
-            });
-            commentListeners = {};
+            // Check file type
+            const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            const validVideoTypes = ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
             
-            Object.keys(replyListeners).forEach(key => {
-                const [postId, commentId] = key.split('_');
-                database.ref(`replies/${postId}/${commentId}`).off('value', replyListeners[key]);
-            });
-            replyListeners = {};
-            
-            if (conversationListeners) {
-                database.ref(`conversations/${currentUser?.uid}`).off('value', conversationListeners);
-                conversationListeners = null;
+            if (!validImageTypes.includes(file.type) && !validVideoTypes.includes(file.type)) {
+                showNotification('Please select an image (JPG, PNG, GIF) or video (MP4, MOV)', 'error');
+                return;
             }
             
-            Object.keys(messageListeners).forEach(convId => {
-                database.ref(`messages/${convId}`).off('value', messageListeners[convId]);
-            });
-            messageListeners = {};
+            // Read file as data URL
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedMedia = {
+                    type: validImageTypes.includes(file.type) ? 'image' : 'video',
+                    dataUrl: e.target.result,
+                    name: file.name,
+                    size: file.size,
+                    mimeType: file.type
+                };
+                
+                // Show preview
+                if (selectedMedia.type === 'image') {
+                    previewImage.src = selectedMedia.dataUrl;
+                    previewImage.style.display = 'block';
+                    previewVideo.style.display = 'none';
+                } else {
+                    previewVideo.src = selectedMedia.dataUrl;
+                    previewVideo.style.display = 'block';
+                    previewImage.style.display = 'none';
+                }
+                
+                mediaPreview.classList.add('active');
+                showNotification('Media file selected', 'success');
+            };
             
-            closeDropdown();
-            closePostDetail();
-            closeMessagingModal();
-            signinModal.classList.add('active');
-            document.body.classList.remove('modal-open');
-            showNotification('Signed out successfully', 'success');
-            postsContainer.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading community posts...</p>
-                </div>
-            `;
+            reader.readAsDataURL(file);
         }
 
-        // Toggle dropdown
-        function toggleDropdown() {
-            dropdownOpen = !dropdownOpen;
-            const dropdown = document.getElementById('userDropdown');
-            if (dropdownOpen) {
-                dropdown.classList.add('active');
+        // Remove selected media
+        function removeSelectedMedia() {
+            selectedMedia = {
+                type: null,
+                dataUrl: null,
+                name: null,
+                size: 0
+            };
+            
+            previewImage.src = '';
+            previewVideo.src = '';
+            mediaPreview.classList.remove('active');
+            mediaFileInput.value = '';
+            
+            showNotification('Media removed', 'info');
+        }
+
+        // Create new post
+        async function createPost() {
+            if (!currentUser) {
+                showNotification('Please sign in to create posts', 'error');
+                return;
+            }
+            
+            const title = postTitleInput.value.trim();
+            const content = postContentInput.value.trim();
+            const tags = postTagsInput.value.trim().split(',').map(tag => tag.trim()).filter(tag => tag);
+            
+            if (!title || !content) {
+                showNotification('Please fill in both title and content', 'error');
+                return;
+            }
+            
+            if (title.length > 100) {
+                showNotification('Title must be 100 characters or less', 'error');
+                return;
+            }
+            
+            if (tags.length > 5) {
+                showNotification('Maximum 5 tags allowed', 'error');
+                return;
+            }
+            
+            try {
+                const postRef = database.ref('communityPosts').push();
+                const newPost = {
+                    id: postRef.key,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.fullName || currentUser.firstName,
+                    authorAvatar: currentUser.picture,
+                    title: title,
+                    content: content,
+                    category: selectedCategory,
+                    tags: tags,
+                    likes: 0,
+                    likedBy: [],
+                    comments: 0,
+                    shares: 0,
+                    bookmarks: 0,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    isPinned: false,
+                    status: "published"
+                };
+                
+                // Add media data if selected
+                if (selectedMedia.dataUrl) {
+                    newPost.mediaDataUrl = selectedMedia.dataUrl;
+                    newPost.mediaType = selectedMedia.type;
+                    newPost.mediaMimeType = selectedMedia.mimeType;
+                    newPost.mediaName = selectedMedia.name;
+                    newPost.mediaSize = selectedMedia.size;
+                }
+                
+                await postRef.set(newPost);
+                
+                // Clear form
+                postTitleInput.value = '';
+                postContentInput.value = '';
+                postTagsInput.value = '';
+                removeSelectedMedia();
+                
+                // Reset character counts
+                updateCharCounts();
+                
+                // Close modal
+                createPostModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                
+                showNotification('Post published successfully!', 'success');
+                
+                // Scroll to top to see new post
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('Error creating post:', error);
+                showNotification('Error creating post', 'error');
+            }
+        }
+
+        // Update character counts
+        function updateCharCounts() {
+            const titleLength = postTitleInput.value.length;
+            const contentLength = postContentInput.value.length;
+            
+            titleCharCount.textContent = `${titleLength}/100 characters`;
+            contentCharCount.textContent = `${contentLength}/5000 characters`;
+            
+            // Update submit button state
+            const title = postTitleInput.value.trim();
+            const content = postContentInput.value.trim();
+            submitPostBtn.disabled = !(title && content);
+            
+            // Style character counts based on limits
+            if (titleLength > 100) {
+                titleCharCount.style.color = '#e74c3c';
             } else {
-                dropdown.classList.remove('active');
+                titleCharCount.style.color = 'var(--dark-gray)';
+            }
+            
+            if (contentLength > 5000) {
+                contentCharCount.style.color = '#e74c3c';
+            } else {
+                contentCharCount.style.color = 'var(--dark-gray)';
             }
         }
 
-        // Close dropdown
-        function closeDropdown() {
-            dropdownOpen = false;
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.remove('active');
+        // Open image modal
+        function openImageModal(imageUrl) {
+            modalImage.src = imageUrl;
+            imageModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        // Close image modal
+        function closeImageModal() {
+            imageModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            modalImage.src = '';
+        }
+
+        // Open create post modal
+        function openCreatePostModal() {
+            if (!currentUser) {
+                showNotification('Please sign in to create posts', 'error');
+                return;
+            }
+            
+            createPostModal.classList.add('active');
+            document.body.classList.add('modal-open');
+            postTitleInput.focus();
+        }
+
+        // Close create post modal
+        function closeCreatePostModal() {
+            createPostModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            
+            // Reset form
+            postTitleInput.value = '';
+            postContentInput.value = '';
+            postTagsInput.value = '';
+            removeSelectedMedia();
+            
+            // Reset category selection
+            document.querySelectorAll('.category-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.querySelector('.category-option[data-category="announcement"]').classList.add('selected');
+            selectedCategory = 'announcement';
+            
+            // Reset character counts
+            updateCharCounts();
         }
 
         // Load sample posts
@@ -2841,6 +2989,83 @@
             }
         }
 
+        // Sign out user
+        function signOut() {
+            currentUser = null;
+            currentUserData = null;
+            localStorage.removeItem('the_songa_welfare_user');
+            
+            // Remove real-time listeners
+            if (realtimeListener) {
+                database.ref('communityPosts').off('value', realtimeListener);
+                realtimeListener = null;
+            }
+            
+            // Remove comment listeners
+            Object.keys(commentListeners).forEach(postId => {
+                database.ref(`comments/${postId}`).off('value', commentListeners[postId]);
+            });
+            commentListeners = {};
+            
+            // Remove reply listeners
+            Object.keys(replyListeners).forEach(key => {
+                const [postId, commentId] = key.split('_');
+                database.ref(`replies/${postId}/${commentId}`).off('value', replyListeners[key]);
+            });
+            replyListeners = {};
+            
+            closeDropdown();
+            closeCreatePostModal();
+            closeImageModal();
+            signinModal.classList.add('active');
+            document.body.classList.remove('modal-open');
+            showNotification('Signed out successfully', 'success');
+            postsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading community posts...</p>
+                </div>
+            `;
+        }
+
+        // Toggle dropdown
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdownOpen) {
+                dropdown.classList.add('active');
+            } else {
+                dropdown.classList.remove('active');
+            }
+        }
+
+        // Close dropdown
+        function closeDropdown() {
+            dropdownOpen = false;
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.remove('active');
+        }
+
+        // View profile (placeholder)
+        function viewProfile(userId) {
+            showNotification('Profile view coming soon!');
+        }
+
+        // Search by tag
+        function searchByTag(tag) {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = `#${tag}`;
+            showNotification(`Searching for posts tagged #${tag}`, 'success');
+        }
+
+        // Load new posts when indicator is clicked
+        newPostsIndicator.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            newPostsAvailable = false;
+            newPostsIndicator.style.display = 'none';
+            showNotification('Showing latest posts', 'success', 2000);
+        });
+
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthStatus();
@@ -2855,22 +3080,104 @@
                 closeDropdown();
             });
             
-            // Post detail back button
-            postDetailBack.addEventListener('click', closePostDetail);
-            
-            // Messaging modal
-            inboxOption.addEventListener('click', function() {
-                openMessagingModal();
-                closeDropdown();
+            // Post actions delegation
+            postsContainer.addEventListener('click', function(e) {
+                const actionBtn = e.target.closest('.post-action');
+                if (actionBtn) {
+                    const postId = actionBtn.dataset.postId;
+                    const action = actionBtn.dataset.action;
+                    handlePostAction(postId, action);
+                }
             });
             
-            closeMessagingModal.addEventListener('click', closeMessagingModal);
+            // Create post button
+            createPostBtn.addEventListener('click', openCreatePostModal);
             
-            // New conversation button
-            newConversationBtn.addEventListener('click', startNewConversation);
+            // Submit post button
+            submitPostBtn.addEventListener('click', createPost);
             
-            // Send message form
-            chatInputForm.addEventListener('submit', sendMessage);
+            // Form validation for post creation
+            postTitleInput.addEventListener('input', updateCharCounts);
+            postContentInput.addEventListener('input', updateCharCounts);
+            
+            // Category selection
+            document.querySelectorAll('.category-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.category-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    selectedCategory = this.dataset.category;
+                });
+            });
+            
+            // Media upload handling
+            mediaFileInput.addEventListener('change', handleMediaFileSelect);
+            mediaUpload.addEventListener('click', () => mediaFileInput.click());
+            removeMediaBtn.addEventListener('click', removeSelectedMedia);
+            
+            // Drag and drop for media upload
+            mediaUpload.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                mediaUpload.classList.add('dragover');
+            });
+            
+            mediaUpload.addEventListener('dragleave', () => {
+                mediaUpload.classList.remove('dragover');
+            });
+            
+            mediaUpload.addEventListener('drop', (e) => {
+                e.preventDefault();
+                mediaUpload.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    mediaFileInput.files = e.dataTransfer.files;
+                    handleMediaFileSelect({ target: mediaFileInput });
+                }
+            });
+            
+            // Close modals
+            document.getElementById('closeSigninModal').addEventListener('click', function() {
+                signinModal.classList.remove('active');
+            });
+            
+            document.getElementById('closeCreatePostModal').addEventListener('click', closeCreatePostModal);
+            
+            document.getElementById('closeImageModal').addEventListener('click', closeImageModal);
+            
+            // Close modals when clicking outside
+            signinModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    signinModal.classList.remove('active');
+                }
+            });
+            
+            createPostModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeCreatePostModal();
+                }
+            });
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeImageModal();
+                }
+            });
+            
+            // Escape key to close modals
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (createPostModal.classList.contains('active')) {
+                        closeCreatePostModal();
+                    }
+                    if (imageModal.classList.contains('active')) {
+                        closeImageModal();
+                    }
+                    if (signinModal.classList.contains('active')) {
+                        signinModal.classList.remove('active');
+                    }
+                }
+            });
             
             // Search input
             const searchInput = document.getElementById('searchInput');
@@ -2912,28 +3219,12 @@
                 closeDropdown();
             });
             
-            // Load new posts when indicator is clicked
-            newPostsIndicator.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                newPostsAvailable = false;
-                newPostsIndicator.style.display = 'none';
-                showNotification('Showing latest posts', 'success', 2000);
-            });
+            // Initialize character counts
+            updateCharCounts();
         });
 
         // Global function for Google Sign-In callback
         window.handleGoogleSignIn = handleGoogleSignIn;
-        window.sendMessageToUser = sendMessageToUser;
-        window.openPostDetail = openPostDetail;
-        window.handlePostAction = handlePostAction;
-        window.handleCommentLike = handleCommentLike;
-        window.startReply = startReply;
-        window.submitComment = submitComment;
-        window.submitReply = submitReply;
-        window.handleCommentKeypress = handleCommentKeypress;
-        window.handleReplyKeypress = handleReplyKeypress;
-        window.searchByTag = searchByTag;
-        window.viewProfile = viewProfile;
     </script>
 </body>
 </html>
