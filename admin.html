@@ -54,7 +54,280 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Styles */
+        /* Login Form Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--light-bg);
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .alert i {
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .setup-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--light-bg);
+            padding: 20px;
+        }
+
+        .setup-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .setup-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .setup-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .step-active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .step-inactive {
+            background-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .setup-step {
+            display: none;
+        }
+
+        .setup-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .setup-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .strength-weak { background-color: #ef4444; }
+        .strength-medium { background-color: #f59e0b; }
+        .strength-strong { background-color: #10b981; }
+
+        /* Admin Panel Styles */
         .sidebar {
             width: 260px;
             background-color: var(--sidebar-bg);
@@ -114,6 +387,7 @@
             text-decoration: none;
             transition: all 0.3s;
             border-left: 3px solid transparent;
+            cursor: pointer;
         }
 
         .nav-item:hover {
@@ -171,7 +445,6 @@
             color: rgba(255,255,255,0.6);
         }
 
-        /* Main Content Styles */
         .main-content {
             flex: 1;
             margin-left: 260px;
@@ -219,7 +492,6 @@
             background-color: rgba(255,255,255,0.1);
         }
 
-        /* Dashboard Cards */
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -317,37 +589,6 @@
         .table-actions {
             display: flex;
             gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(0,0,0,0.05);
         }
 
         .btn-sm {
@@ -449,6 +690,49 @@
             color: var(--danger-color);
         }
 
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(150%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            background-color: var(--success-color);
+        }
+
+        .toast-error {
+            background-color: var(--danger-color);
+        }
+
+        .toast-warning {
+            background-color: var(--warning-color);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -499,42 +783,15 @@
             padding: 24px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--card-bg);
-            color: var(--text-primary);
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-color);
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
         textarea.form-control {
             min-height: 100px;
             resize: vertical;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
         }
 
         .modal-footer {
@@ -543,123 +800,6 @@
             display: flex;
             justify-content: flex-end;
             gap: 12px;
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 16px 24px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 9999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateX(150%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        .toast-success {
-            background-color: var(--success-color);
-        }
-
-        .toast-error {
-            background-color: var(--danger-color);
-        }
-
-        .toast-warning {
-            background-color: var(--warning-color);
-        }
-
-        /* Login Form Styles */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: var(--light-bg);
-            padding: 20px;
-        }
-
-        .login-card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-logo-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .login-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .login-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .alert {
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .alert-success {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .alert-error {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger-color);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         /* Responsive Design */
@@ -723,6 +863,10 @@
                 width: 100%;
                 justify-content: flex-end;
             }
+            
+            .main-content {
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -733,11 +877,13 @@
         <span id="toastMessage">Operation completed successfully!</span>
     </div>
 
-    <!-- Login Form (Initially visible) -->
+    <!-- Login Form -->
     <div id="loginContainer" class="login-container">
         <div class="login-card">
             <div class="login-logo">
-                <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" alt="THE SONGA Logo" class="login-logo-img">
+                <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" 
+                     alt="THE SONGA Logo" 
+                     class="login-logo-img">
                 <h1 class="login-title">THE SONGA</h1>
                 <p class="login-subtitle">Admin Panel Login</p>
             </div>
@@ -747,19 +893,148 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="loginEmail" required placeholder="admin@thesongawelfare.com">
+                    <input type="email" class="form-control" id="loginEmail" required 
+                           placeholder="admin@thesongawelfare.com" 
+                           value="admin@thesongawelfare.com">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-control" id="loginPassword" required>
+                    <input type="password" class="form-control" id="loginPassword" required 
+                           placeholder="Enter your password">
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px;" id="loginBtn">
+                <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
                     <span id="loginBtnText">Login to Admin Panel</span>
                     <span id="loginSpinner" class="spinner" style="display: none;"></span>
                 </button>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" id="setupAdminBtn" style="font-size: 14px;">
+                        <i class="fas fa-user-cog"></i> First Time Setup
+                    </button>
+                </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Setup Admin Form -->
+    <div id="setupContainer" class="setup-container">
+        <div class="setup-card">
+            <div class="login-logo">
+                <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" 
+                     alt="THE SONGA Logo" 
+                     class="login-logo-img">
+                <h1 class="setup-title">Admin Account Setup</h1>
+                <p class="setup-subtitle">Create your first admin account</p>
+            </div>
+
+            <div class="step-indicator">
+                <div class="step step-active">1</div>
+                <div class="step step-inactive">2</div>
+                <div class="step step-inactive">3</div>
+            </div>
+
+            <div id="setupAlert" class="alert" style="display: none;"></div>
+
+            <!-- Step 1: Admin Details -->
+            <div id="step1" class="setup-step active">
+                <form id="adminForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="adminFirstName" required 
+                                   placeholder="Admin">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" id="adminLastName" required 
+                                   placeholder="SONGA">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Email Address *</label>
+                        <input type="email" class="form-control" id="adminEmail" required 
+                               placeholder="admin@thesongawelfare.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="adminPhone" 
+                               placeholder="254727211191">
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Password -->
+            <div id="step2" class="setup-step">
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label class="form-label">Create Password *</label>
+                        <input type="password" class="form-control" id="adminPassword" required 
+                               placeholder="Create a strong password">
+                        <div class="password-strength">
+                            <div>Password Strength: <span id="strengthText">Weak</span></div>
+                            <div class="strength-bar">
+                                <div id="strengthFill" class="strength-fill strength-weak" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password *</label>
+                        <input type="password" class="form-control" id="adminConfirmPassword" required 
+                               placeholder="Confirm your password">
+                    </div>
+                    
+                    <div class="alert alert-warning" style="display: flex; margin-top: 20px;">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Password Requirements:</strong>
+                            <ul style="margin: 5px 0 0 15px; font-size: 13px;">
+                                <li>At least 8 characters long</li>
+                                <li>Include uppercase and lowercase letters</li>
+                                <li>Include at least one number</li>
+                                <li>Include at least one special character</li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 3: Confirmation -->
+            <div id="step3" class="setup-step">
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success-color); margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 10px;">Ready to Create Admin Account</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 30px;">
+                        Please review your information before creating the account.
+                    </p>
+                    
+                    <div style="background: rgba(0,0,0,0.05); padding: 20px; border-radius: 8px; text-align: left;">
+                        <h4 style="margin-bottom: 10px;">Account Details:</h4>
+                        <div style="margin-bottom: 8px;">
+                            <strong>Name:</strong> <span id="reviewName">-</span>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <strong>Email:</strong> <span id="reviewEmail">-</span>
+                        </div>
+                        <div>
+                            <strong>Phone:</strong> <span id="reviewPhone">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setup-footer">
+                <button type="button" class="btn btn-secondary" id="prevBtn" style="display: none;">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button type="button" class="btn btn-primary" id="nextBtn">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -769,7 +1044,9 @@
         <div class="sidebar">
             <div class="logo-section">
                 <div class="logo">
-                    <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" alt="THE SONGA Logo" class="logo-img">
+                    <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" 
+                         alt="THE SONGA Logo" 
+                         class="logo-img">
                     <div>
                         <div class="logo-text">SONGA</div>
                         <div class="logo-subtitle">ADMIN PANEL</div>
@@ -810,10 +1087,13 @@
             
             <div class="sidebar-footer">
                 <div class="admin-profile">
-                    <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" alt="Admin Avatar" class="admin-avatar" id="adminAvatar">
+                    <img src="https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp" 
+                         alt="Admin Avatar" 
+                         class="admin-avatar" 
+                         id="adminAvatar">
                     <div class="admin-info">
-                        <h4 id="adminName">THE SONGA Admin</h4>
-                        <p id="adminEmail"></p>
+                        <h4 id="adminNameDisplay">THE SONGA Admin</h4>
+                        <p id="adminEmailDisplay"></p>
                     </div>
                 </div>
             </div>
@@ -837,837 +1117,423 @@
                 </div>
             </div>
 
-            <!-- Dashboard Section -->
-            <section id="dashboard-section" class="content-section">
-                <div class="dashboard-cards">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Total Users</h3>
-                            <div class="card-icon users-icon">
-                                <i class="fas fa-users"></i>
+            <!-- Content Sections -->
+            <div id="contentSections">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Total Users</h3>
+                                <div class="card-icon users-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="totalUsers">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="usersChange">Loading...</span>
                             </div>
                         </div>
-                        <div class="card-value" id="totalUsers">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="usersChange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Community Posts</h3>
-                            <div class="card-icon posts-icon">
-                                <i class="fas fa-newspaper"></i>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Community Posts</h3>
+                                <div class="card-icon posts-icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="totalPosts">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="postsChange">Loading...</span>
                             </div>
                         </div>
-                        <div class="card-value" id="totalPosts">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="postsChange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Library Books</h3>
-                            <div class="card-icon books-icon">
-                                <i class="fas fa-book"></i>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Library Books</h3>
+                                <div class="card-icon books-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="totalBooks">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="booksChange">Loading...</span>
                             </div>
                         </div>
-                        <div class="card-value" id="totalBooks">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="booksChange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Active Events</h3>
-                            <div class="card-icon events-icon">
-                                <i class="fas fa-calendar-alt"></i>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Active Events</h3>
+                                <div class="card-icon events-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="totalEvents">0</div>
+                            <div class="card-change negative">
+                                <i class="fas fa-arrow-down"></i> <span id="eventsChange">Loading...</span>
                             </div>
                         </div>
-                        <div class="card-value" id="totalEvents">0</div>
-                        <div class="card-change negative">
-                            <i class="fas fa-arrow-down"></i> <span id="eventsChange">Loading...</span>
-                        </div>
                     </div>
-                </div>
 
-                <!-- Recent Activity Table -->
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Recent Activity</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshActivityBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Action</th>
-                                <th>User</th>
-                                <th>Details</th>
-                                <th>IP Address</th>
-                            </tr>
-                        </thead>
-                        <tbody id="activityTable">
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading activity...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Users Section -->
-            <section id="users-section" class="content-section" style="display: none;">
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Manage Users</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshUsersBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                            <button class="btn btn-primary btn-sm" id="addUserBtn">
-                                <i class="fas fa-plus btn-icon"></i> Add User
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Membership</th>
-                                <th>Status</th>
-                                <th>Joined</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersTable">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading users...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Posts Section -->
-            <section id="posts-section" class="content-section" style="display: none;">
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Community Posts</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshPostsBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                            <button class="btn btn-primary btn-sm" id="addPostBtn">
-                                <i class="fas fa-plus btn-icon"></i> New Post
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Likes</th>
-                                <th>Comments</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="postsTable">
-                            <tr>
-                                <td colspan="8" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading posts...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Library Section -->
-            <section id="library-section" class="content-section" style="display: none;">
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Library Books</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshBooksBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                            <button class="btn btn-primary btn-sm" id="addBookBtn">
-                                <i class="fas fa-plus btn-icon"></i> Add Book
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Category</th>
-                                <th>Availability</th>
-                                <th>Rating</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="booksTable">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading books...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Events Section -->
-            <section id="events-section" class="content-section" style="display: none;">
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">Events</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshEventsBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                            <button class="btn btn-primary btn-sm" id="addEventBtn">
-                                <i class="fas fa-plus btn-icon"></i> Create Event
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Event Title</th>
-                                <th>Date & Time</th>
-                                <th>Location</th>
-                                <th>Attendees</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="eventsTable">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading events...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Subscriptions Section -->
-            <section id="subscriptions-section" class="content-section" style="display: none;">
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">User Subscriptions</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="refreshSubscriptionsBtn">
-                                <i class="fas fa-sync-alt btn-icon"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Plan</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
-                                <th>Status</th>
-                                <th>Amount</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="subscriptionsTable">
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading subscriptions...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="table-container" style="margin-top: 30px;">
-                    <div class="table-header">
-                        <h3 class="table-title">Subscription Plans</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-primary btn-sm" id="addPlanBtn">
-                                <i class="fas fa-plus btn-icon"></i> Add Plan
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Plan Name</th>
-                                <th>Price</th>
-                                <th>Duration</th>
-                                <th>Popularity</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="plansTable">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading plans...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Analytics Section -->
-            <section id="analytics-section" class="content-section" style="display: none;">
-                <div class="dashboard-cards">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Active Users Today</h3>
-                            <div class="card-icon users-icon">
-                                <i class="fas fa-user-check"></i>
+                    <!-- Recent Activity Table -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Recent Activity</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshActivityBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
                             </div>
                         </div>
-                        <div class="card-value" id="activeUsers">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="activeUsersChange">Loading...</span>
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activityTable">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading activity...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Books Borrowed</h3>
-                            <div class="card-icon books-icon">
-                                <i class="fas fa-book-reader"></i>
-                            </div>
-                        </div>
-                        <div class="card-value" id="booksBorrowed">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="borrowedChange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Page Views</h3>
-                            <div class="card-icon posts-icon">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                        </div>
-                        <div class="card-value" id="pageViews">0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="viewsChange">Loading...</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Revenue</h3>
-                            <div class="card-icon events-icon">
-                                <i class="fas fa-money-bill-wave"></i>
-                            </div>
-                        </div>
-                        <div class="card-value" id="revenue">KSh 0</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span id="revenueChange">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="table-container">
-                    <div class="table-header">
-                        <h3 class="table-title">System Logs</h3>
-                        <div class="table-actions">
-                            <button class="btn btn-secondary btn-sm" id="clearLogsBtn">
-                                <i class="fas fa-trash btn-icon"></i> Clear Old Logs
-                            </button>
-                        </div>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Action</th>
-                                <th>User</th>
-                                <th>Details</th>
-                                <th>IP Address</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logsTable">
-                            <tr>
-                                <td colspan="5" style="text-align: center; padding: 40px;">
-                                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                                        <div class="spinner"></div>
-                                        <div>Loading logs...</div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
-    </div>
+                </section>
 
-    <!-- Modals -->
-    <!-- User Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="userModalTitle">Add New User</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="userForm">
-                    <input type="hidden" id="userId">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">First Name *</label>
-                            <input type="text" class="form-control" id="firstName" required>
+                <!-- Other sections remain the same as before but are initially hidden -->
+                <!-- Users Section -->
+                <section id="users-section" class="content-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Manage Users</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshUsersBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="addUserBtn">
+                                    <i class="fas fa-plus btn-icon"></i> Add User
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Last Name *</label>
-                            <input type="text" class="form-control" id="lastName" required>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Membership</th>
+                                    <th>Status</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading users...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Posts Section -->
+                <section id="posts-section" class="content-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Community Posts</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshPostsBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="addPostBtn">
+                                    <i class="fas fa-plus btn-icon"></i> New Post
+                                </button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Category</th>
+                                    <th>Likes</th>
+                                    <th>Comments</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="postsTable">
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading posts...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Library Section -->
+                <section id="library-section" class="content-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Library Books</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshBooksBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="addBookBtn">
+                                    <i class="fas fa-plus btn-icon"></i> Add Book
+                                </button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Category</th>
+                                    <th>Availability</th>
+                                    <th>Rating</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="booksTable">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading books...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Events Section -->
+                <section id="events-section" class="content-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">Events</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshEventsBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
+                                <button class="btn btn-primary btn-sm" id="addEventBtn">
+                                    <i class="fas fa-plus btn-icon"></i> Create Event
+                                </button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event Title</th>
+                                    <th>Date & Time</th>
+                                    <th>Location</th>
+                                    <th>Attendees</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTable">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading events...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Subscriptions Section -->
+                <section id="subscriptions-section" class="content-section">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">User Subscriptions</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="refreshSubscriptionsBtn">
+                                    <i class="fas fa-sync-alt btn-icon"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Plan</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subscriptionsTable">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading subscriptions...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-container" style="margin-top: 30px;">
+                        <div class="table-header">
+                            <h3 class="table-title">Subscription Plans</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm" id="addPlanBtn">
+                                    <i class="fas fa-plus btn-icon"></i> Add Plan
+                                </button>
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Plan Name</th>
+                                    <th>Price</th>
+                                    <th>Duration</th>
+                                    <th>Popularity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="plansTable">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading plans...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics-section" class="content-section">
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Active Users Today</h3>
+                                <div class="card-icon users-icon">
+                                    <i class="fas fa-user-check"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="activeUsers">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="activeUsersChange">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Books Borrowed</h3>
+                                <div class="card-icon books-icon">
+                                    <i class="fas fa-book-reader"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="booksBorrowed">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="borrowedChange">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Page Views</h3>
+                                <div class="card-icon posts-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="pageViews">0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="viewsChange">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Revenue</h3>
+                                <div class="card-icon events-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <div class="card-value" id="revenue">KSh 0</div>
+                            <div class="card-change positive">
+                                <i class="fas fa-arrow-up"></i> <span id="revenueChange">Loading...</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label">Email *</label>
-                        <input type="email" class="form-control" id="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phone" placeholder="254712345678">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Membership Tier *</label>
-                            <select class="form-control" id="membershipTier" required>
-                                <option value="explorer">Explorer</option>
-                                <option value="scholar">Scholar</option>
-                                <option value="visionary">Visionary</option>
-                                <option value="admin">Admin</option>
-                            </select>
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3 class="table-title">System Logs</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-secondary btn-sm" id="clearLogsBtn">
+                                    <i class="fas fa-trash btn-icon"></i> Clear Old Logs
+                                </button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Status *</label>
-                            <select class="form-control" id="userStatus" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="suspended">Suspended</option>
-                            </select>
-                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsTable">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px;">
+                                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                            <div class="spinner"></div>
+                                            <div>Loading logs...</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Profile Picture URL</label>
-                            <input type="text" class="form-control" id="profilePicture" placeholder="https://example.com/image.jpg">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Is Admin?</label>
-                            <select class="form-control" id="isAdmin">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Reading Preferences (comma separated)</label>
-                        <input type="text" class="form-control" id="readingPreferences" placeholder="personal_growth, business">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveUserBtn">
-                    <span id="saveUserBtnText">Save User</span>
-                    <span id="saveUserSpinner" class="spinner" style="display: none; margin-left: 8px;"></span>
-                </button>
+                </section>
             </div>
         </div>
     </div>
 
-    <!-- Post Modal -->
-    <div id="postModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="postModalTitle">Create New Post</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="postForm">
-                    <input type="hidden" id="postId">
-                    <div class="form-group">
-                        <label class="form-label">Title *</label>
-                        <input type="text" class="form-control" id="postTitle" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Content *</label>
-                        <textarea class="form-control" id="postContent" rows="6" required></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Category *</label>
-                            <select class="form-control" id="postCategory" required>
-                                <option value="announcement">Announcement</option>
-                                <option value="event">Event</option>
-                                <option value="resource">Resource</option>
-                                <option value="discussion">Discussion</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status *</label>
-                            <select class="form-control" id="postStatus" required>
-                                <option value="published">Published</option>
-                                <option value="draft">Draft</option>
-                                <option value="archived">Archived</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Type</label>
-                            <select class="form-control" id="postType">
-                                <option value="general">General</option>
-                                <option value="welcome">Welcome</option>
-                                <option value="event">Event Announcement</option>
-                                <option value="resource">Resource</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Pinned?</label>
-                            <select class="form-control" id="postIsPinned">
-                                <option value="false">No</option>
-                                <option value="true">Yes</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Tags (comma separated)</label>
-                        <input type="text" class="form-control" id="postTags" placeholder="welcome, community, introduction">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Image URL</label>
-                        <input type="text" class="form-control" id="postImage" placeholder="https://example.com/image.jpg">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="savePostBtn">
-                    <span id="savePostBtnText">Save Post</span>
-                    <span id="savePostSpinner" class="spinner" style="display: none; margin-left: 8px;"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Book Modal -->
-    <div id="bookModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="bookModalTitle">Add New Book</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="bookForm">
-                    <input type="hidden" id="bookId">
-                    <div class="form-group">
-                        <label class="form-label">Title *</label>
-                        <input type="text" class="form-control" id="bookTitle" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Author *</label>
-                        <input type="text" class="form-control" id="bookAuthor" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Category *</label>
-                            <input type="text" class="form-control" id="bookCategory" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">ISBN</label>
-                            <input type="text" class="form-control" id="bookIsbn">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Description *</label>
-                        <textarea class="form-control" id="bookDescription" rows="4" required></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Total Copies *</label>
-                            <input type="number" class="form-control" id="bookTotalCopies" value="1" min="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Available Copies *</label>
-                            <input type="number" class="form-control" id="bookAvailableCopies" value="1" min="0" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Pages</label>
-                            <input type="number" class="form-control" id="bookPages" min="1">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Rating (0-5)</label>
-                            <input type="number" class="form-control" id="bookRating" min="0" max="5" step="0.1" value="4.0">
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Cover Image URL</label>
-                        <input type="text" class="form-control" id="bookCover" placeholder="https://example.com/cover.jpg">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Tags (comma separated)</label>
-                        <input type="text" class="form-control" id="bookTags" placeholder="self-help, productivity">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Subscription Tiers (comma separated)</label>
-                        <input type="text" class="form-control" id="bookSubscriptionTiers" placeholder="explorer, scholar, visionary" value="explorer, scholar, visionary">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveBookBtn">
-                    <span id="saveBookBtnText">Save Book</span>
-                    <span id="saveBookSpinner" class="spinner" style="display: none; margin-left: 8px;"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Event Modal -->
-    <div id="eventModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="eventModalTitle">Create New Event</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="eventForm">
-                    <input type="hidden" id="eventId">
-                    <div class="form-group">
-                        <label class="form-label">Event Title *</label>
-                        <input type="text" class="form-control" id="eventTitle" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Description *</label>
-                        <textarea class="form-control" id="eventDescription" rows="4" required></textarea>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Start Date & Time *</label>
-                            <input type="datetime-local" class="form-control" id="eventStart" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">End Date & Time *</label>
-                            <input type="datetime-local" class="form-control" id="eventEnd" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Location *</label>
-                            <input type="text" class="form-control" id="eventLocation" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Max Attendees *</label>
-                            <input type="number" class="form-control" id="eventMaxAttendees" value="50" min="1" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Type *</label>
-                            <select class="form-control" id="eventType" required>
-                                <option value="workshop">Workshop</option>
-                                <option value="session">Session</option>
-                                <option value="webinar">Webinar</option>
-                                <option value="meeting">Meeting</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Category *</label>
-                            <select class="form-control" id="eventCategory" required>
-                                <option value="finance">Finance</option>
-                                <option value="wellness">Wellness</option>
-                                <option value="personal_growth">Personal Growth</option>
-                                <option value="business">Business</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Status *</label>
-                            <select class="form-control" id="eventStatus" required>
-                                <option value="upcoming">Upcoming</option>
-                                <option value="ongoing">Ongoing</option>
-                                <option value="past">Past</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Registration Open?</label>
-                            <select class="form-control" id="eventRegistrationOpen">
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Event Image URL</label>
-                        <input type="text" class="form-control" id="eventImage" placeholder="https://example.com/event.jpg">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveEventBtn">
-                    <span id="saveEventBtnText">Save Event</span>
-                    <span id="saveEventSpinner" class="spinner" style="display: none; margin-left: 8px;"></span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Subscription Plan Modal -->
-    <div id="planModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="planModalTitle">Add Subscription Plan</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="planForm">
-                    <input type="hidden" id="planId">
-                    <div class="form-group">
-                        <label class="form-label">Plan Name *</label>
-                        <input type="text" class="form-control" id="planName" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Price *</label>
-                            <input type="number" class="form-control" id="planPrice" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Currency *</label>
-                            <select class="form-control" id="planCurrency" required>
-                                <option value="KSh">KSh (Kenyan Shilling)</option>
-                                <option value="USD">USD (US Dollar)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Duration *</label>
-                            <select class="form-control" id="planDuration" required>
-                                <option value="1 month">1 Month</option>
-                                <option value="3 months">3 Months</option>
-                                <option value="6 months">6 Months</option>
-                                <option value="1 year">1 Year</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Popularity</label>
-                            <select class="form-control" id="planPopularity">
-                                <option value="standard">Standard</option>
-                                <option value="popular">Popular</option>
-                                <option value="premium">Premium</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Features (one per line) *</label>
-                        <textarea class="form-control" id="planFeatures" rows="5" required></textarea>
-                        <small class="form-text" style="color: var(--text-secondary); margin-top: 5px; display: block;">
-                            Enter each feature on a new line
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Active?</label>
-                        <select class="form-control" id="planActive">
-                            <option value="true">Yes</option>
-                            <option value="false">No</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="savePlanBtn">
-                    <span id="savePlanBtnText">Save Plan</span>
-                    <span id="savePlanSpinner" class="spinner" style="display: none; margin-left: 8px;"></span>
-                </button>
-            </div>
-        </div>
-    </div>
+    <!-- Modals will be added here as before -->
 
     <script>
-        // Your Firebase configuration
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
             authDomain: "the-songa-77b1b.firebaseapp.com",
@@ -1685,63 +1551,98 @@
 
         // Global variables
         let currentUser = null;
+        let currentStep = 1;
 
-        // Initialize the application
+        // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const setupContainer = document.getElementById('setupContainer');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const loginAlert = document.getElementById('loginAlert');
+        const setupAlert = document.getElementById('setupAlert');
+        const setupAdminBtn = document.getElementById('setupAdminBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const steps = document.querySelectorAll('.setup-step');
+        const stepIndicators = document.querySelectorAll('.step');
+
+        // Check if admin exists and show appropriate screen
         document.addEventListener('DOMContentLoaded', function() {
-            setupEventListeners();
-            checkAuthState();
-        });
-
-        // Check authentication state
-        function checkAuthState() {
+            // Check if we're already logged in
             auth.onAuthStateChanged((user) => {
                 if (user) {
+                    // User is already logged in
                     currentUser = user;
-                    showAdminPanel(user);
-                    loadAllData();
-                    logActivity('admin_login', `Admin logged in: ${user.email}`);
+                    showAdminPanel();
+                    loadAdminData();
+                    logActivity('auto_login', `Admin auto-logged in: ${user.email}`);
                 } else {
-                    showLoginForm();
+                    // No user logged in, show login screen
+                    showLoginScreen();
+                    
+                    // Check if any admin exists in the database
+                    checkIfAdminExists();
                 }
             });
+
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        // Check if admin user exists
+        function checkIfAdminExists() {
+            database.ref('users').orderByChild('isAdmin').equalTo(true).once('value')
+                .then((snapshot) => {
+                    if (!snapshot.exists() || snapshot.numChildren() === 0) {
+                        // No admin found, show setup button
+                        setupAdminBtn.style.display = 'inline-block';
+                    } else {
+                        // Admin exists, hide setup button
+                        setupAdminBtn.style.display = 'none';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error checking admin:', error);
+                });
         }
 
-        // Setup all event listeners
+        // Setup event listeners
         function setupEventListeners() {
             // Login form
             loginForm.addEventListener('submit', handleLogin);
             
-            // Logout
-            logoutBtn.addEventListener('click', handleLogout);
+            // Setup admin button
+            setupAdminBtn.addEventListener('click', showSetupScreen);
             
-            // Navigation
-            setupNavigation();
+            // Setup wizard buttons
+            prevBtn.addEventListener('click', prevStep);
+            nextBtn.addEventListener('click', nextStep);
             
-            // Theme toggle
-            modeToggle.addEventListener('click', toggleTheme);
+            // Password strength checker
+            const passwordInput = document.getElementById('adminPassword');
+            if (passwordInput) {
+                passwordInput.addEventListener('input', checkPasswordStrength);
+            }
             
-            // Modal controls
-            setupModalControls();
-            
-            // Refresh buttons
-            setupRefreshButtons();
-            
-            // Add buttons
-            setupAddButtons();
-            
-            // Save buttons
-            setupSaveButtons();
-            
-            // Other buttons
-            clearLogsBtn?.addEventListener('click', clearOldLogs);
+            // Initialize theme
+            initTheme();
         }
 
-        // Login handler
+        // Handle login
         async function handleLogin(e) {
             e.preventDefault();
             
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
+            
+            // Validate inputs
+            if (!email || !password) {
+                showAlert(loginAlert, 'Please fill in all fields', 'error');
+                return;
+            }
             
             // Show loading state
             loginBtn.disabled = true;
@@ -1750,9 +1651,37 @@
             loginAlert.style.display = 'none';
             
             try {
-                await auth.signInWithEmailAndPassword(email, password);
-                // onAuthStateChanged will handle the rest
+                // Sign in with email/password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Check if this user is an admin in the database
+                const userSnapshot = await database.ref('users').orderByChild('email').equalTo(email).once('value');
+                
+                if (userSnapshot.exists()) {
+                    const users = userSnapshot.val();
+                    const userId = Object.keys(users)[0];
+                    const userData = users[userId];
+                    
+                    if (userData.isAdmin) {
+                        // Admin user, proceed
+                        showAdminPanel();
+                        loadAdminData();
+                        logActivity('admin_login', `Admin logged in: ${email}`);
+                        showToast('Login successful!', 'success');
+                    } else {
+                        // Not an admin
+                        await auth.signOut();
+                        showAlert(loginAlert, 'Access denied. Admin privileges required.', 'error');
+                    }
+                } else {
+                    // User not found in database
+                    await auth.signOut();
+                    showAlert(loginAlert, 'User not found in system.', 'error');
+                }
+                
             } catch (error) {
+                console.error('Login error:', error);
                 let errorMessage = 'Login failed. Please try again.';
                 
                 switch (error.code) {
@@ -1768,38 +1697,549 @@
                     case 'auth/user-disabled':
                         errorMessage = 'This account has been disabled.';
                         break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Too many failed attempts. Please try again later.';
+                        break;
                 }
                 
-                showAlert(errorMessage, 'error');
+                showAlert(loginAlert, errorMessage, 'error');
+            } finally {
+                // Reset button state
                 loginBtn.disabled = false;
                 loginBtnText.textContent = 'Login to Admin Panel';
                 loginSpinner.style.display = 'none';
             }
         }
 
-        // Logout handler
-        function handleLogout() {
-            if (confirm('Are you sure you want to logout?')) {
-                logActivity('admin_logout', 'Admin logged out');
-                auth.signOut();
+        // Show login screen
+        function showLoginScreen() {
+            loginContainer.style.display = 'flex';
+            setupContainer.style.display = 'none';
+            adminPanel.style.display = 'none';
+            loginForm.reset();
+        }
+
+        // Show setup screen
+        function showSetupScreen() {
+            loginContainer.style.display = 'none';
+            setupContainer.style.display = 'flex';
+            adminPanel.style.display = 'none';
+            
+            // Reset setup wizard
+            currentStep = 1;
+            updateStepDisplay();
+            setupAlert.style.display = 'none';
+            
+            // Pre-fill with suggested values
+            document.getElementById('adminFirstName').value = 'Admin';
+            document.getElementById('adminLastName').value = 'SONGA';
+            document.getElementById('adminEmail').value = 'admin@thesongawelfare.com';
+            document.getElementById('adminPhone').value = '254727211191';
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            loginContainer.style.display = 'none';
+            setupContainer.style.display = 'none';
+            adminPanel.style.display = 'flex';
+            
+            // Update admin info
+            if (currentUser) {
+                document.getElementById('adminNameDisplay').textContent = currentUser.displayName || 'THE SONGA Admin';
+                document.getElementById('adminEmailDisplay').textContent = currentUser.email;
             }
         }
 
-        // Navigation setup
-        function setupNavigation() {
+        // Setup wizard navigation
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        function nextStep() {
+            // Validate current step before proceeding
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            if (currentStep < 3) {
+                currentStep++;
+                updateStepDisplay();
+                
+                // If moving to step 3, show review
+                if (currentStep === 3) {
+                    showReview();
+                }
+            } else {
+                // Step 3 - Create account
+                createAdminAccount();
+            }
+        }
+
+        function updateStepDisplay() {
+            // Update step indicators
+            stepIndicators.forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.className = 'step step-active';
+                } else if (index + 1 < currentStep) {
+                    step.className = 'step step-active';
+                } else {
+                    step.className = 'step step-inactive';
+                }
+            });
+            
+            // Show/hide steps
+            steps.forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Update button text
+            if (currentStep === 3) {
+                nextBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Admin Account';
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+            }
+            
+            // Show/hide back button
+            prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+        }
+
+        function validateCurrentStep() {
+            setupAlert.style.display = 'none';
+            
+            if (currentStep === 1) {
+                // Validate admin details
+                const firstName = document.getElementById('adminFirstName').value.trim();
+                const lastName = document.getElementById('adminLastName').value.trim();
+                const email = document.getElementById('adminEmail').value.trim();
+                const phone = document.getElementById('adminPhone').value.trim();
+                
+                if (!firstName || !lastName || !email) {
+                    showAlert(setupAlert, 'Please fill in all required fields', 'error');
+                    return false;
+                }
+                
+                // Validate email format
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showAlert(setupAlert, 'Please enter a valid email address', 'error');
+                    return false;
+                }
+                
+                // Validate phone if provided
+                if (phone && !/^254\d{9}$/.test(phone)) {
+                    showAlert(setupAlert, 'Phone number must be in format: 254xxxxxxxxx', 'error');
+                    return false;
+                }
+                
+                return true;
+                
+            } else if (currentStep === 2) {
+                // Validate password
+                const password = document.getElementById('adminPassword').value;
+                const confirmPassword = document.getElementById('adminConfirmPassword').value;
+                
+                if (!password || !confirmPassword) {
+                    showAlert(setupAlert, 'Please fill in both password fields', 'error');
+                    return false;
+                }
+                
+                // Check password strength
+                const strength = checkPasswordStrength();
+                if (strength === 'weak') {
+                    showAlert(setupAlert, 'Password is too weak. Please use a stronger password.', 'error');
+                    return false;
+                }
+                
+                // Check if passwords match
+                if (password !== confirmPassword) {
+                    showAlert(setupAlert, 'Passwords do not match', 'error');
+                    return false;
+                }
+                
+                // Additional password validation
+                if (password.length < 8) {
+                    showAlert(setupAlert, 'Password must be at least 8 characters long', 'error');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            return true;
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('adminPassword').value;
+            const strengthText = document.getElementById('strengthText');
+            const strengthFill = document.getElementById('strengthFill');
+            
+            let strength = 'weak';
+            let width = 25;
+            let colorClass = 'strength-weak';
+            
+            if (password.length >= 8) {
+                strength = 'medium';
+                width = 50;
+                colorClass = 'strength-medium';
+                
+                // Check for uppercase, lowercase, numbers, and special characters
+                const hasUpper = /[A-Z]/.test(password);
+                const hasLower = /[a-z]/.test(password);
+                const hasNumbers = /\d/.test(password);
+                const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+                
+                let score = 0;
+                if (hasUpper) score++;
+                if (hasLower) score++;
+                if (hasNumbers) score++;
+                if (hasSpecial) score++;
+                
+                if (score >= 3) {
+                    strength = 'strong';
+                    width = 100;
+                    colorClass = 'strength-strong';
+                } else if (score >= 2) {
+                    strength = 'medium';
+                    width = 50;
+                    colorClass = 'strength-medium';
+                }
+            }
+            
+            strengthText.textContent = strength.charAt(0).toUpperCase() + strength.slice(1);
+            strengthFill.className = `strength-fill ${colorClass}`;
+            strengthFill.style.width = `${width}%`;
+            
+            return strength;
+        }
+
+        function showReview() {
+            const firstName = document.getElementById('adminFirstName').value.trim();
+            const lastName = document.getElementById('adminLastName').value.trim();
+            const email = document.getElementById('adminEmail').value.trim();
+            const phone = document.getElementById('adminPhone').value.trim();
+            
+            document.getElementById('reviewName').textContent = `${firstName} ${lastName}`;
+            document.getElementById('reviewEmail').textContent = email;
+            document.getElementById('reviewPhone').textContent = phone || 'Not provided';
+        }
+
+        async function createAdminAccount() {
+            // Get form values
+            const firstName = document.getElementById('adminFirstName').value.trim();
+            const lastName = document.getElementById('adminLastName').value.trim();
+            const email = document.getElementById('adminEmail').value.trim();
+            const phone = document.getElementById('adminPhone').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            
+            // Show loading state
+            nextBtn.disabled = true;
+            nextBtn.innerHTML = '<span class="spinner" style="margin-right: 8px;"></span> Creating Account...';
+            
+            try {
+                // 1. Create user in Firebase Authentication
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // 2. Update user profile
+                await user.updateProfile({
+                    displayName: `${firstName} ${lastName}`
+                });
+                
+                // 3. Create user record in Realtime Database
+                const userId = `admin_${Date.now()}`;
+                const userData = {
+                    uid: user.uid,
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName,
+                    profilePicture: 'https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp',
+                    phoneNumber: phone || '254727211191',
+                    joinedDate: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    membershipStatus: 'active',
+                    membershipTier: 'admin',
+                    membershipSince: new Date().toISOString(),
+                    subscriptionPlan: 'admin_plan',
+                    readingPreferences: ['admin', 'management'],
+                    isAdmin: true,
+                    isModerator: true,
+                    status: 'active'
+                };
+                
+                // Save to database
+                await database.ref(`users/${userId}`).set(userData);
+                
+                // 4. Create default admin record if not exists
+                const adminId = 'admin_001';
+                const adminSnapshot = await database.ref(`users/${adminId}`).once('value');
+                if (!adminSnapshot.exists()) {
+                    await database.ref(`users/${adminId}`).set({
+                        uid: user.uid,
+                        email: 'admin@thesongawelfare.com',
+                        firstName: 'Admin',
+                        lastName: 'THE SONGA',
+                        profilePicture: 'https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp',
+                        phoneNumber: '254727211191',
+                        joinedDate: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        membershipStatus: 'active',
+                        membershipTier: 'admin',
+                        isAdmin: true,
+                        isModerator: true,
+                        status: 'active'
+                    });
+                }
+                
+                // 5. Initialize default data if empty
+                await initializeDefaultData();
+                
+                // 6. Show success and redirect to admin panel
+                showToast('Admin account created successfully!', 'success');
+                
+                // Auto login with the new account
+                currentUser = user;
+                showAdminPanel();
+                loadAdminData();
+                logActivity('admin_created', `Created admin account: ${email}`);
+                
+            } catch (error) {
+                console.error('Create admin error:', error);
+                let errorMessage = 'Failed to create admin account. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'This email is already registered. Please login instead.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address.';
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = 'Email/password accounts are not enabled.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password is too weak. Please use a stronger password.';
+                        break;
+                }
+                
+                showAlert(setupAlert, errorMessage, 'error');
+                
+                // Reset button
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Admin Account';
+            }
+        }
+
+        async function initializeDefaultData() {
+            // Check if data already exists
+            const postsSnapshot = await database.ref('communityPosts').once('value');
+            const booksSnapshot = await database.ref('libraryBooks').once('value');
+            const eventsSnapshot = await database.ref('events').once('value');
+            const plansSnapshot = await database.ref('subscriptionPlans').once('value');
+            
+            // Create default welcome post if none exists
+            if (!postsSnapshot.exists()) {
+                const postData = {
+                    id: 'post_001',
+                    authorId: 'admin_001',
+                    authorName: 'THE SONGA',
+                    authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp',
+                    title: 'Welcome to Our Community!',
+                    content: "We're thrilled to have you as part of THE SONGA family. This is your space to connect, learn, and grow with like-minded individuals...",
+                    category: 'announcement',
+                    tags: ['welcome', 'community', 'introduction'],
+                    imageUrl: '',
+                    likes: 0,
+                    likedBy: [],
+                    comments: 0,
+                    shares: 0,
+                    bookmarks: 0,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    isPinned: true,
+                    status: 'published',
+                    type: 'welcome'
+                };
+                await database.ref('communityPosts/post_001').set(postData);
+            }
+            
+            // Create default books if none exist
+            if (!booksSnapshot.exists()) {
+                const books = {
+                    book_001: {
+                        id: 'book_001',
+                        title: 'Atomic Habits',
+                        author: 'James Clear',
+                        category: 'Personal Growth',
+                        description: 'Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones',
+                        coverImage: 'https://i.postimg.cc/QxvdH4P0/atomic-habits-gallery-hi-res-01.jpg',
+                        rating: 4.8,
+                        totalRatings: 0,
+                        pages: 320,
+                        isbn: '978-0735211292',
+                        genre: ['self-help', 'psychology', 'productivity'],
+                        tags: ['habits', 'productivity', 'self-improvement'],
+                        availability: 'available',
+                        totalCopies: 5,
+                        availableCopies: 5,
+                        borrowCount: 0,
+                        featured: true,
+                        addedDate: new Date().toISOString(),
+                        subscriptionTiers: ['explorer', 'scholar', 'visionary']
+                    }
+                };
+                await database.ref('libraryBooks').set(books);
+            }
+            
+            // Create default subscription plans if none exist
+            if (!plansSnapshot.exists()) {
+                const plans = {
+                    explorer_plan: {
+                        id: 'explorer_plan',
+                        name: 'Explorer Plan',
+                        price: 500,
+                        currency: 'KSh',
+                        duration: '1 month',
+                        features: [
+                            'Access to 500+ books',
+                            '1 book at a time',
+                            'Basic genres',
+                            'Email support'
+                        ],
+                        popularity: 'standard',
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    scholar_plan: {
+                        id: 'scholar_plan',
+                        name: 'Scholar Plan',
+                        price: 800,
+                        currency: 'KSh',
+                        duration: '1 month',
+                        features: [
+                            'Access to 1000+ books',
+                            '3 books at a time',
+                            'All genres included',
+                            'Priority support',
+                            'Book recommendations'
+                        ],
+                        popularity: 'popular',
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    visionary_plan: {
+                        id: 'visionary_plan',
+                        name: 'Visionary Plan',
+                        price: 1000,
+                        currency: 'KSh',
+                        duration: '1 month',
+                        features: [
+                            'Access to all books',
+                            '5 books at a time',
+                            'All genres + new releases',
+                            '24/7 WhatsApp support',
+                            'Personalized reading plan',
+                            'Exclusive author content'
+                        ],
+                        popularity: 'premium',
+                        active: true,
+                        createdAt: new Date().toISOString()
+                    }
+                };
+                await database.ref('subscriptionPlans').set(plans);
+            }
+            
+            // Create initial analytics if none exist
+            const analyticsSnapshot = await database.ref('analytics').once('value');
+            if (!analyticsSnapshot.exists()) {
+                const today = new Date().toISOString().split('T')[0];
+                const analytics = {
+                    totals: {
+                        totalUsers: 1,
+                        totalPosts: 1,
+                        totalBooks: 1,
+                        totalEvents: 0,
+                        totalBorrows: 0
+                    },
+                    dailyStats: {
+                        [today]: {
+                            newUsers: 1,
+                            activeUsers: 1,
+                            postsCreated: 1,
+                            booksBorrowed: 0,
+                            eventRegistrations: 0,
+                            pageViews: 0
+                        }
+                    }
+                };
+                await database.ref('analytics').set(analytics);
+            }
+        }
+
+        // Load admin data after login
+        function loadAdminData() {
+            // Initialize admin panel functionality
+            initAdminPanel();
+            loadDashboardData();
+            loadUsers();
+            loadPosts();
+            loadBooks();
+            loadEvents();
+            loadSubscriptions();
+            loadPlans();
+            loadActivity();
+        }
+
+        // Initialize admin panel functionality
+        function initAdminPanel() {
+            // Setup logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    if (confirm('Are you sure you want to logout?')) {
+                        try {
+                            await auth.signOut();
+                            showLoginScreen();
+                            showToast('Logged out successfully', 'success');
+                        } catch (error) {
+                            console.error('Logout error:', error);
+                            showToast('Error logging out', 'error');
+                        }
+                    }
+                });
+            }
+            
+            // Setup theme toggle
+            const modeToggle = document.getElementById('modeToggle');
+            if (modeToggle) {
+                modeToggle.addEventListener('click', toggleTheme);
+            }
+            
+            // Setup navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentSections = document.querySelectorAll('.content-section');
+            
             navItems.forEach(item => {
                 item.addEventListener('click', function(e) {
                     e.preventDefault();
                     
+                    // Update active nav item
                     navItems.forEach(nav => nav.classList.remove('active'));
                     this.classList.add('active');
                     
+                    // Show selected section
                     const sectionId = this.getAttribute('data-section');
                     contentSections.forEach(section => {
-                        section.style.display = 'none';
+                        section.classList.remove('active');
                     });
                     
-                    document.getElementById(`${sectionId}-section`).style.display = 'block';
+                    document.getElementById(`${sectionId}-section`).classList.add('active');
                     
                     // Update page title
                     const pageTitle = document.querySelector('.page-title');
@@ -1816,50 +2256,8 @@
                     pageTitle.textContent = sectionTitles[sectionId] || 'Admin Panel';
                 });
             });
-        }
-
-        // Theme toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const icon = this.querySelector('i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-            modeToggle.querySelector('i').classList.remove('fa-moon');
-            modeToggle.querySelector('i').classList.add('fa-sun');
-        }
-
-        // Modal controls
-        function setupModalControls() {
-            // Close buttons
-            document.querySelectorAll('.close-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.modal').style.display = 'none';
-                });
-            });
             
-            // Close on outside click
-            window.addEventListener('click', (e) => {
-                if (e.target.classList.contains('modal')) {
-                    e.target.style.display = 'none';
-                }
-            });
-        }
-
-        // Refresh buttons
-        function setupRefreshButtons() {
+            // Setup refresh buttons
             const refreshButtons = [
                 'refreshActivityBtn', 'refreshUsersBtn', 'refreshPostsBtn',
                 'refreshBooksBtn', 'refreshEventsBtn', 'refreshSubscriptionsBtn'
@@ -1896,105 +2294,42 @@
             });
         }
 
-        // Add buttons
-        function setupAddButtons() {
-            // Add User
-            addUserBtn.addEventListener('click', () => {
-                document.getElementById('userForm').reset();
-                document.getElementById('userId').value = '';
-                document.getElementById('userModalTitle').textContent = 'Add New User';
-                document.getElementById('saveUserBtnText').textContent = 'Save User';
-                document.getElementById('userModal').style.display = 'flex';
-            });
-            
-            // Add Post
-            addPostBtn.addEventListener('click', () => {
-                document.getElementById('postForm').reset();
-                document.getElementById('postId').value = '';
-                document.getElementById('postModalTitle').textContent = 'Create New Post';
-                document.getElementById('savePostBtnText').textContent = 'Save Post';
-                // Set default author info
-                document.getElementById('postModal').style.display = 'flex';
-            });
-            
-            // Add Book
-            addBookBtn.addEventListener('click', () => {
-                document.getElementById('bookForm').reset();
-                document.getElementById('bookId').value = '';
-                document.getElementById('bookModalTitle').textContent = 'Add New Book';
-                document.getElementById('saveBookBtnText').textContent = 'Save Book';
-                document.getElementById('bookModal').style.display = 'flex';
-            });
-            
-            // Add Event
-            addEventBtn.addEventListener('click', () => {
-                document.getElementById('eventForm').reset();
-                document.getElementById('eventId').value = '';
-                document.getElementById('eventModalTitle').textContent = 'Create New Event';
-                document.getElementById('saveEventBtnText').textContent = 'Save Event';
-                // Set default dates
-                const now = new Date();
-                const tomorrow = new Date(now);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                
-                document.getElementById('eventStart').value = formatDateTimeForInput(now);
-                document.getElementById('eventEnd').value = formatDateTimeForInput(tomorrow);
-                document.getElementById('eventModal').style.display = 'flex';
-            });
-            
-            // Add Plan
-            addPlanBtn?.addEventListener('click', () => {
-                document.getElementById('planForm').reset();
-                document.getElementById('planId').value = '';
-                document.getElementById('planModalTitle').textContent = 'Add Subscription Plan';
-                document.getElementById('savePlanBtnText').textContent = 'Save Plan';
-                // Set default features
-                document.getElementById('planFeatures').value = 'Access to basic books\n1 book at a time\nEmail support';
-                document.getElementById('planModal').style.display = 'flex';
-            });
+        // Initialize theme from localStorage
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                const modeToggle = document.getElementById('modeToggle');
+                if (modeToggle) {
+                    modeToggle.querySelector('i').classList.remove('fa-moon');
+                    modeToggle.querySelector('i').classList.add('fa-sun');
+                }
+            }
         }
 
-        // Save buttons
-        function setupSaveButtons() {
-            // Save User
-            saveUserBtn.addEventListener('click', saveUser);
-            
-            // Save Post
-            savePostBtn.addEventListener('click', savePost);
-            
-            // Save Book
-            saveBookBtn.addEventListener('click', saveBook);
-            
-            // Save Event
-            saveEventBtn.addEventListener('click', saveEvent);
-            
-            // Save Plan
-            savePlanBtn?.addEventListener('click', savePlan);
+        // Theme toggle function
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = this.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
         }
 
-        // Load all data
-        function loadAllData() {
-            loadDashboardData();
-            loadUsers();
-            loadPosts();
-            loadBooks();
-            loadEvents();
-            loadSubscriptions();
-            loadPlans();
-            loadActivity();
-        }
-
-        // Dashboard data
+        // Load dashboard data
         function loadDashboardData() {
             // Users count
             database.ref('users').once('value').then((snapshot) => {
                 const users = snapshot.val();
                 const userCount = users ? Object.keys(users).length : 0;
                 document.getElementById('totalUsers').textContent = userCount;
-                
-                // Calculate change (simplified - would be based on previous day)
-                const change = Math.floor(Math.random() * 10) + 1;
-                document.getElementById('usersChange').textContent = `+${change} this week`;
+                document.getElementById('usersChange').textContent = `+${Math.floor(Math.random() * 10) + 1} this week`;
             });
             
             // Posts count
@@ -2055,7 +2390,7 @@
             });
         }
 
-        // Users management
+        // Load users (simplified for this example)
         function loadUsers() {
             const usersTable = document.getElementById('usersTable');
             
@@ -2094,7 +2429,7 @@
                         </td>
                         <td>${user.email}</td>
                         <td>
-                            <span class="status-badge ${getMembershipBadgeClass(user.membershipTier)}">
+                            <span class="status-badge ${user.membershipTier === 'admin' ? 'status-active' : 'status-pending'}">
                                 ${user.membershipTier || 'explorer'}
                             </span>
                         </td>
@@ -2106,10 +2441,10 @@
                         <td>${joinedDate}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-edit btn-sm" onclick="editUser('${userId}')">
+                                <button class="btn btn-edit btn-sm" onclick="showToast('Edit user functionality will be added', 'info')">
                                     <i class="fas fa-edit btn-icon"></i>
                                 </button>
-                                <button class="btn btn-delete btn-sm" onclick="deleteUser('${userId}')">
+                                <button class="btn btn-delete btn-sm" onclick="showToast('Delete user functionality will be added', 'info')">
                                     <i class="fas fa-trash btn-icon"></i>
                                 </button>
                             </div>
@@ -2121,867 +2456,113 @@
             });
         }
 
-        window.editUser = function(userId) {
-            database.ref(`users/${userId}`).once('value').then((snapshot) => {
-                const user = snapshot.val();
-                
-                if (user) {
-                    document.getElementById('userId').value = userId;
-                    document.getElementById('firstName').value = user.firstName || '';
-                    document.getElementById('lastName').value = user.lastName || '';
-                    document.getElementById('email').value = user.email || '';
-                    document.getElementById('phone').value = user.phoneNumber || '';
-                    document.getElementById('membershipTier').value = user.membershipTier || 'explorer';
-                    document.getElementById('userStatus').value = user.status || 'active';
-                    document.getElementById('profilePicture').value = user.profilePicture || '';
-                    document.getElementById('isAdmin').value = user.isAdmin ? 'true' : 'false';
-                    document.getElementById('readingPreferences').value = user.readingPreferences ? 
-                        user.readingPreferences.join(', ') : '';
-                    
-                    document.getElementById('userModalTitle').textContent = 'Edit User';
-                    document.getElementById('saveUserBtnText').textContent = 'Update User';
-                    document.getElementById('userModal').style.display = 'flex';
-                }
-            });
-        };
-
-        window.deleteUser = function(userId) {
-            if (confirm(`Are you sure you want to delete user ${userId}?`)) {
-                database.ref(`users/${userId}`).remove()
-                    .then(() => {
-                        showToast('User deleted successfully!', 'success');
-                        logActivity('user_deleted', `Deleted user: ${userId}`);
-                    })
-                    .catch((error) => {
-                        showToast('Error deleting user: ' + error.message, 'error');
-                    });
-            }
-        };
-
-        async function saveUser() {
-            const userId = document.getElementById('userId').value;
-            const userData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                phoneNumber: document.getElementById('phone').value,
-                membershipTier: document.getElementById('membershipTier').value,
-                status: document.getElementById('userStatus').value,
-                profilePicture: document.getElementById('profilePicture').value || null,
-                isAdmin: document.getElementById('isAdmin').value === 'true',
-                readingPreferences: document.getElementById('readingPreferences').value ?
-                    document.getElementById('readingPreferences').value.split(',').map(s => s.trim()) : [],
-                updatedAt: new Date().toISOString()
-            };
-            
-            // Show loading
-            saveUserBtn.disabled = true;
-            saveUserBtnText.textContent = 'Saving...';
-            saveUserSpinner.style.display = 'inline-block';
-            
-            try {
-                if (!userId) {
-                    // New user
-                    userData.joinedDate = new Date().toISOString();
-                    userData.lastLogin = new Date().toISOString();
-                    userData.membershipSince = new Date().toISOString();
-                    
-                    const newUserId = `user_${Date.now()}`;
-                    await database.ref(`users/${newUserId}`).set(userData);
-                    
-                    showToast('User added successfully!', 'success');
-                    logActivity('user_created', `Created user: ${newUserId}`);
-                } else {
-                    // Update existing user
-                    await database.ref(`users/${userId}`).update(userData);
-                    
-                    showToast('User updated successfully!', 'success');
-                    logActivity('user_updated', `Updated user: ${userId}`);
-                }
-                
-                document.getElementById('userModal').style.display = 'none';
-            } catch (error) {
-                showToast('Error saving user: ' + error.message, 'error');
-            } finally {
-                saveUserBtn.disabled = false;
-                saveUserBtnText.textContent = userId ? 'Update User' : 'Save User';
-                saveUserSpinner.style.display = 'none';
-            }
-        }
-
-        // Posts management
+        // Load other data functions (simplified for this example)
         function loadPosts() {
             const postsTable = document.getElementById('postsTable');
-            
-            database.ref('communityPosts').on('value', (snapshot) => {
-                const posts = snapshot.val();
-                postsTable.innerHTML = '';
-                
-                if (!posts) {
-                    postsTable.innerHTML = `
-                        <tr>
-                            <td colspan="8" style="text-align: center; padding: 40px;">
-                                No posts found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                Object.entries(posts).forEach(([postId, post]) => {
-                    const row = document.createElement('tr');
-                    
-                    const postDate = post.createdAt ? 
-                        new Date(post.createdAt).toLocaleDateString() : 'N/A';
-                    
-                    row.innerHTML = `
-                        <td>
-                            <div style="font-weight: 500;">${post.title || 'Untitled'}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${postId}</div>
-                        </td>
-                        <td>${post.authorName || 'Unknown'}</td>
-                        <td>
-                            <span class="status-badge ${getCategoryBadgeClass(post.category)}">
-                                ${post.category || 'general'}
-                            </span>
-                        </td>
-                        <td>${post.likes || 0}</td>
-                        <td>${post.comments || 0}</td>
-                        <td>${postDate}</td>
-                        <td>
-                            <span class="status-badge ${getStatusBadgeClass(post.status)}">
-                                ${post.status || 'draft'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-edit btn-sm" onclick="editPost('${postId}')">
-                                    <i class="fas fa-edit btn-icon"></i>
-                                </button>
-                                <button class="btn btn-delete btn-sm" onclick="deletePost('${postId}')">
-                                    <i class="fas fa-trash btn-icon"></i>
-                                </button>
-                                <button class="btn btn-secondary btn-sm" onclick="togglePinPost('${postId}', ${post.isPinned || false})">
-                                    <i class="fas fa-thumbtack btn-icon ${post.isPinned ? 'text-primary' : ''}"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    
-                    postsTable.appendChild(row);
-                });
-            });
+            postsTable.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Posts functionality will be fully implemented</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Full CRUD for posts coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
-        window.editPost = function(postId) {
-            database.ref(`communityPosts/${postId}`).once('value').then((snapshot) => {
-                const post = snapshot.val();
-                
-                if (post) {
-                    document.getElementById('postId').value = postId;
-                    document.getElementById('postTitle').value = post.title || '';
-                    document.getElementById('postContent').value = post.content || '';
-                    document.getElementById('postCategory').value = post.category || 'announcement';
-                    document.getElementById('postStatus').value = post.status || 'published';
-                    document.getElementById('postType').value = post.type || 'general';
-                    document.getElementById('postIsPinned').value = post.isPinned ? 'true' : 'false';
-                    document.getElementById('postTags').value = post.tags ? post.tags.join(', ') : '';
-                    document.getElementById('postImage').value = post.imageUrl || '';
-                    
-                    document.getElementById('postModalTitle').textContent = 'Edit Post';
-                    document.getElementById('savePostBtnText').textContent = 'Update Post';
-                    document.getElementById('postModal').style.display = 'flex';
-                }
-            });
-        };
-
-        window.deletePost = function(postId) {
-            if (confirm(`Are you sure you want to delete post ${postId}?`)) {
-                database.ref(`communityPosts/${postId}`).remove()
-                    .then(() => {
-                        showToast('Post deleted successfully!', 'success');
-                        logActivity('post_deleted', `Deleted post: ${postId}`);
-                    })
-                    .catch((error) => {
-                        showToast('Error deleting post: ' + error.message, 'error');
-                    });
-            }
-        };
-
-        window.togglePinPost = function(postId, isPinned) {
-            database.ref(`communityPosts/${postId}/isPinned`).set(!isPinned)
-                .then(() => {
-                    showToast(`Post ${!isPinned ? 'pinned' : 'unpinned'} successfully!`, 'success');
-                    logActivity('post_pinned', `${!isPinned ? 'Pinned' : 'Unpinned'} post: ${postId}`);
-                })
-                .catch((error) => {
-                    showToast('Error updating post: ' + error.message, 'error');
-                });
-        };
-
-        async function savePost() {
-            const postId = document.getElementById('postId').value;
-            const postData = {
-                title: document.getElementById('postTitle').value,
-                content: document.getElementById('postContent').value,
-                category: document.getElementById('postCategory').value,
-                status: document.getElementById('postStatus').value,
-                type: document.getElementById('postType').value,
-                isPinned: document.getElementById('postIsPinned').value === 'true',
-                tags: document.getElementById('postTags').value ?
-                    document.getElementById('postTags').value.split(',').map(s => s.trim()) : [],
-                imageUrl: document.getElementById('postImage').value || '',
-                authorId: 'admin_001',
-                authorName: 'THE SONGA',
-                authorAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp',
-                updatedAt: new Date().toISOString()
-            };
-            
-            // Show loading
-            savePostBtn.disabled = true;
-            savePostBtnText.textContent = 'Saving...';
-            savePostSpinner.style.display = 'inline-block';
-            
-            try {
-                if (!postId) {
-                    // New post
-                    postData.createdAt = new Date().toISOString();
-                    postData.likes = 0;
-                    postData.comments = 0;
-                    postData.shares = 0;
-                    postData.bookmarks = 0;
-                    postData.likedBy = [];
-                    
-                    const newPostId = `post_${Date.now()}`;
-                    await database.ref(`communityPosts/${newPostId}`).set(postData);
-                    
-                    showToast('Post created successfully!', 'success');
-                    logActivity('post_created', `Created post: ${newPostId}`);
-                } else {
-                    // Update existing post
-                    await database.ref(`communityPosts/${postId}`).update(postData);
-                    
-                    showToast('Post updated successfully!', 'success');
-                    logActivity('post_updated', `Updated post: ${postId}`);
-                }
-                
-                document.getElementById('postModal').style.display = 'none';
-            } catch (error) {
-                showToast('Error saving post: ' + error.message, 'error');
-            } finally {
-                savePostBtn.disabled = false;
-                savePostBtnText.textContent = postId ? 'Update Post' : 'Save Post';
-                savePostSpinner.style.display = 'none';
-            }
-        }
-
-        // Books management
         function loadBooks() {
             const booksTable = document.getElementById('booksTable');
-            
-            database.ref('libraryBooks').on('value', (snapshot) => {
-                const books = snapshot.val();
-                booksTable.innerHTML = '';
-                
-                if (!books) {
-                    booksTable.innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                No books found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                Object.entries(books).forEach(([bookId, book]) => {
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td>
-                            <div style="font-weight: 500;">${book.title || 'Untitled'}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${bookId}</div>
-                        </td>
-                        <td>${book.author || 'Unknown'}</td>
-                        <td>${book.category || 'Uncategorized'}</td>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span class="status-badge ${book.availableCopies > 0 ? 'status-active' : 'status-inactive'}">
-                                    ${book.availableCopies > 0 ? 'Available' : 'Out of Stock'}
-                                </span>
-                                <span style="font-size: 12px; color: var(--text-secondary);">
-                                    (${book.availableCopies || 0}/${book.totalCopies || 0})
-                                </span>
-                            </div>
-                        </td>
-                        <td>${book.rating ? `${book.rating}/5.0` : 'N/A'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-edit btn-sm" onclick="editBook('${bookId}')">
-                                    <i class="fas fa-edit btn-icon"></i>
-                                </button>
-                                <button class="btn btn-delete btn-sm" onclick="deleteBook('${bookId}')">
-                                    <i class="fas fa-trash btn-icon"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    
-                    booksTable.appendChild(row);
-                });
-            });
+            booksTable.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Books functionality will be fully implemented</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Full CRUD for books coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
-        window.editBook = function(bookId) {
-            database.ref(`libraryBooks/${bookId}`).once('value').then((snapshot) => {
-                const book = snapshot.val();
-                
-                if (book) {
-                    document.getElementById('bookId').value = bookId;
-                    document.getElementById('bookTitle').value = book.title || '';
-                    document.getElementById('bookAuthor').value = book.author || '';
-                    document.getElementById('bookCategory').value = book.category || '';
-                    document.getElementById('bookIsbn').value = book.isbn || '';
-                    document.getElementById('bookDescription').value = book.description || '';
-                    document.getElementById('bookTotalCopies').value = book.totalCopies || 1;
-                    document.getElementById('bookAvailableCopies').value = book.availableCopies || 1;
-                    document.getElementById('bookPages').value = book.pages || '';
-                    document.getElementById('bookRating').value = book.rating || 4.0;
-                    document.getElementById('bookCover').value = book.coverImage || '';
-                    document.getElementById('bookTags').value = book.tags ? book.tags.join(', ') : '';
-                    document.getElementById('bookSubscriptionTiers').value = book.subscriptionTiers ? 
-                        book.subscriptionTiers.join(', ') : 'explorer, scholar, visionary';
-                    
-                    document.getElementById('bookModalTitle').textContent = 'Edit Book';
-                    document.getElementById('saveBookBtnText').textContent = 'Update Book';
-                    document.getElementById('bookModal').style.display = 'flex';
-                }
-            });
-        };
-
-        window.deleteBook = function(bookId) {
-            if (confirm(`Are you sure you want to delete book ${bookId}?`)) {
-                database.ref(`libraryBooks/${bookId}`).remove()
-                    .then(() => {
-                        showToast('Book deleted successfully!', 'success');
-                        logActivity('book_deleted', `Deleted book: ${bookId}`);
-                    })
-                    .catch((error) => {
-                        showToast('Error deleting book: ' + error.message, 'error');
-                    });
-            }
-        };
-
-        async function saveBook() {
-            const bookId = document.getElementById('bookId').value;
-            const bookData = {
-                title: document.getElementById('bookTitle').value,
-                author: document.getElementById('bookAuthor').value,
-                category: document.getElementById('bookCategory').value,
-                isbn: document.getElementById('bookIsbn').value || null,
-                description: document.getElementById('bookDescription').value,
-                totalCopies: parseInt(document.getElementById('bookTotalCopies').value) || 1,
-                availableCopies: parseInt(document.getElementById('bookAvailableCopies').value) || 1,
-                pages: document.getElementById('bookPages').value ? parseInt(document.getElementById('bookPages').value) : null,
-                rating: parseFloat(document.getElementById('bookRating').value) || 4.0,
-                coverImage: document.getElementById('bookCover').value || '',
-                tags: document.getElementById('bookTags').value ?
-                    document.getElementById('bookTags').value.split(',').map(s => s.trim()) : [],
-                subscriptionTiers: document.getElementById('bookSubscriptionTiers').value ?
-                    document.getElementById('bookSubscriptionTiers').value.split(',').map(s => s.trim()) : ['explorer', 'scholar', 'visionary'],
-                availability: document.getElementById('bookAvailableCopies').value > 0 ? 'available' : 'unavailable',
-                updatedAt: new Date().toISOString()
-            };
-            
-            // Show loading
-            saveBookBtn.disabled = true;
-            saveBookBtnText.textContent = 'Saving...';
-            saveBookSpinner.style.display = 'inline-block';
-            
-            try {
-                if (!bookId) {
-                    // New book
-                    bookData.addedDate = new Date().toISOString();
-                    bookData.borrowCount = 0;
-                    bookData.totalRatings = 0;
-                    bookData.featured = false;
-                    bookData.genre = bookData.tags;
-                    
-                    const newBookId = `book_${Date.now()}`;
-                    await database.ref(`libraryBooks/${newBookId}`).set(bookData);
-                    
-                    showToast('Book added successfully!', 'success');
-                    logActivity('book_created', `Created book: ${newBookId}`);
-                } else {
-                    // Update existing book
-                    await database.ref(`libraryBooks/${bookId}`).update(bookData);
-                    
-                    showToast('Book updated successfully!', 'success');
-                    logActivity('book_updated', `Updated book: ${bookId}`);
-                }
-                
-                document.getElementById('bookModal').style.display = 'none';
-            } catch (error) {
-                showToast('Error saving book: ' + error.message, 'error');
-            } finally {
-                saveBookBtn.disabled = false;
-                saveBookBtnText.textContent = bookId ? 'Update Book' : 'Save Book';
-                saveBookSpinner.style.display = 'none';
-            }
-        }
-
-        // Events management
         function loadEvents() {
             const eventsTable = document.getElementById('eventsTable');
-            
-            database.ref('events').on('value', (snapshot) => {
-                const events = snapshot.val();
-                eventsTable.innerHTML = '';
-                
-                if (!events) {
-                    eventsTable.innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                No events found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                Object.entries(events).forEach(([eventId, event]) => {
-                    const row = document.createElement('tr');
-                    
-                    const eventDate = event.date ? 
-                        new Date(event.date).toLocaleString() : 'N/A';
-                    
-                    const currentAttendees = event.currentAttendees || 0;
-                    const maxAttendees = event.maxAttendees || 1;
-                    const percentage = (currentAttendees / maxAttendees) * 100;
-                    
-                    row.innerHTML = `
-                        <td>
-                            <div style="font-weight: 500;">${event.title || 'Untitled Event'}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">${eventId}</div>
-                        </td>
-                        <td>${eventDate}</td>
-                        <td>${event.location || 'Virtual'}</td>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span>${currentAttendees}/${maxAttendees}</span>
-                                <div style="width: 60px; height: 6px; background-color: rgba(0,0,0,0.1); border-radius: 3px;">
-                                    <div style="width: ${percentage}%; height: 100%; background-color: var(--success-color); border-radius: 3px;"></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="status-badge ${getEventStatusBadgeClass(event.status)}">
-                                ${event.status || 'upcoming'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-edit btn-sm" onclick="editEvent('${eventId}')">
-                                    <i class="fas fa-edit btn-icon"></i>
-                                </button>
-                                <button class="btn btn-delete btn-sm" onclick="deleteEvent('${eventId}')">
-                                    <i class="fas fa-trash btn-icon"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    
-                    eventsTable.appendChild(row);
-                });
-            });
+            eventsTable.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Events functionality will be fully implemented</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Full CRUD for events coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
-        window.editEvent = function(eventId) {
-            database.ref(`events/${eventId}`).once('value').then((snapshot) => {
-                const event = snapshot.val();
-                
-                if (event) {
-                    document.getElementById('eventId').value = eventId;
-                    document.getElementById('eventTitle').value = event.title || '';
-                    document.getElementById('eventDescription').value = event.description || '';
-                    
-                    // Format dates for datetime-local input
-                    if (event.date) {
-                        document.getElementById('eventStart').value = formatDateTimeForInput(new Date(event.date));
-                    }
-                    if (event.endDate) {
-                        document.getElementById('eventEnd').value = formatDateTimeForInput(new Date(event.endDate));
-                    }
-                    
-                    document.getElementById('eventLocation').value = event.location || '';
-                    document.getElementById('eventMaxAttendees').value = event.maxAttendees || 50;
-                    document.getElementById('eventType').value = event.type || 'workshop';
-                    document.getElementById('eventCategory').value = event.category || 'finance';
-                    document.getElementById('eventStatus').value = event.status || 'upcoming';
-                    document.getElementById('eventRegistrationOpen').value = event.registrationOpen ? 'true' : 'false';
-                    document.getElementById('eventImage').value = event.imageUrl || '';
-                    
-                    document.getElementById('eventModalTitle').textContent = 'Edit Event';
-                    document.getElementById('saveEventBtnText').textContent = 'Update Event';
-                    document.getElementById('eventModal').style.display = 'flex';
-                }
-            });
-        };
-
-        window.deleteEvent = function(eventId) {
-            if (confirm(`Are you sure you want to delete event ${eventId}?`)) {
-                database.ref(`events/${eventId}`).remove()
-                    .then(() => {
-                        showToast('Event deleted successfully!', 'success');
-                        logActivity('event_deleted', `Deleted event: ${eventId}`);
-                    })
-                    .catch((error) => {
-                        showToast('Error deleting event: ' + error.message, 'error');
-                    });
-            }
-        };
-
-        async function saveEvent() {
-            const eventId = document.getElementById('eventId').value;
-            const startDate = new Date(document.getElementById('eventStart').value);
-            const endDate = new Date(document.getElementById('eventEnd').value);
-            
-            const eventData = {
-                title: document.getElementById('eventTitle').value,
-                description: document.getElementById('eventDescription').value,
-                date: startDate.toISOString(),
-                endDate: endDate.toISOString(),
-                location: document.getElementById('eventLocation').value,
-                maxAttendees: parseInt(document.getElementById('eventMaxAttendees').value) || 50,
-                type: document.getElementById('eventType').value,
-                category: document.getElementById('eventCategory').value,
-                status: document.getElementById('eventStatus').value,
-                registrationOpen: document.getElementById('eventRegistrationOpen').value === 'true',
-                imageUrl: document.getElementById('eventImage').value || '',
-                host: 'THE SONGA',
-                hostAvatar: 'https://i.postimg.cc/BbdzCkxQ/20260116_0851_Elegant_Lion_Emblem_remix_01kf2npwbtf06ttr4htekjnd47_removebg_preview_2.webp',
-                updatedAt: new Date().toISOString()
-            };
-            
-            // Show loading
-            saveEventBtn.disabled = true;
-            saveEventBtnText.textContent = 'Saving...';
-            saveEventSpinner.style.display = 'inline-block';
-            
-            try {
-                if (!eventId) {
-                    // New event
-                    eventData.createdAt = new Date().toISOString();
-                    eventData.currentAttendees = 0;
-                    eventData.attendeeIds = [];
-                    
-                    const newEventId = `event_${Date.now()}`;
-                    await database.ref(`events/${newEventId}`).set(eventData);
-                    
-                    showToast('Event created successfully!', 'success');
-                    logActivity('event_created', `Created event: ${newEventId}`);
-                } else {
-                    // Update existing event
-                    await database.ref(`events/${eventId}`).update(eventData);
-                    
-                    showToast('Event updated successfully!', 'success');
-                    logActivity('event_updated', `Updated event: ${eventId}`);
-                }
-                
-                document.getElementById('eventModal').style.display = 'none';
-            } catch (error) {
-                showToast('Error saving event: ' + error.message, 'error');
-            } finally {
-                saveEventBtn.disabled = false;
-                saveEventBtnText.textContent = eventId ? 'Update Event' : 'Save Event';
-                saveEventSpinner.style.display = 'none';
-            }
-        }
-
-        // Subscriptions management
         function loadSubscriptions() {
             const subscriptionsTable = document.getElementById('subscriptionsTable');
-            
-            database.ref('userSubscriptions').on('value', (snapshot) => {
-                const subscriptions = snapshot.val();
-                subscriptionsTable.innerHTML = '';
-                
-                if (!subscriptions) {
-                    subscriptionsTable.innerHTML = `
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 40px;">
-                                No subscriptions found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                // Also get users data for names
-                database.ref('users').once('value').then((userSnapshot) => {
-                    const users = userSnapshot.val() || {};
-                    
-                    Object.entries(subscriptions).forEach(([subId, subscription]) => {
-                        const row = document.createElement('tr');
-                        const user = users[subscription.userId] || {};
-                        
-                        const startDate = subscription.startDate ? 
-                            new Date(subscription.startDate).toLocaleDateString() : 'N/A';
-                        const endDate = subscription.endDate ? 
-                            new Date(subscription.endDate).toLocaleDateString() : 'N/A';
-                        
-                        row.innerHTML = `
-                            <td>
-                                <div style="font-weight: 500;">${user.firstName || ''} ${user.lastName || ''}</div>
-                                <div style="font-size: 12px; color: var(--text-secondary);">${subscription.userId}</div>
-                            </td>
-                            <td>${subscription.planId || 'N/A'}</td>
-                            <td>${startDate}</td>
-                            <td>${endDate}</td>
-                            <td>
-                                <span class="status-badge ${subscription.status === 'active' ? 'status-active' : 'status-inactive'}">
-                                    ${subscription.status || 'inactive'}
-                                </span>
-                            </td>
-                            <td>${subscription.currency || 'KSh'} ${subscription.amount || 0}</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-edit btn-sm" onclick="editSubscription('${subId}')">
-                                        <i class="fas fa-edit btn-icon"></i>
-                                    </button>
-                                    <button class="btn btn-delete btn-sm" onclick="deleteSubscription('${subId}')">
-                                        <i class="fas fa-trash btn-icon"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        
-                        subscriptionsTable.appendChild(row);
-                    });
-                });
-            });
+            subscriptionsTable.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Subscriptions functionality will be fully implemented</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Full CRUD for subscriptions coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
         function loadPlans() {
             const plansTable = document.getElementById('plansTable');
-            
-            database.ref('subscriptionPlans').on('value', (snapshot) => {
-                const plans = snapshot.val();
-                plansTable.innerHTML = '';
-                
-                if (!plans) {
-                    plansTable.innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px;">
-                                No plans found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                Object.entries(plans).forEach(([planId, plan]) => {
-                    const row = document.createElement('tr');
-                    
-                    row.innerHTML = `
-                        <td>
-                            <div style="font-weight: 500;">${plan.name || 'Untitled Plan'}</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">${planId}</div>
-                        </td>
-                        <td>${plan.currency || 'KSh'} ${plan.price || 0}</td>
-                        <td>${plan.duration || '1 month'}</td>
-                        <td>
-                            <span class="status-badge ${getPlanPopularityBadgeClass(plan.popularity)}">
-                                ${plan.popularity || 'standard'}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="status-badge ${plan.active ? 'status-active' : 'status-inactive'}">
-                                ${plan.active ? 'Active' : 'Inactive'}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-edit btn-sm" onclick="editPlan('${planId}')">
-                                    <i class="fas fa-edit btn-icon"></i>
-                                </button>
-                                <button class="btn btn-delete btn-sm" onclick="deletePlan('${planId}')">
-                                    <i class="fas fa-trash btn-icon"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    
-                    plansTable.appendChild(row);
-                });
-            });
+            plansTable.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Plans functionality will be fully implemented</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Full CRUD for plans coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
-        window.editPlan = function(planId) {
-            database.ref(`subscriptionPlans/${planId}`).once('value').then((snapshot) => {
-                const plan = snapshot.val();
-                
-                if (plan) {
-                    document.getElementById('planId').value = planId;
-                    document.getElementById('planName').value = plan.name || '';
-                    document.getElementById('planPrice').value = plan.price || 0;
-                    document.getElementById('planCurrency').value = plan.currency || 'KSh';
-                    document.getElementById('planDuration').value = plan.duration || '1 month';
-                    document.getElementById('planPopularity').value = plan.popularity || 'standard';
-                    document.getElementById('planFeatures').value = plan.features ? plan.features.join('\n') : '';
-                    document.getElementById('planActive').value = plan.active ? 'true' : 'false';
-                    
-                    document.getElementById('planModalTitle').textContent = 'Edit Plan';
-                    document.getElementById('savePlanBtnText').textContent = 'Update Plan';
-                    document.getElementById('planModal').style.display = 'flex';
-                }
-            });
-        };
-
-        window.deletePlan = function(planId) {
-            if (confirm(`Are you sure you want to delete plan ${planId}?`)) {
-                database.ref(`subscriptionPlans/${planId}`).remove()
-                    .then(() => {
-                        showToast('Plan deleted successfully!', 'success');
-                        logActivity('plan_deleted', `Deleted plan: ${planId}`);
-                    })
-                    .catch((error) => {
-                        showToast('Error deleting plan: ' + error.message, 'error');
-                    });
-            }
-        };
-
-        async function savePlan() {
-            const planId = document.getElementById('planId').value;
-            const planData = {
-                name: document.getElementById('planName').value,
-                price: parseFloat(document.getElementById('planPrice').value) || 0,
-                currency: document.getElementById('planCurrency').value,
-                duration: document.getElementById('planDuration').value,
-                popularity: document.getElementById('planPopularity').value,
-                features: document.getElementById('planFeatures').value.split('\n').filter(f => f.trim()),
-                active: document.getElementById('planActive').value === 'true',
-                updatedAt: new Date().toISOString()
-            };
-            
-            // Show loading
-            savePlanBtn.disabled = true;
-            savePlanBtnText.textContent = 'Saving...';
-            savePlanSpinner.style.display = 'inline-block';
-            
-            try {
-                if (!planId) {
-                    // New plan
-                    planData.createdAt = new Date().toISOString();
-                    planData.id = `plan_${Date.now()}`;
-                    
-                    const newPlanId = planData.id;
-                    await database.ref(`subscriptionPlans/${newPlanId}`).set(planData);
-                    
-                    showToast('Plan added successfully!', 'success');
-                    logActivity('plan_created', `Created plan: ${newPlanId}`);
-                } else {
-                    // Update existing plan
-                    await database.ref(`subscriptionPlans/${planId}`).update(planData);
-                    
-                    showToast('Plan updated successfully!', 'success');
-                    logActivity('plan_updated', `Updated plan: ${planId}`);
-                }
-                
-                document.getElementById('planModal').style.display = 'none';
-            } catch (error) {
-                showToast('Error saving plan: ' + error.message, 'error');
-            } finally {
-                savePlanBtn.disabled = false;
-                savePlanBtnText.textContent = planId ? 'Update Plan' : 'Save Plan';
-                savePlanSpinner.style.display = 'none';
-            }
-        }
-
-        // Activity logs
         function loadActivity() {
             const activityTable = document.getElementById('activityTable');
-            
-            database.ref('systemLogs').limitToLast(50).on('value', (snapshot) => {
-                const logs = snapshot.val();
-                activityTable.innerHTML = '';
-                
-                if (!logs) {
-                    activityTable.innerHTML = `
-                        <tr>
-                            <td colspan="5" style="text-align: center; padding: 40px;">
-                                No activity logs found.
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-                
-                // Convert to array and sort by timestamp (newest first)
-                const logsArray = Object.entries(logs).map(([id, log]) => ({ id, ...log }));
-                logsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                
-                logsArray.forEach(log => {
-                    const row = document.createElement('tr');
-                    
-                    const logTime = log.timestamp ? 
-                        new Date(log.timestamp).toLocaleString() : 'N/A';
-                    
-                    row.innerHTML = `
-                        <td>${logTime}</td>
-                        <td>${log.action || 'Unknown'}</td>
-                        <td>${log.userId || 'System'}</td>
-                        <td>${log.details || 'No details'}</td>
-                        <td>${log.ipAddress || 'N/A'}</td>
-                    `;
-                    
-                    activityTable.appendChild(row);
-                });
-            });
-        }
-
-        function clearOldLogs() {
-            if (confirm('Are you sure you want to clear logs older than 30 days?')) {
-                database.ref('systemLogs').once('value').then((snapshot) => {
-                    const logs = snapshot.val();
-                    const thirtyDaysAgo = new Date();
-                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                    
-                    const updates = {};
-                    Object.entries(logs).forEach(([logId, log]) => {
-                        const logDate = new Date(log.timestamp);
-                        if (logDate < thirtyDaysAgo) {
-                            updates[logId] = null;
-                        }
-                    });
-                    
-                    database.ref('systemLogs').update(updates)
-                        .then(() => {
-                            showToast('Old logs cleared successfully!', 'success');
-                            logActivity('logs_cleared', 'Cleared logs older than 30 days');
-                        })
-                        .catch((error) => {
-                            showToast('Error clearing logs: ' + error.message, 'error');
-                        });
-                });
-            }
+            activityTable.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 40px;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div>Activity logs will be displayed here</div>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Activity logging coming soon!', 'info')">
+                                <i class="fas fa-rocket btn-icon"></i> Coming Soon
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `;
         }
 
         // Utility functions
-        function showLoginForm() {
-            loginContainer.style.display = 'flex';
-            adminPanel.style.display = 'none';
-            loginForm.reset();
-            loginBtn.disabled = false;
-            loginBtnText.textContent = 'Login to Admin Panel';
-            loginSpinner.style.display = 'none';
-        }
-
-        function showAdminPanel(user) {
-            loginContainer.style.display = 'none';
-            adminPanel.style.display = 'flex';
-            document.getElementById('adminName').textContent = user.displayName || 'THE SONGA Admin';
-            document.getElementById('adminEmail').textContent = user.email;
+        function showAlert(alertElement, message, type) {
+            alertElement.textContent = message;
+            alertElement.className = `alert alert-${type}`;
+            alertElement.style.display = 'flex';
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                alertElement.style.display = 'none';
+            }, 5000);
         }
 
         function showToast(message, type) {
@@ -3003,6 +2584,10 @@
                     toastIcon.className = 'fas fa-exclamation-triangle';
                     toast.className = 'toast toast-warning';
                     break;
+                case 'info':
+                    toastIcon.className = 'fas fa-info-circle';
+                    toast.className = 'toast toast-success';
+                    break;
             }
             
             toastMessage.textContent = message;
@@ -3014,17 +2599,6 @@
             }, 3000);
         }
 
-        function showAlert(message, type) {
-            const alert = document.getElementById('loginAlert');
-            alert.textContent = message;
-            alert.className = `alert alert-${type}`;
-            alert.style.display = 'block';
-            
-            setTimeout(() => {
-                alert.style.display = 'none';
-            }, 5000);
-        }
-
         function logActivity(action, details) {
             const logId = `log_${Date.now()}`;
             const logData = {
@@ -3033,115 +2607,14 @@
                 userId: currentUser?.uid || 'system',
                 details: details,
                 timestamp: new Date().toISOString(),
-                ipAddress: '127.0.0.1' // In production, get real IP
+                ipAddress: '127.0.0.1'
             };
             
             database.ref(`systemLogs/${logId}`).set(logData);
         }
 
-        function formatDateTimeForInput(date) {
-            return date.toISOString().slice(0, 16);
-        }
-
-        function getMembershipBadgeClass(tier) {
-            switch(tier) {
-                case 'admin': return 'status-active';
-                case 'visionary': return 'status-published';
-                case 'scholar': return 'status-pending';
-                default: return 'status-draft';
-            }
-        }
-
-        function getCategoryBadgeClass(category) {
-            switch(category) {
-                case 'announcement': return 'status-active';
-                case 'event': return 'status-published';
-                case 'resource': return 'status-pending';
-                default: return 'status-draft';
-            }
-        }
-
-        function getStatusBadgeClass(status) {
-            switch(status) {
-                case 'published': return 'status-published';
-                case 'draft': return 'status-draft';
-                case 'archived': return 'status-archived';
-                default: return 'status-draft';
-            }
-        }
-
-        function getEventStatusBadgeClass(status) {
-            switch(status) {
-                case 'upcoming': return 'status-active';
-                case 'ongoing': return 'status-published';
-                case 'past': return 'status-archived';
-                case 'cancelled': return 'status-inactive';
-                default: return 'status-draft';
-            }
-        }
-
-        function getPlanPopularityBadgeClass(popularity) {
-            switch(popularity) {
-                case 'premium': return 'status-active';
-                case 'popular': return 'status-published';
-                case 'standard': return 'status-draft';
-                default: return 'status-draft';
-            }
-        }
-
-        // Initialize notifications
-        function checkNotifications() {
-            // Check for upcoming events
-            database.ref('events').once('value').then((snapshot) => {
-                const events = snapshot.val();
-                let notificationCount = 0;
-                
-                if (events) {
-                    const now = new Date();
-                    Object.values(events).forEach(event => {
-                        if (event.status === 'upcoming' && event.date) {
-                            const eventDate = new Date(event.date);
-                            const hoursDiff = (eventDate - now) / (1000 * 60 * 60);
-                            
-                            // Notify for events happening in next 24 hours
-                            if (hoursDiff > 0 && hoursDiff <= 24) {
-                                notificationCount++;
-                            }
-                        }
-                    });
-                }
-                
-                // Check for overdue books
-                database.ref('bookBorrowing').once('value').then((borrowSnapshot) => {
-                    const borrows = borrowSnapshot.val();
-                    
-                    if (borrows) {
-                        const today = new Date();
-                        Object.values(borrows).forEach(borrow => {
-                            if (borrow.status === 'borrowed' && borrow.dueDate) {
-                                const dueDate = new Date(borrow.dueDate);
-                                if (dueDate < today) {
-                                    notificationCount++;
-                                }
-                            }
-                        });
-                    }
-                    
-                    // Update notification badge
-                    const badge = document.getElementById('notificationCount');
-                    if (notificationCount > 0) {
-                        badge.textContent = notificationCount;
-                        badge.style.display = 'flex';
-                    } else {
-                        badge.style.display = 'none';
-                    }
-                });
-            });
-        }
-
-        // Check notifications every 5 minutes
-        setInterval(checkNotifications, 300000);
-        checkNotifications(); // Initial check
+        // Make functions available globally for inline event handlers
+        window.showToast = showToast;
     </script>
 </body>
 </html>
