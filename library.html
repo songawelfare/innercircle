@@ -60,7 +60,7 @@
             overflow: hidden;
         }
 
-        /* HEADER */
+        /* HEADER - MATCHING HOME PAGE EXACTLY */
         header {
             background-color: var(--white);
             color: var(--black);
@@ -110,7 +110,36 @@
             font-style: italic;
         }
 
-        /* USER PROFILE */
+        /* SEARCH BAR - FROM HOME PAGE */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--gray);
+            border-radius: 20px;
+            padding: 8px 15px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .search-box i {
+            color: var(--dark-gray);
+            margin-right: 10px;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        /* USER PROFILE - MATCHING HOME PAGE */
         .auth-section {
             display: flex;
             align-items: center;
@@ -218,6 +247,7 @@
             margin-left: auto;
         }
 
+        /* THEME TOGGLE */
         .theme-toggle {
             background: none;
             border: none;
@@ -233,6 +263,7 @@
             background-color: var(--gold-light);
         }
 
+        /* JOIN BUTTON */
         .join-btn {
             background: var(--gold);
             color: var(--black);
@@ -254,6 +285,7 @@
             color: var(--white);
         }
 
+        /* REST OF THE STYLES (keeping the same as before) */
         /* MAIN CONTAINER */
         .container {
             max-width: 600px;
@@ -1215,49 +1247,40 @@
             transform: translateY(-2px);
         }
 
-        /* LOADING STATES */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gold-dark);
+        /* NOTIFICATION */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--black);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+            box-shadow: 0 8px 25px var(--shadow);
+            font-weight: 500;
         }
 
-        .loading-spinner {
-            border: 3px solid var(--gold-light);
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .notification.error {
+            background: #e74c3c;
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--dark-gray);
-            grid-column: 1 / -1;
+        .notification.success {
+            background: var(--gold);
+            color: var(--black);
         }
 
-        .empty-state i {
-            font-size: 3rem;
-            color: var(--gold-light);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-            color: var(--gold-dark);
-        }
-
-        .empty-state p {
-            font-size: 1rem;
+        .notification.info {
+            background: #3498db;
         }
 
         /* BOTTOM NAVIGATION */
@@ -1305,44 +1328,16 @@
             transform: translateY(-3px);
         }
 
-        /* NOTIFICATION */
-        .notification {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: var(--black);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 12px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            max-width: 300px;
-            box-shadow: 0 8px 25px var(--shadow);
-            font-weight: 500;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .notification.error {
-            background: #e74c3c;
-        }
-
-        .notification.success {
-            background: var(--gold);
-            color: var(--black);
-        }
-
-        .notification.info {
-            background: #3498db;
-        }
-
         /* RESPONSIVE DESIGN */
         @media (max-width: 768px) {
+            .search-container {
+                display: none;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
             .container {
                 padding: 0.5rem;
             }
@@ -1394,6 +1389,10 @@
         }
 
         @media (max-width: 480px) {
+            .brand-subtitle {
+                display: none;
+            }
+            
             .brand-title {
                 font-size: 1.8rem;
             }
@@ -1444,10 +1443,6 @@
                 justify-content: center;
             }
             
-            .user-name {
-                display: none;
-            }
-            
             .bottom-nav {
                 padding: 0.6rem 0;
             }
@@ -1496,6 +1491,15 @@
                     <div class="brand-subtitle">Mind. Body. Spirit. Beyond.</div>
                 </div>
             </div>
+            
+            <!-- Search Bar - Added from home page -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search posts, members, tags..." id="headerSearchInput">
+                </div>
+            </div>
+            
             <div class="auth-section">
                 <button class="theme-toggle" id="themeToggle">
                     <i class="fas fa-moon"></i>
@@ -1743,6 +1747,7 @@
         const articlesGrid = document.getElementById('articlesGrid');
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
+        const headerSearchInput = document.getElementById('headerSearchInput');
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = themeToggle.querySelector('i');
         const userProfile = document.getElementById('userProfile');
@@ -2552,6 +2557,29 @@
             searchInput.addEventListener('input', function() {
                 performSearch(this.value);
             });
+            
+            // Header search functionality (from home page)
+            if (headerSearchInput) {
+                headerSearchInput.addEventListener('input', function() {
+                    const query = this.value.trim();
+                    if (query) {
+                        showNotification(`Searching for: ${query}`, 'info', 2000);
+                        // You can add search functionality here if needed
+                    }
+                });
+                
+                headerSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const query = this.value.trim();
+                        if (query) {
+                            showNotification(`Searching library for: ${query}`, 'info');
+                            // You could trigger the main library search here
+                            searchInput.value = query;
+                            performSearch(query);
+                        }
+                    }
+                });
+            }
             
             document.addEventListener('click', function(e) {
                 if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
