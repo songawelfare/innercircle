@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Library - THE SONGA WELFARE</title>
     <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,49 +21,78 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <style>
+        /* ===== BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         :root {
             --gold: #D4AF37;
             --gold-light: #F5E6B3;
             --gold-dark: #B8860B;
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #f5f5f5;
-            --dark-gray: #333333;
-            --light-gray: #e0e0e0;
+            --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F5E6B3 100%);
+            --black: #1A1A1A;
+            --white: #FFFFFF;
+            --gray-50: #FAFAFA;
+            --gray-100: #F5F5F5;
+            --gray-200: #E5E5E5;
+            --gray-300: #D4D4D4;
+            --gray-400: #A3A3A3;
+            --gray-700: #404040;
+            --gray-800: #262626;
+            --gray-900: #171717;
             --accent: #25D366;
-            --whatsapp-green: #25D366;
-            --whatsapp-dark: #128C7E;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.12);
+            --elevation-2: 0 3px 6px rgba(0,0,0,0.16);
+            --elevation-3: 0 10px 20px rgba(0,0,0,0.19);
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --transition-fast: 0.2s ease;
+            --transition-base: 0.3s ease;
+            --transition-slow: 0.5s ease;
         }
 
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 80px;
         }
 
         body {
-            background-color: var(--white);
-            color: var(--black);
+            background-color: var(--gray-50);
+            color: var(--gray-900);
             line-height: 1.6;
-            padding-bottom: 70px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Header Styles */
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        /* ===== HEADER ===== */
         header {
             background-color: var(--white);
-            color: var(--black);
-            padding: 0.5rem 1rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 0;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid var(--light-gray);
-            height: 60px;
+            z-index: 1000;
+            box-shadow: var(--elevation-1);
+            border-bottom: 1px solid var(--gray-200);
+            height: 70px;
         }
 
         .header-container {
@@ -71,17 +100,26 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            text-decoration: none;
         }
 
         .logo img {
-            height: 40px;
+            height: 42px;
             width: auto;
+            transition: transform var(--transition-base);
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
         }
 
         .brand-info {
@@ -90,61 +128,79 @@
         }
 
         .brand-name {
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 1.3rem;
             color: var(--gold-dark);
+            letter-spacing: -0.5px;
         }
 
         .brand-subtitle {
             font-size: 0.7rem;
-            color: var(--dark-gray);
+            color: var(--gray-700);
             font-style: italic;
+            letter-spacing: 0.3px;
         }
 
         .auth-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             position: relative;
         }
 
+        /* ===== BUTTONS ===== */
         .join-btn {
-            background-color: var(--gold);
+            background: var(--gold-gradient);
             color: var(--black);
             border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            padding: 10px 20px;
             font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: background-color 0.3s;
+            transition: all var(--transition-base);
             text-decoration: none;
-            font-weight: 600;
+            box-shadow: var(--card-shadow);
+            letter-spacing: 0.3px;
         }
 
         .join-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow-hover);
         }
 
+        .join-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ===== USER PROFILE ===== */
         .user-profile {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: var(--gold-light);
+            padding: 6px 12px;
+            border-radius: var(--radius-xl);
+            background: var(--gray-100);
             cursor: pointer;
             position: relative;
+            transition: all var(--transition-base);
+            border: 1px solid transparent;
+        }
+
+        .user-profile:hover {
+            background: var(--gray-200);
+            border-color: var(--gray-300);
         }
 
         .user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             overflow: hidden;
+            border: 2px solid var(--gold);
         }
 
         .user-avatar img {
@@ -156,47 +212,53 @@
         .user-name {
             font-weight: 600;
             font-size: 0.9rem;
-            color: var(--black);
+            color: var(--gray-900);
         }
 
-        /* Membership Badge */
         .membership-badge {
-            background: var(--gold);
+            background: var(--gold-gradient);
             color: var(--black);
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 0.7rem;
-            font-weight: 600;
-            margin-left: 5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        /* User Profile Dropdown */
+        /* ===== USER DROPDOWN ===== */
         .user-dropdown {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            min-width: 180px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--elevation-3);
+            min-width: 220px;
             z-index: 1000;
             display: none;
-            margin-top: 5px;
             overflow: hidden;
+            border: 1px solid var(--gray-200);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all var(--transition-base);
         }
 
         .user-dropdown.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .dropdown-item {
-            padding: 12px 16px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            border-bottom: 1px solid var(--light-gray);
+            transition: background-color var(--transition-fast);
+            border-bottom: 1px solid var(--gray-100);
+            text-decoration: none;
+            color: var(--gray-900);
         }
 
         .dropdown-item:last-child {
@@ -211,711 +273,187 @@
             width: 20px;
             text-align: center;
             color: var(--gold-dark);
+            font-size: 1rem;
         }
 
-        /* Theme Toggle */
+        /* ===== THEME TOGGLE ===== */
         .theme-toggle {
-            background: none;
+            background: var(--gray-100);
             border: none;
-            color: var(--dark-gray);
+            color: var(--gray-700);
             font-size: 1.2rem;
             cursor: pointer;
-            padding: 5px;
+            padding: 10px;
             border-radius: 50%;
-            transition: all 0.3s;
+            transition: all var(--transition-base);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .theme-toggle:hover {
-            background-color: var(--gold-light);
+            background-color: var(--gray-200);
+            color: var(--gold-dark);
+            transform: rotate(15deg);
         }
 
-        /* Main Content */
+        /* ===== MAIN CONTAINER ===== */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 2rem;
         }
 
-        /* Brand Header */
+        /* ===== BRAND HEADER ===== */
         .brand-header {
             text-align: center;
-            margin: 2rem 0 1rem;
+            margin: 3rem 0 2rem;
             padding: 0;
         }
 
         .brand-logo {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .brand-logo img {
             height: 120px;
             width: auto;
+            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.2));
         }
 
         .brand-title {
-            font-size: 2.8rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 800;
             color: var(--gold-dark);
-            letter-spacing: 1px;
+            letter-spacing: -1px;
+            margin-bottom: 0.5rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .brand-subtitle {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
+            font-size: 1.3rem;
+            color: var(--gray-700);
             margin-top: 0.5rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0.5rem auto 0;
         }
 
-        /* Stats Section */
+        /* ===== STATS SECTION ===== */
         .stats-section {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
         }
 
         .stat-card {
             background: var(--white);
-            border: 1px solid var(--gold-light);
-            border-radius: 12px;
-            padding: 1.5rem;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
             text-align: center;
-            min-width: 200px;
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gold-gradient);
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 3rem;
+            font-weight: 800;
             color: var(--gold);
             margin-bottom: 0.5rem;
+            line-height: 1;
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            color: var(--dark-gray);
-        }
-
-        /* Search Section */
-        .search-section {
-            margin: 2rem 0;
-            padding: 0 1rem;
-        }
-
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px 50px 15px 20px;
-            border: 2px solid var(--gold);
-            border-radius: 25px;
             font-size: 1rem;
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.1);
-            transition: all 0.3s ease;
+            color: var(--gray-700);
+            font-weight: 500;
         }
 
-        .search-input:focus {
-            outline: none;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
-            border-color: var(--gold-dark);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gold);
-            font-size: 1.2rem;
-        }
-
-        /* Search Results */
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--white);
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 10;
-            display: none;
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .search-result-item {
-            padding: 12px 20px;
-            border-bottom: 1px solid var(--light-gray);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: background-color 0.2s;
-        }
-
-        .search-result-item:hover {
-            background-color: var(--gold-light);
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .search-result-cover {
-            width: 40px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .search-result-info {
-            flex: 1;
-        }
-
-        .search-result-title {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .search-result-author {
-            font-size: 0.8rem;
-            color: var(--dark-gray);
-        }
-
-        /* Filter Section */
-        .filter-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0;
-            padding: 1rem;
-            background: var(--gray);
-            border-radius: 12px;
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            min-width: 200px;
-        }
-
-        .filter-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--gold-dark);
-        }
-
-        .filter-select {
-            padding: 8px 12px;
-            border: 1px solid var(--light-gray);
-            border-radius: 6px;
-            background: var(--white);
-            color: var(--black);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        .clear-filters {
-            background: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: 600;
-            align-self: flex-end;
-            transition: background-color 0.3s;
-        }
-
-        .clear-filters:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        /* Subscription Button */
-        .subscription-section {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .subscription-btn {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            border: none;
-            border-radius: 8px;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
-
-        .subscription-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Content Tabs */
-        .content-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--light-gray);
-            padding-bottom: 1rem;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s;
-            font-weight: 600;
-            color: var(--dark-gray);
-            position: relative;
-        }
-
-        .tab-btn.active {
-            background-color: var(--gold);
-            color: var(--black);
-        }
-
-        .tab-btn:hover:not(.active) {
-            background-color: var(--gold-light);
-        }
-
-        .tab-count {
-            background: var(--gold-dark);
-            color: var(--white);
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 5px;
-        }
-
-        /* Content Sections */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        /* Books Grid */
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .book-card {
-            background-color: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .book-cover {
-            width: 100%;
-            height: 380px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .book-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .book-card:hover .book-cover img {
-            transform: scale(1.05);
-        }
-
-        .book-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--gold);
-            color: var(--black);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            z-index: 2;
-        }
-
-        .availability-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            z-index: 2;
-        }
-
-        .available {
-            background: var(--accent);
-            color: var(--white);
-        }
-
-        .limited {
-            background: #f39c12;
-            color: var(--white);
-        }
-
-        .unavailable {
-            background: #e74c3c;
-            color: var(--white);
-        }
-
-        .book-content {
-            padding: 1.5rem;
-        }
-
-        .book-category {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .book-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
-            color: var(--black);
-        }
-
-        .book-author {
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .book-description {
-            color: var(--dark-gray);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .book-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 1rem;
-        }
-
-        .book-tag {
-            background: var(--gold-light);
-            color: var(--gold-dark);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-        }
-
-        .book-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        .book-rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--gold);
-        }
-
-        .book-pages {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-        }
-
-        .book-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .borrow-btn {
-            flex: 1;
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-
-        .borrow-btn:hover:not(:disabled) {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        .borrow-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .whatsapp-btn {
-            background-color: var(--whatsapp-green);
-            color: white;
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 1.3rem;
-            transition: transform 0.3s;
-        }
-
-        .whatsapp-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /* Articles Grid */
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .article-card {
-            background-color: var(--white);
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .article-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .article-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .article-card:hover .article-image img {
-            transform: scale(1.05);
-        }
-
-        .article-content {
-            padding: 1.5rem;
-        }
-
-        .article-category {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-        }
-
-        .article-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
-            color: var(--black);
-        }
-
-        .article-excerpt {
-            color: var(--dark-gray);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .article-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        .article-date {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-        }
-
-        .article-read-time {
-            color: var(--dark-gray);
-            font-size: 0.8rem;
-        }
-
-        .article-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .read-btn {
-            flex: 1;
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .read-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        /* Loading States */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gold-dark);
-        }
-
-        .loading-spinner {
-            border: 3px solid var(--gold-light);
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--dark-gray);
-            grid-column: 1 / -1;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            color: var(--gold-light);
-            margin-bottom: 1rem;
-        }
-
-        /* Borrowed Books Section */
+        /* ===== BORROWED SECTION ===== */
         .borrowed-section {
             margin: 2rem 0;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
-            border-radius: 12px;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(245, 230, 179, 0.1) 100%);
+            border-radius: var(--radius-xl);
             border: 1px solid var(--gold-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .borrowed-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gold-gradient);
         }
 
         .borrowed-section h3 {
             color: var(--gold-dark);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
         }
 
         .borrowed-books {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
         .borrowed-book {
             background: var(--white);
             border: 1px solid var(--gold);
-            border-radius: 8px;
-            padding: 1rem;
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
             display: flex;
             gap: 1rem;
             align-items: center;
+            transition: all var(--transition-base);
+            box-shadow: var(--card-shadow);
+        }
+
+        .borrowed-book:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .borrowed-cover {
-            width: 60px;
-            height: 80px;
-            border-radius: 4px;
+            width: 70px;
+            height: 90px;
+            border-radius: var(--radius-md);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .borrowed-cover img {
@@ -930,80 +468,780 @@
 
         .borrowed-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        .borrowed-author {
+            color: var(--gray-700);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
         }
 
         .borrowed-due-date {
             font-size: 0.8rem;
-            color: var(--dark-gray);
+            color: var(--warning);
+            font-weight: 500;
         }
 
-        /* Subscription Modal */
-        .subscription-modal {
+        /* ===== SEARCH SECTION ===== */
+        .search-section {
+            margin: 3rem 0;
+            padding: 0 1rem;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 60px 18px 25px;
+            border: 2px solid var(--gold);
+            border-radius: var(--radius-xl);
+            font-size: 1.1rem;
+            background-color: var(--white);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-base);
+            color: var(--gray-900);
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            border-color: var(--gold-dark);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            font-size: 1.3rem;
+            pointer-events: none;
+        }
+
+        /* ===== SEARCH RESULTS ===== */
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--elevation-3);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            border: 1px solid var(--gray-200);
+        }
+
+        .search-results.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-result-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-100);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color var(--transition-fast);
+        }
+
+        .search-result-item:hover {
+            background-color: var(--gold-light);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-cover {
+            width: 45px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--card-shadow);
+        }
+
+        .search-result-info {
+            flex: 1;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--gray-900);
+        }
+
+        .search-result-author {
+            font-size: 0.85rem;
+            color: var(--gray-700);
+        }
+
+        /* ===== FILTER SECTION ===== */
+        .filter-section {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin: 2rem 0 3rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            background: var(--white);
+            color: var(--gray-900);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .clear-filters {
+            background: var(--white);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .clear-filters:hover {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
+        }
+
+        .filter-count {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+        }
+
+        /* ===== SUBSCRIPTION BUTTON ===== */
+        .subscription-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .subscription-btn {
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            border-radius: var(--radius-xl);
+            padding: 18px 36px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--card-shadow);
+            letter-spacing: 0.5px;
+        }
+
+        .subscription-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .subscription-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* ===== CONTENT TABS ===== */
+        .content-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 2.5rem;
+            background: var(--gray-100);
+            border-radius: var(--radius-xl);
+            padding: 4px;
+            width: fit-content;
+            margin: 0 auto 3rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: var(--radius-lg);
+            transition: all var(--transition-base);
+            font-weight: 600;
+            color: var(--gray-700);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--white);
+            color: var(--gold-dark);
+            box-shadow: var(--card-shadow);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-count {
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== BOOKS GRID ===== */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .book-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-base);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 380px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .book-card:hover .book-cover img {
+            transform: scale(1.05);
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--gold-gradient);
+            color: var(--black);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+
+        .availability-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .available {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .limited {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .unavailable {
+            background: var(--error);
+            color: var(--white);
+        }
+
+        .book-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-category {
+            color: var(--gold-dark);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .book-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            color: var(--gray-900);
+        }
+
+        .book-author {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .book-description {
+            color: var(--gray-700);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .book-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .book-tag {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .book-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .book-pages {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .borrow-btn {
+            flex: 1;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .borrow-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .borrow-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, var(--accent), #128C7E);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.4rem;
+            transition: all var(--transition-base);
+            flex-shrink: 0;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* ===== ARTICLES GRID ===== */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .article-card {
+            background-color: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-base);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-category {
+            color: var(--gold-dark);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            color: var(--gray-900);
+        }
+
+        .article-excerpt {
+            color: var(--gray-700);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .article-date {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .article-read-time {
+            color: var(--gray-700);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .read-btn {
+            flex: 1;
+            background: var(--gold-gradient);
+            color: var(--black);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .read-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        /* ===== LOADING STATES ===== */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gold-dark);
+            grid-column: 1 / -1;
+        }
+
+        .loading-spinner {
+            border: 3px solid var(--gold-light);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gray-700);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gold-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+        }
+
+        /* ===== MODALS ===== */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
 
-        .subscription-modal.active {
+        .modal.active {
             display: flex;
+            animation: fadeIn 0.3s ease;
         }
 
-        .subscription-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 800px;
+        .modal-content {
+            background-color: var(--white);
+            border-radius: var(--radius-xl);
+            width: 95%;
+            max-width: 900px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
+            box-shadow: var(--elevation-3);
+            animation: modalSlideUp 0.4s ease;
         }
 
-        @keyframes modalAppear {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .subscription-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        .modal-header {
+            background: var(--gold-gradient);
             color: var(--black);
-            padding: 1.5rem;
+            padding: 2rem;
             text-align: center;
             position: relative;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
         }
 
-        .subscription-header h2 {
-            font-size: 1.5rem;
+        .modal-header h2 {
+            font-size: 1.8rem;
             margin-bottom: 0.5rem;
+            font-weight: 800;
         }
 
-        .subscription-body {
-            padding: 2rem;
+        .modal-body {
+            padding: 2.5rem;
         }
 
+        /* ===== SUBSCRIPTION PLANS ===== */
         .subscription-plans {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
 
         .plan-card {
             background: var(--white);
-            border: 2px solid var(--light-gray);
-            border-radius: 12px;
-            padding: 2rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all var(--transition-base);
             position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .plan-card.featured {
@@ -1012,68 +1250,72 @@
         }
 
         .plan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .plan-badge {
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gold);
+            background: var(--gold-gradient);
             color: var(--black);
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .plan-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--black);
-            color: var(--white);
+            width: 70px;
+            height: 70px;
+            background: var(--gold-gradient);
+            color: var(--black);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
         }
 
         .plan-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--black);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--gray-900);
         }
 
         .plan-price {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--black);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: var(--gold-dark);
+            line-height: 1;
         }
 
         .plan-duration {
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+            color: var(--gray-700);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
         }
 
         .plan-features {
             list-style: none;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             text-align: left;
+            flex: 1;
         }
 
         .plan-features li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--light-gray);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-200);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .plan-features li:last-child {
@@ -1082,75 +1324,37 @@
 
         .plan-features i {
             color: var(--gold);
-            font-size: 0.9rem;
+            font-size: 1rem;
+            flex-shrink: 0;
         }
 
         .subscribe-btn {
-            background-color: var(--black);
-            color: var(--white);
+            background: var(--gold-gradient);
+            color: var(--black);
             border: none;
-            border-radius: 8px;
-            padding: 12px 30px;
-            font-size: 1rem;
+            border-radius: var(--radius-lg);
+            padding: 16px 32px;
+            font-size: 1.1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all var(--transition-base);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
-            font-weight: 600;
+            font-weight: 700;
+            margin-top: auto;
         }
 
         .subscribe-btn:hover {
-            background-color: var(--dark-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
         }
 
-        /* Borrow Form Modal */
-        .borrow-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .borrow-modal.active {
-            display: flex;
-        }
-
-        .borrow-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
-        }
-
-        .borrow-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .borrow-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
+        /* ===== BORROW MODAL ===== */
         .borrow-body {
             padding: 0;
-            height: 600px;
+            height: 700px;
             overflow: hidden;
         }
 
@@ -1162,63 +1366,80 @@
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: rgba(0, 0, 0, 0.2);
             border: none;
             color: var(--black);
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            transition: all var(--transition-base);
         }
 
-        /* Contact Section */
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* ===== CONTACT SECTION ===== */
         .contact-section {
-            background-color: var(--gray);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(245, 230, 179, 0.1) 100%);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            margin: 4rem 0;
             text-align: center;
+            border: 1px solid var(--gold-light);
         }
 
         .contact-section h3 {
             margin-bottom: 1rem;
             color: var(--gold-dark);
+            font-size: 1.8rem;
+        }
+
+        .contact-section p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--gray-700);
+            font-size: 1.1rem;
         }
 
         .contact-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 1rem;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
         }
 
         .contact-btn {
-            background-color: var(--gold);
+            background: var(--gold-gradient);
             color: var(--black);
             border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
+            border-radius: var(--radius-lg);
+            padding: 14px 28px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
+            gap: 10px;
+            transition: all var(--transition-base);
             font-weight: 600;
+            box-shadow: var(--card-shadow);
         }
 
         .contact-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow-hover);
         }
 
-        /* Bottom Navigation */
+        /* ===== BOTTOM NAVIGATION ===== */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -1227,43 +1448,54 @@
             background-color: var(--white);
             display: flex;
             justify-content: space-around;
-            padding: 0.8rem 0;
+            padding: 1rem 0;
             z-index: 100;
-            border-top: 1px solid var(--light-gray);
+            border-top: 1px solid var(--gray-200);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--dark-gray);
+            color: var(--gray-700);
             text-decoration: none;
             font-size: 0.8rem;
-            transition: color 0.3s;
+            transition: all var(--transition-base);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
         }
 
         .nav-icon {
-            font-size: 1.3rem;
-            margin-bottom: 3px;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            transition: all var(--transition-base);
         }
 
         .nav-item.active {
             color: var(--gold-dark);
+            background: var(--gold-light);
         }
 
         .nav-item:hover {
             color: var(--gold-dark);
+            transform: translateY(-2px);
         }
 
-        /* Dark Theme */
+        /* ===== DARK THEME ===== */
         body.dark-theme {
             --white: #1a1a1a;
             --black: #ffffff;
-            --gray: #2d2d2d;
-            --dark-gray: #cccccc;
-            --light-gray: #404040;
-            background-color: var(--white);
-            color: var(--black);
+            --gray-50: #0a0a0a;
+            --gray-100: #1a1a1a;
+            --gray-200: #2a2a2a;
+            --gray-300: #3a3a3a;
+            --gray-400: #5a5a5a;
+            --gray-700: #a3a3a3;
+            --gray-800: #c2c2c2;
+            --gray-900: #e5e5e5;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
         }
 
         body.dark-theme .book-card,
@@ -1271,122 +1503,178 @@
         body.dark-theme .plan-card,
         body.dark-theme .stat-card,
         body.dark-theme .borrowed-book {
-            background-color: #2d2d2d;
-            border-color: #404040;
+            background-color: var(--gray-100);
+            border-color: var(--gray-200);
         }
 
-        body.dark-theme .search-input {
-            background-color: #2d2d2d;
-            color: var(--black);
+        body.dark-theme .search-input,
+        body.dark-theme .filter-select {
+            background-color: var(--gray-100);
+            color: var(--gray-900);
             border-color: var(--gold);
         }
 
         body.dark-theme .search-results {
-            background-color: #2d2d2d;
-            color: var(--black);
+            background-color: var(--gray-100);
+            color: var(--gray-900);
+            border-color: var(--gray-200);
         }
 
         body.dark-theme .contact-section,
-        body.dark-theme .borrowed-section {
-            background-color: #2d2d2d;
+        body.dark-theme .borrowed-section,
+        body.dark-theme .filter-section {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(245, 230, 179, 0.05) 100%);
+            border-color: var(--gray-200);
         }
 
         body.dark-theme .bottom-nav {
-            background-color: #2d2d2d;
-            border-color: #404040;
+            background-color: var(--gray-100);
+            border-color: var(--gray-200);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .subscription-plans {
-                grid-template-columns: 1fr;
-            }
-            
-            .plan-card.featured {
-                transform: none;
-            }
-            
-            .books-grid, .articles-grid, .borrowed-books {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 1.5rem;
+        body.dark-theme .user-profile {
+            background: var(--gray-200);
+        }
+
+        body.dark-theme .content-tabs {
+            background: var(--gray-200);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 1.5rem;
             }
             
             .brand-title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .brand-title {
+                font-size: 2rem;
+            }
+            
+            .brand-subtitle {
+                font-size: 1.1rem;
             }
             
             .brand-logo img {
                 height: 90px;
             }
             
-            .book-cover {
-                height: 320px;
-            }
-            
-            .borrow-content {
-                width: 98%;
-                height: 90vh;
-            }
-            
-            .borrow-body {
-                height: calc(90vh - 80px);
-            }
-            
             .stats-section {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
             }
             
             .stat-card {
-                min-width: 150px;
-                padding: 1rem;
+                padding: 1.5rem;
             }
             
             .stat-number {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .books-grid, .articles-grid {
-                grid-template-columns: 1fr;
+                font-size: 2.5rem;
             }
             
-            .book-actions, .article-actions {
-                flex-direction: column;
+            .books-grid,
+            .articles-grid,
+            .subscription-plans {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
             }
             
-            .whatsapp-btn {
+            .plan-card.featured {
+                transform: none;
+            }
+            
+            .content-tabs {
                 width: 100%;
-                height: 44px;
+                justify-content: center;
+            }
+            
+            .tab-btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                width: 98%;
+            }
+            
+            .borrow-body {
+                height: 500px;
             }
             
             .contact-buttons {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
+            }
+            
+            .contact-btn {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .books-grid,
+            .articles-grid {
+                grid-template-columns: 1fr;
             }
             
             .brand-title {
                 font-size: 1.8rem;
             }
             
+            .brand-subtitle {
+                font-size: 1rem;
+            }
+            
             .brand-logo img {
                 height: 70px;
             }
             
-            .book-cover {
-                height: 280px;
+            .subscription-btn {
+                padding: 16px 24px;
+                font-size: 1.1rem;
+                width: 100%;
+            }
+            
+            .tab-btn {
+                padding: 12px 16px;
+                font-size: 0.95rem;
             }
             
             .user-name {
                 display: none;
             }
             
-            .stats-section {
-                flex-direction: column;
+            .user-profile {
+                padding: 6px;
             }
             
-            .stat-card {
-                width: 100%;
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .book-cover {
+                height: 320px;
+            }
+            
+            .borrow-body {
+                height: 400px;
             }
         }
     </style>
@@ -1395,15 +1683,15 @@
     <!-- Header -->
     <header>
         <div class="header-container">
-            <div class="logo">
+            <a href="#" class="logo">
                 <img src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="THE SONGA Logo">
                 <div class="brand-info">
                     <div class="brand-name">THE SONGA</div>
                     <div class="brand-subtitle">Mind. Body. Spirit. Beyond.</div>
                 </div>
-            </div>
+            </a>
             <div class="auth-section">
-                <button class="theme-toggle" id="themeToggle">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                     <i class="fas fa-moon"></i>
                 </button>
                 <div id="userProfile" class="user-profile" style="display: none;">
@@ -1412,10 +1700,10 @@
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
                     <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-item" id="viewProfileOption">
+                        <a href="profile.html" class="dropdown-item" id="viewProfileOption">
                             <i class="fas fa-user"></i>
                             <span>My Profile</span>
-                        </div>
+                        </a>
                         <div class="dropdown-item" id="membershipOption">
                             <i class="fas fa-crown"></i>
                             <span>Membership Status</span>
@@ -1431,7 +1719,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="join-btn" id="headerJoinBtn">
+                <button class="join-btn" id="headerJoinBtn" aria-label="Join or Subscribe">
                     <i class="fas fa-user-plus"></i>
                     <span>Join Us</span>
                 </button>
@@ -1440,14 +1728,14 @@
     </header>
 
     <!-- Subscription Modal -->
-    <div class="subscription-modal" id="subscriptionModal">
-        <div class="subscription-content">
-            <div class="subscription-header">
-                <h2>Library Subscription Plans</h2>
+    <div class="modal" id="subscriptionModal" role="dialog" aria-labelledby="subscriptionModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="subscriptionModalTitle">Library Subscription Plans</h2>
                 <p>Choose the plan that fits your reading goals</p>
-                <button class="close-modal" id="closeSubscriptionModal">&times;</button>
+                <button class="close-modal" id="closeSubscriptionModal" aria-label="Close modal">&times;</button>
             </div>
-            <div class="subscription-body">
+            <div class="modal-body">
                 <div class="subscription-plans" id="subscriptionPlans">
                     <!-- Plans will be loaded from Firebase -->
                 </div>
@@ -1456,12 +1744,12 @@
     </div>
 
     <!-- Borrow Form Modal -->
-    <div class="borrow-modal" id="borrowModal">
-        <div class="borrow-content">
-            <div class="borrow-header">
-                <h2>Borrow a Book</h2>
+    <div class="modal" id="borrowModal" role="dialog" aria-labelledby="borrowModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="borrowModalTitle">Borrow a Book</h2>
                 <p>Fill out the form to request a book from our library</p>
-                <button class="close-modal" id="closeBorrowModal">&times;</button>
+                <button class="close-modal" id="closeBorrowModal" aria-label="Close modal">&times;</button>
             </div>
             <div class="borrow-body">
                 <iframe 
@@ -1469,7 +1757,8 @@
                     class="borrow-iframe"
                     frameborder="0"
                     marginheight="0"
-                    marginwidth="0">
+                    marginwidth="0"
+                    title="Borrow Book Form">
                     Loading…
                 </iframe>
             </div>
@@ -1514,35 +1803,47 @@
         <!-- Search Section -->
         <div class="search-section">
             <div class="search-container">
-                <input type="text" class="search-input" id="searchInput" placeholder="Search for books by title, author, or category...">
-                <i class="fas fa-search search-icon"></i>
-                <div class="search-results" id="searchResults"></div>
+                <input type="text" 
+                       class="search-input" 
+                       id="searchInput" 
+                       placeholder="Search for books by title, author, or category..."
+                       aria-label="Search library">
+                <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                <div class="search-results" id="searchResults" role="listbox"></div>
             </div>
         </div>
 
         <!-- Filter Section -->
         <div class="filter-section" id="filterSection">
-            <div class="filter-group">
-                <label class="filter-label">Category</label>
-                <select class="filter-select" id="categoryFilter">
-                    <option value="">All Categories</option>
-                </select>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label class="filter-label" for="categoryFilter">Category</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="genreFilter">Genre</label>
+                    <select class="filter-select" id="genreFilter">
+                        <option value="">All Genres</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="availabilityFilter">Availability</label>
+                    <select class="filter-select" id="availabilityFilter">
+                        <option value="">All Books</option>
+                        <option value="available">Available Now</option>
+                        <option value="featured">Featured Books</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="clear-filters" id="clearFilters">
+                        <i class="fas fa-times"></i>
+                        Clear Filters
+                    </button>
+                    <div class="filter-count" id="filterCount">Showing 0 books</div>
+                </div>
             </div>
-            <div class="filter-group">
-                <label class="filter-label">Genre</label>
-                <select class="filter-select" id="genreFilter">
-                    <option value="">All Genres</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">Availability</label>
-                <select class="filter-select" id="availabilityFilter">
-                    <option value="">All Books</option>
-                    <option value="available">Available Now</option>
-                    <option value="featured">Featured Books</option>
-                </select>
-            </div>
-            <button class="clear-filters" id="clearFilters">Clear Filters</button>
         </div>
 
         <!-- Subscription Button -->
@@ -1555,18 +1856,18 @@
 
         <!-- Content Tabs -->
         <div class="content-tabs">
-            <button class="tab-btn active" data-tab="books">
+            <button class="tab-btn active" data-tab="books" aria-selected="true" role="tab">
                 Books
                 <span class="tab-count" id="booksCount">0</span>
             </button>
-            <button class="tab-btn" data-tab="articles">
+            <button class="tab-btn" data-tab="articles" aria-selected="false" role="tab">
                 Articles
                 <span class="tab-count" id="articlesCount">0</span>
             </button>
         </div>
 
         <!-- Books Section -->
-        <div class="content-section active" id="books-section">
+        <div class="content-section active" id="books-section" role="tabpanel">
             <div class="books-grid" id="booksGrid">
                 <div class="loading">
                     <div class="loading-spinner"></div>
@@ -1576,7 +1877,7 @@
         </div>
 
         <!-- Articles Section -->
-        <div class="content-section" id="articles-section">
+        <div class="content-section" id="articles-section" role="tabpanel" hidden>
             <div class="articles-grid" id="articlesGrid">
                 <div class="loading">
                     <div class="loading-spinner"></div>
@@ -1590,7 +1891,7 @@
             <h3>Need Help With Our Library?</h3>
             <p>Have questions about subscriptions, books, or articles? We're here to help:</p>
             <div class="contact-buttons">
-                <a href="https://wa.me/254727211191" class="contact-btn">
+                <a href="https://wa.me/254727211191" class="contact-btn" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-whatsapp"></i> WhatsApp Support
                 </a>
                 <a href="mailto:library@thesongawelfare.com" class="contact-btn">
@@ -1601,20 +1902,20 @@
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item">
+    <nav class="bottom-nav" aria-label="Main navigation">
+        <a href="index.html" class="nav-item" aria-label="Home">
             <i class="fas fa-home nav-icon"></i>
             <span>Feed</span>
         </a>
-        <a href="events.html" class="nav-item">
+        <a href="events.html" class="nav-item" aria-label="Events">
             <i class="fas fa-calendar-alt nav-icon"></i>
             <span>Events</span>
         </a>
-        <a href="library.html" class="nav-item active">
+        <a href="library.html" class="nav-item active" aria-label="Library" aria-current="page">
             <i class="fas fa-book nav-icon"></i>
             <span>Library</span>
         </a>
-        <a href="profile.html" class="nav-item">
+        <a href="profile.html" class="nav-item" aria-label="Profile">
             <i class="fas fa-user nav-icon"></i>
             <span>Profile</span>
         </a>
@@ -1656,15 +1957,12 @@
         const userDisplayName = document.getElementById('userDisplayName');
         const userDropdown = document.getElementById('userDropdown');
         const membershipBadge = document.getElementById('membershipBadge');
-        const viewProfileOption = document.getElementById('viewProfileOption');
-        const membershipOption = document.getElementById('membershipOption');
-        const settingsOption = document.getElementById('settingsOption');
-        const signOutOption = document.getElementById('signOutOption');
         const subscriptionPlans = document.getElementById('subscriptionPlans');
         const categoryFilter = document.getElementById('categoryFilter');
         const genreFilter = document.getElementById('genreFilter');
         const availabilityFilter = document.getElementById('availabilityFilter');
         const clearFilters = document.getElementById('clearFilters');
+        const filterCount = document.getElementById('filterCount');
         const booksCount = document.getElementById('booksCount');
         const articlesCount = document.getElementById('articlesCount');
         const totalBooks = document.getElementById('totalBooks');
@@ -1685,37 +1983,57 @@
 
         // Show notification
         function showNotification(message, type = 'success') {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+
             const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
             notification.textContent = message;
             notification.style.cssText = `
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 right: 20px;
-                background: ${type === 'error' ? '#e74c3c' : 'var(--gold)'};
-                color: ${type === 'error' ? 'white' : 'var(--black)'};
-                padding: 12px 20px;
-                border-radius: 4px;
-                z-index: 1000;
-                max-width: 300px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                background: ${type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#10b981'};
+                color: white;
+                padding: 14px 24px;
+                border-radius: var(--radius-md);
+                z-index: 9999;
+                max-width: 350px;
+                box-shadow: var(--elevation-3);
+                animation: slideInRight 0.3s ease;
+                font-weight: 500;
             `;
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.remove();
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
             }, 4000);
         }
+
+        // Animation keyframes for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOutRight {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Theme functionality
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
             if (document.body.classList.contains('dark-theme')) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
                 localStorage.setItem('theme', 'dark');
             } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('theme', 'light');
             }
         }
@@ -1723,10 +2041,9 @@
         // Initialize theme from localStorage
         function initializeTheme() {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-theme');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
             }
         }
 
@@ -1743,12 +2060,15 @@
 
         // Get availability badge
         function getAvailabilityBadge(book) {
-            if (!book.availableCopies || book.availableCopies === 0) {
-                return '<span class="availability-badge unavailable">Unavailable</span>';
-            } else if (book.availableCopies < 2) {
+            const copies = book.availableCopies || 0;
+            const total = book.totalCopies || 0;
+            
+            if (copies === 0) {
+                return '<span class="availability-badge unavailable">Out of Stock</span>';
+            } else if (copies < 2) {
                 return '<span class="availability-badge limited">Limited</span>';
             } else {
-                return '<span class="availability-badge available">Available</span>';
+                return '<span class="availability-badge available">In Stock</span>';
             }
         }
 
@@ -1769,7 +2089,6 @@
                 return [];
             }
             
-            // Show borrowed section
             borrowedSection.style.display = 'block';
             return currentUserData.borrowedBooks;
         }
@@ -1779,11 +2098,10 @@
             borrowedBooksList.innerHTML = '';
             
             if (bookIds.length === 0) {
-                borrowedBooksList.innerHTML = '<p>No books currently borrowed.</p>';
+                borrowedBooksList.innerHTML = '<p style="text-align: center; color: var(--gray-700);">No books currently borrowed.</p>';
                 return;
             }
             
-            // Find book details for each borrowed book
             const borrowedBooksCount = bookIds.length;
             borrowedBooks.textContent = borrowedBooksCount;
             
@@ -1794,7 +2112,7 @@
                     borrowedBookElement.className = 'borrowed-book';
                     borrowedBookElement.innerHTML = `
                         <div class="borrowed-cover">
-                            <img src="${book.coverImage || 'https://via.placeholder.com/60x80?text=No+Cover'}" alt="${book.title}">
+                            <img src="${book.coverImage || 'https://via.placeholder.com/70x90?text=No+Cover'}" alt="${book.title}" loading="lazy">
                         </div>
                         <div class="borrowed-info">
                             <div class="borrowed-title">${book.title}</div>
@@ -1822,19 +2140,22 @@
                 return;
             }
 
-            books.forEach(book => {
+            books.forEach((book, index) => {
                 const canBorrow = canUserBorrowBook(book);
                 const availabilityBadgeHtml = getAvailabilityBadge(book);
                 const tagsHtml = book.tags && book.tags.length > 0 ? 
                     `<div class="book-tags">${book.tags.map(tag => `<span class="book-tag">#${tag}</span>`).join('')}</div>` : '';
                 
-                const bookCard = document.createElement('div');
+                const bookCard = document.createElement('article');
                 bookCard.className = 'book-card';
                 bookCard.setAttribute('data-book-id', book.id);
+                bookCard.style.animationDelay = `${index * 50}ms`;
                 
                 bookCard.innerHTML = `
                     <div class="book-cover">
-                        <img src="${book.coverImage || 'https://via.placeholder.com/280x380?text=No+Cover'}" alt="${book.title}">
+                        <img src="${book.coverImage || 'https://via.placeholder.com/300x380?text=No+Cover'}" 
+                             alt="${book.title}" 
+                             loading="lazy">
                         ${book.featured ? `<div class="book-badge">FEATURED</div>` : ''}
                         ${availabilityBadgeHtml}
                     </div>
@@ -1852,11 +2173,16 @@
                             <div class="book-pages">${book.pages || 'N/A'} pages</div>
                         </div>
                         <div class="book-actions">
-                            <button class="borrow-btn" ${canBorrow && book.availableCopies > 0 ? '' : 'disabled'}>
+                            <button class="borrow-btn" ${canBorrow && (book.availableCopies || 0) > 0 ? '' : 'disabled'}
+                                    aria-label="Borrow ${book.title}">
                                 <i class="fas fa-book-open"></i>
-                                ${canBorrow ? (book.availableCopies > 0 ? 'Borrow Now' : 'Unavailable') : 'Upgrade Plan'}
+                                ${canBorrow ? ((book.availableCopies || 0) > 0 ? 'Borrow Now' : 'Unavailable') : 'Upgrade Plan'}
                             </button>
-                            <a href="https://wa.me/254727211191?text=Hi%20THE%20SONGA,%20I%20want%20to%20borrow%20'${encodeURIComponent(book.title)}'%20by%20${encodeURIComponent(book.author)}%20from%20your%20library" class="whatsapp-btn" target="_blank">
+                            <a href="https://wa.me/254727211191?text=Hi%20THE%20SONGA,%20I%20want%20to%20borrow%20'${encodeURIComponent(book.title)}'%20by%20${encodeURIComponent(book.author)}%20from%20your%20library" 
+                               class="whatsapp-btn" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               aria-label="Contact via WhatsApp about ${book.title}">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
@@ -1875,7 +2201,6 @@
                     const book = books.find(b => b.id === bookId);
                     
                     if (book) {
-                        // Store book info in localStorage for the form
                         localStorage.setItem('borrowing_book', JSON.stringify({
                             title: book.title,
                             author: book.author,
@@ -1883,6 +2208,7 @@
                         }));
                         
                         borrowModal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
                     }
                 });
             });
@@ -1903,27 +2229,30 @@
                 return;
             }
 
-            articles.forEach(article => {
-                const articleCard = document.createElement('div');
+            articles.forEach((article, index) => {
+                const articleCard = document.createElement('article');
                 articleCard.className = 'article-card';
+                articleCard.style.animationDelay = `${index * 50}ms`;
                 
                 articleCard.innerHTML = `
                     <div class="article-image">
-                        <img src="${article.coverImage || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'}" alt="${article.title}">
+                        <img src="${article.coverImage || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'}" 
+                             alt="${article.title}" 
+                             loading="lazy">
                     </div>
                     <div class="article-content">
                         <div class="article-category">${article.category || 'General'}</div>
                         <h3 class="article-title">${article.title}</h3>
-                        <p class="article-excerpt">${article.excerpt || article.content?.substring(0, 150) + '...' || 'No excerpt available.'}</p>
+                        <p class="article-excerpt">${article.excerpt || (article.content ? article.content.substring(0, 150) + '...' : 'No excerpt available.')}</p>
                         <div class="article-meta">
                             <div class="article-date">${formatDate(article.publishedDate)}</div>
-                            <div class="article-read-time">${article.readTime || '5 min'} read</div>
+                            <div class="article-read-time">${article.readTime || '5'} min read</div>
                         </div>
                         <div class="article-actions">
-                            <a href="#" class="read-btn" data-article-id="${article.id}">
+                            <button class="read-btn" data-article-id="${article.id}">
                                 <i class="fas fa-book-reader"></i>
                                 Read Article
-                            </a>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -1937,7 +2266,15 @@
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const articleId = this.getAttribute('data-article-id');
-                    showNotification(`Article reading feature coming soon! (ID: ${articleId})`);
+                    showNotification(`Opening article... Feature coming soon!`);
+                    
+                    // For now, simulate opening an article
+                    setTimeout(() => {
+                        const article = articles.find(a => a.id === articleId);
+                        if (article && article.url) {
+                            window.open(article.url, '_blank');
+                        }
+                    }, 1000);
                 });
             });
         }
@@ -1947,7 +2284,7 @@
             subscriptionPlans.innerHTML = '';
             
             if (!plans || plans.length === 0) {
-                subscriptionPlans.innerHTML = '<p>No subscription plans available at the moment.</p>';
+                subscriptionPlans.innerHTML = '<p style="text-align: center; color: var(--gray-700);">No subscription plans available at the moment.</p>';
                 return;
             }
 
@@ -1985,6 +2322,12 @@
                     
                     const message = `Hi THE SONGA, I want to subscribe to your ${plan} Library plan for KSh ${price}`;
                     window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
+                    
+                    // Close modal after a delay
+                    setTimeout(() => {
+                        subscriptionModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }, 500);
                 });
             });
         }
@@ -1996,21 +2339,16 @@
             const availability = availabilityFilter.value;
             
             filteredBooks = libraryBooks.filter(book => {
-                // Filter by category
                 if (category && book.category !== category) return false;
-                
-                // Filter by genre
                 if (genre && (!book.genre || !book.genre.includes(genre))) return false;
-                
-                // Filter by availability
                 if (availability === 'available' && (!book.availableCopies || book.availableCopies === 0)) return false;
                 if (availability === 'featured' && !book.featured) return false;
-                
                 return true;
             });
             
             renderBooks(filteredBooks);
             booksCount.textContent = filteredBooks.length;
+            filterCount.textContent = `Showing ${filteredBooks.length} of ${libraryBooks.length} books`;
         }
 
         // Update filter options
@@ -2030,6 +2368,10 @@
         // Fetch library data from Firebase
         async function fetchLibraryData() {
             try {
+                // Show loading state
+                booksGrid.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading books...</p></div>';
+                articlesGrid.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading articles...</p></div>';
+                
                 // Fetch books
                 const booksRef = database.ref('libraryBooks');
                 const booksSnapshot = await booksRef.once('value');
@@ -2044,9 +2386,9 @@
                     updateFilterOptions();
                     filterBooks();
                 } else {
-                    // Load sample books if none exist
                     await loadSampleBooks();
-                    await fetchLibraryData(); // Fetch again after loading samples
+                    await fetchLibraryData();
+                    return;
                 }
                 
                 // Fetch articles
@@ -2076,13 +2418,48 @@
                     renderSubscriptionPlans(subscriptionPlansData);
                 }
                 
+                // Trigger animations
+                setTimeout(animateContent, 100);
+                
             } catch (error) {
                 console.error('Error fetching library data:', error);
-                showNotification('Failed to load library data', 'error');
+                showNotification('Failed to load library data. Please try again.', 'error');
+                
+                // Show error state
+                booksGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading Books</h3><p>Please check your connection and refresh the page.</p></div>';
+                articlesGrid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error Loading Articles</h3><p>Please check your connection and refresh the page.</p></div>';
             }
         }
 
-        // Load sample books (aligned with songa.json)
+        // Animate content on load
+        function animateContent() {
+            const bookCards = document.querySelectorAll('.book-card');
+            const articleCards = document.querySelectorAll('.article-card');
+            
+            bookCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+            
+            articleCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 200 + (index * 50));
+            });
+        }
+
+        // Load sample books
         async function loadSampleBooks() {
             const sampleBooks = {
                 book_001: {
@@ -2093,7 +2470,6 @@
                     description: "Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones",
                     coverImage: "https://i.postimg.cc/QxvdH4P0/atomic-habits-gallery-hi-res-01.jpg",
                     rating: 4.8,
-                    totalRatings: 42,
                     pages: 320,
                     isbn: "978-0735211292",
                     genre: ["self-help", "psychology", "productivity"],
@@ -2114,7 +2490,6 @@
                     description: "How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses",
                     coverImage: "https://i.postimg.cc/yxgWbwtd/Buy-The-Lean-Start-Upinthephilippines2.jpg",
                     rating: 4.6,
-                    totalRatings: 28,
                     pages: 336,
                     isbn: "978-0307887894",
                     genre: ["business", "entrepreneurship", "innovation"],
@@ -2135,7 +2510,6 @@
                     description: "A Guide to Spiritual Enlightenment that has the potential to completely transform your life",
                     coverImage: "https://i.postimg.cc/vZcGypvz/6777a02acc4544001d9bed6e.jpg",
                     rating: 4.7,
-                    totalRatings: 35,
                     pages: 236,
                     isbn: "978-1577314806",
                     genre: ["spirituality", "self-help", "mindfulness"],
@@ -2156,7 +2530,6 @@
                     description: "A masterpiece that has sold over 20 million copies worldwide about traditional African life",
                     coverImage: "https://i.postimg.cc/pL6zXMMr/f3ce3b76-c6cf-4d13-9c84-2503d297eccb.webp",
                     rating: 4.9,
-                    totalRatings: 56,
                     pages: 209,
                     isbn: "978-0385474542",
                     genre: ["african", "literature", "classic"],
@@ -2174,9 +2547,10 @@
             try {
                 const booksRef = database.ref('libraryBooks');
                 await booksRef.set(sampleBooks);
-                showNotification('Sample books loaded!', 'success');
+                showNotification('Sample books loaded successfully!', 'success');
             } catch (error) {
                 console.error('Error loading sample books:', error);
+                showNotification('Failed to load sample books', 'error');
             }
         }
 
@@ -2196,7 +2570,7 @@
                 (book.genre && book.genre.some(g => g.toLowerCase().includes(searchLower)))
             );
             
-            displaySearchResults(results.slice(0, 10)); // Limit to 10 results
+            displaySearchResults(results.slice(0, 8));
         }
 
         function displaySearchResults(books) {
@@ -2212,9 +2586,13 @@
                     const resultItem = document.createElement('div');
                     resultItem.className = 'search-result-item';
                     resultItem.setAttribute('data-book-id', book.id);
+                    resultItem.setAttribute('role', 'option');
                     
                     resultItem.innerHTML = `
-                        <img src="${book.coverImage || 'https://via.placeholder.com/40x50?text=No+Cover'}" alt="${book.title}" class="search-result-cover">
+                        <img src="${book.coverImage || 'https://via.placeholder.com/45x55?text=No+Cover'}" 
+                             alt="${book.title}" 
+                             class="search-result-cover" 
+                             loading="lazy">
                         <div class="search-result-info">
                             <div class="search-result-title">${book.title}</div>
                             <div class="search-result-author">${book.author}</div>
@@ -2225,6 +2603,7 @@
                         const bookId = this.getAttribute('data-book-id');
                         
                         // Switch to books tab
+                        document.querySelector('[data-tab="articles"]').click();
                         tabButtons.forEach(btn => btn.classList.remove('active'));
                         contentSections.forEach(section => section.classList.remove('active'));
                         document.getElementById('books-section').classList.add('active');
@@ -2238,11 +2617,10 @@
                                 bookCard.style.boxShadow = '0 0 0 3px var(--gold)';
                                 setTimeout(() => {
                                     bookCard.style.boxShadow = '';
-                                }, 2000);
+                                }, 3000);
                             }
                         }, 100);
                         
-                        // Clear search and close results
                         searchInput.value = '';
                         searchResults.classList.remove('active');
                     });
@@ -2269,7 +2647,6 @@
                     emailVerified: userData.email_verified
                 };
                 
-                // Save to localStorage
                 localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
                 
                 // Check if user exists in Firebase
@@ -2277,7 +2654,7 @@
                 const snapshot = await userRef.once('value');
                 
                 if (!snapshot.exists()) {
-                    // Create new user in Firebase
+                    // Create new user
                     const newUser = {
                         uid: currentUser.uid,
                         email: currentUser.email,
@@ -2311,7 +2688,6 @@
                     
                     showNotification(`Welcome to THE SONGA, ${currentUser.firstName}! Your account has been created.`, 'success');
                 } else {
-                    // Update last login
                     await userRef.update({
                         lastLogin: new Date().toISOString()
                     });
@@ -2337,9 +2713,9 @@
             try {
                 const base64Url = token.split('.')[1];
                 const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
                 return JSON.parse(jsonPayload);
             } catch (error) {
                 console.error('Error parsing JWT:', error);
@@ -2359,12 +2735,9 @@
 
         // Update user badges
         function updateUserBadges() {
-            if (currentUserData) {
-                // Update membership badge
-                if (currentUserData.membershipTier) {
-                    membershipBadge.textContent = currentUserData.membershipTier.toUpperCase();
-                    membershipBadge.style.display = 'inline-block';
-                }
+            if (currentUserData && currentUserData.membershipTier) {
+                membershipBadge.textContent = currentUserData.membershipTier.toUpperCase();
+                membershipBadge.style.display = 'inline-block';
             }
         }
 
@@ -2374,8 +2747,6 @@
             if (storedUser) {
                 currentUser = JSON.parse(storedUser);
                 updateUserProfile();
-                
-                // Fetch user data from Firebase
                 fetchUserData(currentUser.uid);
             }
         }
@@ -2389,8 +2760,6 @@
                 if (snapshot.exists()) {
                     currentUserData = snapshot.val();
                     updateUserBadges();
-                    
-                    // Load user's borrowed books
                     const borrowed = getUserBorrowedBooks();
                     renderBorrowedBooks(borrowed);
                 }
@@ -2415,11 +2784,7 @@
         // Toggle dropdown
         function toggleDropdown() {
             dropdownOpen = !dropdownOpen;
-            if (dropdownOpen) {
-                userDropdown.classList.add('active');
-            } else {
-                userDropdown.classList.remove('active');
-            }
+            userDropdown.classList.toggle('active');
         }
 
         // Close dropdown
@@ -2434,36 +2799,13 @@
             loadUserFromStorage();
             fetchLibraryData();
             
-            // Animation for book cards
-            const animateCards = () => {
-                const bookCards = document.querySelectorAll('.book-card');
-                const articleCards = document.querySelectorAll('.article-card');
-                
-                bookCards.forEach((card, index) => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(() => {
-                        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, index * 100);
-                });
-                
-                articleCards.forEach((card, index) => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(() => {
-                        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 400 + (index * 100));
-                });
-            };
-
-            // Run animation after content loads
-            setTimeout(animateCards, 500);
+            // Initialize Google Sign-In
+            window.google.accounts.id.initialize({
+                client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+                callback: handleGoogleSignIn,
+                auto_select: false,
+                cancel_on_tap_outside: true
+            });
             
             // User profile dropdown
             userProfile.addEventListener('click', function(e) {
@@ -2478,102 +2820,104 @@
             userDropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
-        });
-
-        // Dropdown option event listeners
-        viewProfileOption.addEventListener('click', function() {
-            showNotification('Profile page coming soon!');
-            closeDropdown();
-        });
-
-        membershipOption.addEventListener('click', function() {
-            if (currentUserData) {
-                showNotification(`Your ${currentUserData.membershipTier} membership is active and in good standing.`);
-            }
-            closeDropdown();
-        });
-
-        settingsOption.addEventListener('click', function() {
-            showNotification('Settings page coming soon!');
-            closeDropdown();
-        });
-
-        signOutOption.addEventListener('click', function() {
-            signOut();
-            closeDropdown();
-        });
-
-        // Search functionality
-        searchInput.addEventListener('input', function() {
-            performSearch(this.value);
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-                searchResults.classList.remove('active');
-            }
-        });
-
-        // Theme toggle
-        themeToggle.addEventListener('click', toggleTheme);
-
-        // Modals
-        subscriptionBtn.addEventListener('click', function() {
-            subscriptionModal.classList.add('active');
-        });
-
-        headerJoinBtn.addEventListener('click', function() {
-            if (!currentUser) {
-                showNotification('Please sign in with Google first', 'error');
-            } else {
-                subscriptionModal.classList.add('active');
-            }
-        });
-
-        closeSubscriptionModal.addEventListener('click', function() {
-            subscriptionModal.classList.remove('active');
-        });
-
-        closeBorrowModal.addEventListener('click', function() {
-            borrowModal.classList.remove('active');
-        });
-
-        subscriptionModal.addEventListener('click', function(e) {
-            if (e.target === subscriptionModal) {
-                subscriptionModal.classList.remove('active');
-            }
-        });
-
-        borrowModal.addEventListener('click', function(e) {
-            if (e.target === borrowModal) {
-                borrowModal.classList.remove('active');
-            }
-        });
-
-        // Tab switching
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
-                
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                contentSections.forEach(section => section.classList.remove('active'));
-                document.getElementById(`${tabId}-section`).classList.add('active');
+            
+            // Dropdown options
+            document.getElementById('signOutOption').addEventListener('click', signOut);
+            
+            // Theme toggle
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                performSearch(this.value);
             });
-        });
-
-        // Filter functionality
-        categoryFilter.addEventListener('change', filterBooks);
-        genreFilter.addEventListener('change', filterBooks);
-        availabilityFilter.addEventListener('change', filterBooks);
-
-        clearFilters.addEventListener('click', function() {
-            categoryFilter.value = '';
-            genreFilter.value = '';
-            availabilityFilter.value = '';
-            filterBooks();
-            showNotification('Filters cleared', 'success');
+            
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.classList.remove('active');
+                }
+            });
+            
+            // Modals
+            subscriptionBtn.addEventListener('click', function() {
+                subscriptionModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            headerJoinBtn.addEventListener('click', function() {
+                if (!currentUser) {
+                    showNotification('Please sign in first', 'error');
+                } else {
+                    subscriptionModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            [closeSubscriptionModal, closeBorrowModal].forEach(btn => {
+                btn.addEventListener('click', function() {
+                    subscriptionModal.classList.remove('active');
+                    borrowModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                });
+            });
+            
+            [subscriptionModal, borrowModal].forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            });
+            
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                        section.hidden = true;
+                    });
+                    const activeSection = document.getElementById(`${tabId}-section`);
+                    activeSection.classList.add('active');
+                    activeSection.hidden = false;
+                    
+                    // Update URL hash without scrolling
+                    history.pushState(null, null, `#${tabId}`);
+                });
+            });
+            
+            // Filter functionality
+            [categoryFilter, genreFilter, availabilityFilter].forEach(filter => {
+                filter.addEventListener('change', filterBooks);
+            });
+            
+            clearFilters.addEventListener('click', function() {
+                categoryFilter.value = '';
+                genreFilter.value = '';
+                availabilityFilter.value = '';
+                filterBooks();
+                showNotification('Filters cleared', 'success');
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    subscriptionModal.classList.remove('active');
+                    borrowModal.classList.remove('active');
+                    searchResults.classList.remove('active');
+                    closeDropdown();
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
 
         // Global function for Google Sign-In callback
