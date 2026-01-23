@@ -920,71 +920,165 @@
     </nav>
 
     <script>
-        // Configuration
-        const WHATSAPP_NUMBER = '254727211191';
-        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScann_IwZdMXihlYHa6jQK1gLy7qEsIVDR-mKUzc3CroZgvOQ/viewform?embedded=true';
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
+        authDomain: "the-songa-77b1b.firebaseapp.com",
+        databaseURL: "https://the-songa-77b1b-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "the-songa-77b1b",
+        storageBucket: "the-songa-77b1b.firebasestorage.app",
+        messagingSenderId: "123922889572",
+        appId: "1:123922889572:web:482b2a624930baaf92d871"
+    };
+
+    // Initialize Firebase
+    let database;
+    try {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        database = firebase.database();
+        console.log("Firebase initialized successfully");
+    } catch (error) {
+        console.error("Firebase initialization error:", error);
+        // Show error state immediately
+        showEventError();
+    }
+
+    // Global variables
+    let currentUser = null;
+    let currentUserData = null;
+    let events = [];
+    let filteredEvents = [];
+    let dropdownOpen = false;
+    let realtimeListener = null;
+    let selectedEvent = null;
+
+    // DOM Elements
+    const signinModal = document.getElementById('signinModal');
+    const eventModal = document.getElementById('eventModal');
+    const userProfile = document.getElementById('userProfile');
+    const userAvatar = document.getElementById('userAvatar');
+    const userDisplayName = document.getElementById('userDisplayName');
+    const notification = document.getElementById('notification');
+    const eventsContainer = document.getElementById('eventsContainer');
+    const eventsCount = document.getElementById('eventsCount');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const typeFilter = document.getElementById('typeFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const clearFilters = document.getElementById('clearFilters');
+    const closeSigninModal = document.getElementById('closeSigninModal');
+    const closeEventModal = document.getElementById('closeEventModal');
+    const modalEventTitle = document.getElementById('modalEventTitle');
+    const modalEventCategory = document.getElementById('modalEventCategory');
+    const modalEventImage = document.getElementById('modalEventImage');
+    const modalEventDate = document.getElementById('modalEventDate');
+    const modalEventLocation = document.getElementById('modalEventLocation');
+    const modalEventPrice = document.getElementById('modalEventPrice');
+    const modalEventSeats = document.getElementById('modalEventSeats');
+    const modalEventDescription = document.getElementById('modalEventDescription');
+    const modalRegisterBtn = document.getElementById('modalRegisterBtn');
+    const modalWhatsappBtn = document.getElementById('modalWhatsappBtn');
+    const requirementsSection = document.getElementById('requirementsSection');
+    const modalRequirements = document.getElementById('modalRequirements');
+    const learningSection = document.getElementById('learningSection');
+    const modalLearning = document.getElementById('modalLearning');
+    const notifyMeBtn = document.getElementById('notifyMeBtn');
+
+    // Show notification
+    function showNotification(message, type = 'success', duration = 4000) {
+        notification.textContent = message;
+        notification.className = `notification show ${type}`;
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, duration);
+    }
+
+    // Show loading state
+    function showLoading() {
+        eventsContainer.innerHTML = `
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading events...</p>
+            </div>
+        `;
+        eventsContainer.style.display = 'block';
+        emptyState.style.display = 'none';
+    }
+
+    // Show error state
+    function showEventError() {
+        eventsContainer.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Connection Error</h3>
+                <p>Unable to load events. Please check your connection or contact support.</p>
+                <div class="action-buttons">
+                    <button class="action-btn primary" onclick="loadSampleEventsAndRender()">
+                        <i class="fas fa-sync-alt"></i>
+                        Load Sample Events
+                    </button>
+                    <a href="https://wa.me/254727211191" class="action-btn secondary" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Contact Support
+                    </a>
+                </div>
+            </div>
+        `;
+        eventsContainer.style.display = 'none';
+        emptyState.style.display = 'block';
+        eventsCount.textContent = 'Connection error';
+    }
+
+    // Check authentication status
+    function checkAuthStatus() {
+        showLoading();
         
-        // DOM Elements
-        const googleFormModal = document.getElementById('googleFormModal');
-        const notificationModal = document.getElementById('notificationModal');
-        const successModal = document.getElementById('successModal');
-        const closeGoogleFormModal = document.getElementById('closeGoogleFormModal');
-        const closeNotificationModal = document.getElementById('closeNotificationModal');
-        const closeSuccessModal = document.getElementById('closeSuccessModal');
-        const headerJoinBtn = document.getElementById('headerJoinBtn');
-        const contactJoinBtn = document.getElementById('contactJoinBtn');
-        const notifyMeBtn = document.getElementById('notifyMeBtn');
-        const notificationForm = document.getElementById('notificationForm');
-        const submitNotification = document.getElementById('submitNotification');
-        const notification = document.getElementById('notification');
-        const userProfile = document.getElementById('userProfile');
-        const userAvatar = document.getElementById('userAvatar');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const userDropdown = document.getElementById('userDropdown');
-        const viewProfileOption = document.getElementById('viewProfileOption');
-        const membershipOption = document.getElementById('membershipOption');
-        const settingsOption = document.getElementById('settingsOption');
-        const signOutOption = document.getElementById('signOutOption');
-
-        // User state
-        let currentUser = null;
-        let dropdownOpen = false;
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            notification.textContent = message;
-            notification.className = `notification show ${type}`;
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
+        const storedUser = localStorage.getItem('the_songa_welfare_user');
+        if (storedUser) {
+            try {
+                currentUser = JSON.parse(storedUser);
+                updateUIForMember();
+                signinModal.classList.remove('active');
+                fetchUserData(currentUser.uid);
+            } catch (error) {
+                console.error("Error parsing stored user:", error);
+                localStorage.removeItem('the_songa_welfare_user');
+                signinModal.classList.add('active');
+            }
+        } else {
+            signinModal.classList.add('active');
         }
+        
+        // Load events immediately
+        loadEvents();
+    }
 
-        // Show loading state
-        function showLoading(button) {
-            const originalText = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = '<div class="loading"></div> Processing...';
-            button.setAttribute('data-original-text', originalText);
+    // Parse JWT token
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            ).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error('Error parsing JWT:', error);
+            return {};
         }
+    }
 
-        // Hide loading state
-        function hideLoading(button) {
-            button.disabled = false;
-            const originalText = button.getAttribute('data-original-text');
-            button.innerHTML = originalText || 'Complete Registration';
-        }
-
-        // Google Sign-In Handler
-        function handleGoogleSignIn(response) {
-            console.log('Google Sign-In response:', response);
-            
-            // Decode the JWT token to get user info
+    // Google Sign-In Handler
+    async function handleGoogleSignIn(response) {
+        try {
             const userData = parseJwt(response.credential);
-            console.log('User data:', userData);
             
-            // Store user data
             currentUser = {
-                id: userData.sub,
+                uid: userData.sub,
                 email: userData.email,
                 firstName: userData.given_name,
                 lastName: userData.family_name,
@@ -993,238 +1087,830 @@
                 emailVerified: userData.email_verified
             };
             
-            // Update UI
-            updateUserProfile();
+            localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
             
-            // Show success message
-            showNotification(`Welcome, ${currentUser.firstName}!`, 'success');
-        }
-
-        // Parse JWT token
-        function parseJwt(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (error) {
-                console.error('Error parsing JWT:', error);
-                return {};
-            }
-        }
-
-        // Update user profile in header
-        function updateUserProfile() {
-            if (currentUser) {
-                userAvatar.src = currentUser.picture;
-                userDisplayName.textContent = currentUser.firstName;
-                userProfile.style.display = 'flex';
-                headerJoinBtn.style.display = 'none';
+            if (database) {
+                const userRef = database.ref(`users/${currentUser.uid}`);
+                const snapshot = await userRef.once('value');
                 
-                // Store user data in localStorage
-                localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
+                if (!snapshot.exists()) {
+                    const newUser = {
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        firstName: currentUser.firstName,
+                        lastName: currentUser.lastName,
+                        profilePicture: currentUser.picture,
+                        joinedDate: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        membershipStatus: "active",
+                        membershipTier: "explorer",
+                        bookmarkedPosts: [],
+                        isAdmin: false,
+                        status: "active"
+                    };
+                    
+                    await userRef.set(newUser);
+                    currentUserData = newUser;
+                    showNotification(`Welcome to THE SONGA, ${currentUser.firstName}!`, 'success');
+                } else {
+                    await userRef.update({ lastLogin: new Date().toISOString() });
+                    currentUserData = snapshot.val();
+                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+                }
             }
-        }
-
-        // Load user from localStorage
-        function loadUserFromStorage() {
-            const storedUser = localStorage.getItem('the_songa_welfare_user');
-            if (storedUser) {
-                currentUser = JSON.parse(storedUser);
-                updateUserProfile();
-            }
-        }
-
-        // Sign out user
-        function signOut() {
-            currentUser = null;
-            userProfile.style.display = 'none';
-            headerJoinBtn.style.display = 'flex';
-            localStorage.removeItem('the_songa_welfare_user');
-            closeDropdown();
             
-            showNotification('Signed out successfully', 'success');
+            updateUIForMember();
+            signinModal.classList.remove('active');
+            
+        } catch (error) {
+            console.error('Error in Google Sign-In:', error);
+            showNotification('Error signing in. Please try again.', 'error');
         }
+    }
 
-        // Toggle dropdown
-        function toggleDropdown() {
-            dropdownOpen = !dropdownOpen;
-            if (dropdownOpen) {
-                userDropdown.classList.add('active');
+    // Update UI for signed-in members
+    function updateUIForMember() {
+        if (userProfile && currentUser) {
+            userProfile.style.display = 'flex';
+            userAvatar.src = currentUser.picture;
+            userDisplayName.textContent = currentUser.firstName;
+        }
+    }
+
+    // Fetch user data
+    async function fetchUserData(userId) {
+        if (!database) return;
+        
+        try {
+            const userRef = database.ref(`users/${userId}`);
+            const snapshot = await userRef.once('value');
+            if (snapshot.exists()) {
+                currentUserData = snapshot.val();
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+
+    // Load events from Firebase or show samples
+    async function loadEvents() {
+        if (!database) {
+            console.log("No database connection, loading sample events");
+            loadSampleEventsAndRender();
+            return;
+        }
+        
+        try {
+            console.log("Loading events from Firebase...");
+            const eventsRef = database.ref('events');
+            const snapshot = await eventsRef.once('value');
+            
+            if (snapshot.exists()) {
+                const eventsData = snapshot.val();
+                events = Object.keys(eventsData).map(key => ({
+                    id: key,
+                    ...eventsData[key]
+                }));
+                console.log(`Loaded ${events.length} events from Firebase`);
+                filterAndRenderEvents();
             } else {
-                userDropdown.classList.remove('active');
+                console.log("No events in Firebase, loading samples...");
+                await loadSampleEventsToFirebase();
             }
+        } catch (error) {
+            console.error("Error loading events:", error);
+            showNotification("Error loading events. Showing sample events.", "error");
+            loadSampleEventsAndRender();
         }
+    }
 
-        // Close dropdown
-        function closeDropdown() {
-            dropdownOpen = false;
-            userDropdown.classList.remove('active');
+    // Load sample events directly to the page
+    function loadSampleEventsAndRender() {
+        console.log("Rendering sample events directly...");
+        events = [
+            {
+                id: "event_001",
+                title: "Wealth Building Masterclass",
+                description: "A comprehensive workshop covering investment strategies, passive income generation, and wealth preservation techniques.",
+                category: "workshop",
+                type: "virtual",
+                date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+                location: "Virtual - Zoom",
+                address: "Online Event",
+                coverImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                thumbnailImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                organizer: "THE SONGA WELFARE",
+                organizerId: "admin_001",
+                speakers: ["Mugera W.", "Financial Expert Guest"],
+                capacity: 100,
+                registeredCount: 45,
+                price: 0,
+                currency: "KSh",
+                registrationLink: "https://docs.google.com/forms/d/e/example",
+                whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Wealth%20Building%20Masterclass",
+                tags: ["finance", "investment", "workshop", "free", "wealth"],
+                status: "upcoming",
+                visibility: "public",
+                featured: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                requirements: ["Basic financial knowledge", "Notebook", "Internet connection"],
+                whatYouLearn: [
+                    "Investment fundamentals",
+                    "Passive income streams",
+                    "Risk management",
+                    "Wealth preservation strategies"
+                ]
+            },
+            {
+                id: "event_002",
+                title: "Community Networking Mixer",
+                description: "Connect with fellow members, share experiences, and build meaningful relationships within our community.",
+                category: "networking",
+                type: "in-person",
+                date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+                location: "THE SONGA Headquarters",
+                address: "Nairobi Business District, Nairobi",
+                coverImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                thumbnailImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                organizer: "THE SONGA WELFARE",
+                organizerId: "admin_001",
+                speakers: ["Community Leaders", "Successful Members"],
+                capacity: 50,
+                registeredCount: 28,
+                price: 500,
+                currency: "KSh",
+                registrationLink: "https://docs.google.com/forms/d/e/example2",
+                whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Networking%20Mixer",
+                tags: ["networking", "community", "social", "in-person", "connections"],
+                status: "upcoming",
+                visibility: "members",
+                featured: false,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            },
+            {
+                id: "event_003",
+                title: "Mindfulness & Meditation Workshop",
+                description: "Learn practical mindfulness techniques and meditation practices to reduce stress and improve focus in daily life.",
+                category: "workshop",
+                type: "virtual",
+                date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000).toISOString(),
+                location: "Virtual - Google Meet",
+                address: "Online Event",
+                coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                thumbnailImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                organizer: "THE SONGA WELFARE",
+                organizerId: "admin_001",
+                speakers: ["Meditation Expert"],
+                capacity: 75,
+                registeredCount: 62,
+                price: 200,
+                currency: "KSh",
+                registrationLink: "https://docs.google.com/forms/d/e/example3",
+                whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Mindfulness%20Workshop",
+                tags: ["mindfulness", "meditation", "wellness", "stress-relief", "mental-health"],
+                status: "upcoming",
+                visibility: "public",
+                featured: true,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                requirements: ["Comfortable seating", "Quiet space", "Open mind"],
+                whatYouLearn: [
+                    "Basic meditation techniques",
+                    "Mindfulness in daily activities",
+                    "Stress reduction methods",
+                    "Focus and concentration improvement"
+                ]
+            }
+        ];
+        
+        console.log(`Loaded ${events.length} sample events`);
+        filterAndRenderEvents();
+        showNotification("Loaded sample events successfully!", "success");
+    }
+
+    // Load sample events to Firebase
+    async function loadSampleEventsToFirebase() {
+        if (!database) {
+            console.log("No database, loading samples directly");
+            loadSampleEventsAndRender();
+            return;
         }
+        
+        try {
+            console.log("Saving sample events to Firebase...");
+            const sampleEvents = {
+                event_001: {
+                    id: "event_001",
+                    title: "Wealth Building Masterclass",
+                    description: "A comprehensive workshop covering investment strategies, passive income generation, and wealth preservation techniques.",
+                    category: "workshop",
+                    type: "virtual",
+                    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                    endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+                    location: "Virtual - Zoom",
+                    address: "Online Event",
+                    coverImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    thumbnailImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                    organizer: "THE SONGA WELFARE",
+                    organizerId: "admin_001",
+                    speakers: ["Mugera W.", "Financial Expert Guest"],
+                    capacity: 100,
+                    registeredCount: 45,
+                    price: 0,
+                    currency: "KSh",
+                    registrationLink: "https://docs.google.com/forms/d/e/example",
+                    whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Wealth%20Building%20Masterclass",
+                    tags: ["finance", "investment", "workshop", "free", "wealth"],
+                    status: "upcoming",
+                    visibility: "public",
+                    featured: true,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    requirements: ["Basic financial knowledge", "Notebook", "Internet connection"],
+                    whatYouLearn: [
+                        "Investment fundamentals",
+                        "Passive income streams",
+                        "Risk management",
+                        "Wealth preservation strategies"
+                    ]
+                },
+                event_002: {
+                    id: "event_002",
+                    title: "Community Networking Mixer",
+                    description: "Connect with fellow members, share experiences, and build meaningful relationships within our community.",
+                    category: "networking",
+                    type: "in-person",
+                    date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+                    endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
+                    location: "THE SONGA Headquarters",
+                    address: "Nairobi Business District, Nairobi",
+                    coverImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                    thumbnailImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+                    organizer: "THE SONGA WELFARE",
+                    organizerId: "admin_001",
+                    speakers: ["Community Leaders", "Successful Members"],
+                    capacity: 50,
+                    registeredCount: 28,
+                    price: 500,
+                    currency: "KSh",
+                    registrationLink: "https://docs.google.com/forms/d/e/example2",
+                    whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Networking%20Mixer",
+                    tags: ["networking", "community", "social", "in-person", "connections"],
+                    status: "upcoming",
+                    visibility: "members",
+                    featured: false,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                }
+            };
 
-        // Format notification data for WhatsApp message
-        function formatNotificationWhatsAppMessage(data) {
-            return `🔔 *EVENT NOTIFICATION REQUEST - THE SONGA WELFARE* 🔔
-
-*Personal Details:*
-👤 Name: ${data.firstName} ${data.lastName}
-📧 Email: ${data.email}
-📞 Phone: ${data.phone}
-
-*Event Interests:*
-🎯 Interested In: ${data.interests}
-
-*Registration Details:*
-📅 Requested: ${new Date().toLocaleString()}
-🌐 Source: Events Page Notification Request`;
-        }
-
-        // Send data to WhatsApp
-        function sendToWhatsApp(message) {
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-            window.open(whatsappUrl, '_blank');
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load user from storage
-            loadUserFromStorage();
+            const eventsRef = database.ref('events');
+            await eventsRef.set(sampleEvents);
+            console.log("Sample events saved to Firebase");
             
-            // Add click event to user profile to toggle dropdown
+            // Now load them back
+            loadEvents();
+            
+        } catch (error) {
+            console.error('Error saving sample events to Firebase:', error);
+            loadSampleEventsAndRender();
+        }
+    }
+
+    // Format date
+    function formatDate(dateString) {
+        if (!dateString) return 'Date not set';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (error) {
+            return 'Invalid date';
+        }
+    }
+
+    // Format price
+    function formatPrice(price, currency = 'KSh') {
+        if (price === 0 || price === '0' || !price) {
+            return 'Free';
+        }
+        return `${currency} ${Number(price).toLocaleString()}`;
+    }
+
+    // Get event badge class
+    function getEventBadgeClass(event) {
+        const now = new Date();
+        let eventDate, endDate;
+        
+        try {
+            eventDate = new Date(event.date);
+            endDate = new Date(event.endDate || event.date);
+        } catch (error) {
+            return 'badge-upcoming';
+        }
+        
+        if (event.featured) return 'badge-featured';
+        if (event.type === 'virtual') return 'badge-virtual';
+        
+        if (now > endDate) return 'badge-past';
+        if (now >= eventDate && now <= endDate) return 'badge-ongoing';
+        return 'badge-upcoming';
+    }
+
+    // Get event badge text
+    function getEventBadgeText(event) {
+        const now = new Date();
+        let eventDate, endDate;
+        
+        try {
+            eventDate = new Date(event.date);
+            endDate = new Date(event.endDate || event.date);
+        } catch (error) {
+            return 'UPCOMING';
+        }
+        
+        if (event.featured) return 'FEATURED';
+        if (event.type === 'virtual') return 'VIRTUAL';
+        
+        if (now > endDate) return 'PAST';
+        if (now >= eventDate && now <= endDate) return 'ONGOING';
+        return 'UPCOMING';
+    }
+
+    // Filter events
+    function filterEvents() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const activeTab = document.querySelector('.filter-tab.active')?.dataset.filter || 'all';
+        const category = categoryFilter.value;
+        const type = typeFilter.value;
+        const sort = sortFilter.value;
+        
+        filteredEvents = events.filter(event => {
+            // Search filter
+            if (searchTerm && !(
+                (event.title && event.title.toLowerCase().includes(searchTerm)) ||
+                (event.description && event.description.toLowerCase().includes(searchTerm)) ||
+                (event.tags && event.tags.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+                (event.category && event.category.toLowerCase().includes(searchTerm))
+            )) return false;
+            
+            // Tab filter
+            if (activeTab !== 'all') {
+                const now = new Date();
+                let eventDate, endDate;
+                
+                try {
+                    eventDate = new Date(event.date);
+                    endDate = new Date(event.endDate || event.date);
+                } catch (error) {
+                    return false;
+                }
+                
+                switch(activeTab) {
+                    case 'upcoming':
+                        if (now >= eventDate) return false;
+                        break;
+                    case 'ongoing':
+                        if (!(now >= eventDate && now <= endDate)) return false;
+                        break;
+                    case 'past':
+                        if (now <= endDate) return false;
+                        break;
+                    case 'virtual':
+                        if (event.type !== 'virtual') return false;
+                        break;
+                    case 'featured':
+                        if (!event.featured) return false;
+                        break;
+                }
+            }
+            
+            // Category filter
+            if (category && event.category !== category) return false;
+            
+            // Type filter
+            if (type && event.type !== type) return false;
+            
+            return true;
+        });
+        
+        // Sort events
+        filteredEvents.sort((a, b) => {
+            try {
+                switch(sort) {
+                    case 'date-desc':
+                        return new Date(b.date) - new Date(a.date);
+                    case 'date-asc':
+                        return new Date(a.date) - new Date(b.date);
+                    case 'price-asc':
+                        return (a.price || 0) - (b.price || 0);
+                    case 'price-desc':
+                        return (b.price || 0) - (a.price || 0);
+                    case 'popularity':
+                        return (b.registeredCount || 0) - (a.registeredCount || 0);
+                    default:
+                        return new Date(a.date) - new Date(b.date);
+                }
+            } catch (error) {
+                return 0;
+            }
+        });
+        
+        return filteredEvents;
+    }
+
+    // Render events
+    function renderEvents(eventsArray) {
+        console.log(`Rendering ${eventsArray.length} events`);
+        
+        if (!eventsArray || eventsArray.length === 0) {
+            eventsContainer.style.display = 'none';
+            emptyState.style.display = 'block';
+            eventsCount.textContent = '0 events found';
+            return;
+        }
+        
+        eventsContainer.style.display = 'grid';
+        emptyState.style.display = 'none';
+        eventsCount.textContent = `${eventsArray.length} event${eventsArray.length === 1 ? '' : 's'} found`;
+        
+        eventsContainer.innerHTML = eventsArray.map(event => {
+            const badgeClass = getEventBadgeClass(event);
+            const badgeText = getEventBadgeText(event);
+            const formattedDate = formatDate(event.date);
+            const formattedPrice = formatPrice(event.price, event.currency);
+            const seatsLeft = event.capacity - (event.registeredCount || 0);
+            const isRegistered = currentUserData?.attendedEvents?.includes(event.id) || false;
+            const isFull = seatsLeft <= 0;
+            
+            const tagsHtml = event.tags && event.tags.length > 0 ? 
+                `<div class="event-tags">
+                    ${event.tags.slice(0, 3).map(tag => `<span class="event-tag">${tag}</span>`).join('')}
+                    ${event.tags.length > 3 ? `<span class="event-tag">+${event.tags.length - 3}</span>` : ''}
+                </div>` : '';
+            
+            return `
+                <div class="event-card" data-event-id="${event.id}">
+                    <span class="event-badge ${badgeClass}">${badgeText}</span>
+                    <div class="event-image">
+                        <img src="${event.coverImage || 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" 
+                             alt="${event.title || 'Event'}">
+                    </div>
+                    <div class="event-content">
+                        <div class="event-header">
+                            <div class="event-category">${event.category || 'Event'}</div>
+                            <h3 class="event-title">${event.title || 'Untitled Event'}</h3>
+                            <p class="event-description">${event.description || 'Join us for this amazing event!'}</p>
+                        </div>
+                        
+                        <div class="event-details">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Date</div>
+                                    <div class="detail-value">${formattedDate.split(',')[0]}, ${formattedDate.split(',')[1]}</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="detail-text">
+                                    <div class="detail-label">Location</div>
+                                    <div class="detail-value">${event.location || 'TBA'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${tagsHtml}
+                        
+                        <div class="event-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-users"></i>
+                                <span>${event.registeredCount || 0} registered</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span>${formattedPrice}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="event-actions">
+                            <button class="register-btn" ${isFull ? 'disabled' : ''} onclick="openEventModal('${event.id}')">
+                                <i class="fas ${isRegistered ? 'fa-check-circle' : 'fa-calendar-check'}"></i>
+                                <span>${isFull ? 'Sold Out' : isRegistered ? 'Registered' : 'View Details'}</span>
+                            </button>
+                            <a href="https://wa.me/254727211191?text=${encodeURIComponent(`Hi THE SONGA, I'm interested in your event: ${event.title || 'Event'}`)}" 
+                               class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Filter and render events
+    function filterAndRenderEvents() {
+        console.log("Filtering and rendering events...");
+        const filtered = filterEvents();
+        renderEvents(filtered);
+    }
+
+    // Open event modal
+    function openEventModal(eventId) {
+        selectedEvent = events.find(e => e.id === eventId);
+        if (!selectedEvent) {
+            showNotification('Event not found', 'error');
+            return;
+        }
+        
+        console.log("Opening modal for event:", selectedEvent.title);
+        
+        // Update modal content
+        modalEventTitle.textContent = selectedEvent.title || 'Untitled Event';
+        modalEventCategory.textContent = selectedEvent.category || 'Event';
+        modalEventImage.src = selectedEvent.coverImage || 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+        modalEventDate.textContent = formatDate(selectedEvent.date);
+        modalEventLocation.textContent = selectedEvent.location || 'Location to be announced';
+        modalEventPrice.textContent = formatPrice(selectedEvent.price, selectedEvent.currency);
+        
+        const seatsLeft = selectedEvent.capacity - (selectedEvent.registeredCount || 0);
+        modalEventSeats.textContent = `${seatsLeft} of ${selectedEvent.capacity || 0} seats available`;
+        
+        modalEventDescription.textContent = selectedEvent.description || 'Join us for this amazing event!';
+        
+        // Update registration button
+        const isRegistered = currentUserData?.attendedEvents?.includes(selectedEvent.id);
+        modalRegisterBtn.innerHTML = `
+            <i class="fas ${isRegistered ? 'fa-check-circle' : 'fa-calendar-check'}"></i>
+            <span>${isRegistered ? 'Already Registered' : 'Register Now'}</span>
+        `;
+        
+        if (isRegistered) {
+            modalRegisterBtn.disabled = true;
+        } else {
+            modalRegisterBtn.disabled = false;
+            modalRegisterBtn.onclick = () => registerForEvent(selectedEvent);
+        }
+        
+        // Update WhatsApp button
+        modalWhatsappBtn.href = `https://wa.me/254727211191?text=${encodeURIComponent(`Hi THE SONGA, I have a question about your event: ${selectedEvent.title || 'Event'}`)}`;
+        
+        // Update requirements
+        if (selectedEvent.requirements && selectedEvent.requirements.length > 0) {
+            requirementsSection.style.display = 'block';
+            modalRequirements.innerHTML = selectedEvent.requirements.map(req => 
+                `<li><i class="fas fa-check-circle"></i> ${req}</li>`
+            ).join('');
+        } else {
+            requirementsSection.style.display = 'none';
+        }
+        
+        // Update learning points
+        if (selectedEvent.whatYouLearn && selectedEvent.whatYouLearn.length > 0) {
+            learningSection.style.display = 'block';
+            modalLearning.innerHTML = selectedEvent.whatYouLearn.map(point => 
+                `<li><i class="fas fa-graduation-cap"></i> ${point}</li>`
+            ).join('');
+        } else {
+            learningSection.style.display = 'none';
+        }
+        
+        // Show modal
+        eventModal.classList.add('active');
+        document.body.classList.add('modal-open');
+    }
+
+    // Close event modal
+    function closeEventModal() {
+        eventModal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        selectedEvent = null;
+    }
+
+    // Register for event
+    async function registerForEvent(event) {
+        if (!currentUser) {
+            showNotification('Please sign in to register for events', 'error');
+            closeEventModal();
+            signinModal.classList.add('active');
+            return;
+        }
+        
+        if (!database) {
+            showNotification('Registration requires database connection', 'error');
+            return;
+        }
+        
+        try {
+            showNotification('Registering for event...', 'info');
+            
+            const registrationRef = database.ref(`eventRegistrations/${event.id}/${currentUser.uid}`);
+            const registration = {
+                userId: currentUser.uid,
+                eventId: event.id,
+                firstName: currentUser.firstName,
+                lastName: currentUser.lastName,
+                email: currentUser.email,
+                phone: currentUserData?.phone || '',
+                registrationDate: new Date().toISOString(),
+                status: 'pending',
+                paymentStatus: event.price === 0 ? 'free' : 'pending',
+                attendanceStatus: 'registered'
+            };
+            
+            await registrationRef.set(registration);
+            
+            // Update event registration count
+            const eventRef = database.ref(`events/${event.id}`);
+            await eventRef.update({
+                registeredCount: (event.registeredCount || 0) + 1,
+                updatedAt: new Date().toISOString()
+            });
+            
+            // Update user's attended events
+            const userRef = database.ref(`users/${currentUser.uid}`);
+            const userSnapshot = await userRef.once('value');
+            const userData = userSnapshot.val();
+            
+            if (userData) {
+                const attendedEvents = userData.attendedEvents || [];
+                if (!attendedEvents.includes(event.id)) {
+                    attendedEvents.push(event.id);
+                    await userRef.update({
+                        attendedEvents: attendedEvents,
+                        lastLogin: new Date().toISOString()
+                    });
+                }
+            }
+            
+            showNotification(`Successfully registered for ${event.title}!`, 'success');
+            closeEventModal();
+            
+            // Refresh events to update registration status
+            loadEvents();
+            
+        } catch (error) {
+            console.error('Error registering for event:', error);
+            showNotification('Error registering for event. Please try again.', 'error');
+        }
+    }
+
+    // Sign out user
+    function signOut() {
+        currentUser = null;
+        currentUserData = null;
+        localStorage.removeItem('the_songa_welfare_user');
+        
+        if (realtimeListener && database) {
+            database.ref('events').off('value', realtimeListener);
+            realtimeListener = null;
+        }
+        
+        userProfile.style.display = 'none';
+        signinModal.classList.add('active');
+        showNotification('Signed out successfully', 'success');
+        
+        // Reload events to update registration status
+        filterAndRenderEvents();
+    }
+
+    // Toggle dropdown
+    function toggleDropdown() {
+        dropdownOpen = !dropdownOpen;
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdownOpen) {
+            dropdown.classList.add('active');
+        } else {
+            dropdown.classList.remove('active');
+        }
+    }
+
+    // Close dropdown
+    function closeDropdown() {
+        dropdownOpen = false;
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdown) dropdown.classList.remove('active');
+    }
+
+    // Initialize the page
+    function initializePage() {
+        console.log("Initializing events page...");
+        checkAuthStatus();
+        
+        // User profile dropdown
+        if (userProfile) {
             userProfile.addEventListener('click', function(e) {
                 e.stopPropagation();
                 toggleDropdown();
             });
-            
-            // Close dropdown when clicking elsewhere
-            document.addEventListener('click', function() {
-                closeDropdown();
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            closeDropdown();
+        });
+        
+        // Event listeners for filters
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                filterAndRenderEvents();
             });
-            
-            // Prevent dropdown from closing when clicking inside it
-            userDropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
         });
-
-        // Dropdown option event listeners
-        viewProfileOption.addEventListener('click', function() {
-            showNotification('Profile feature coming soon!', 'success');
-            closeDropdown();
+        
+        categoryFilter.addEventListener('change', filterAndRenderEvents);
+        typeFilter.addEventListener('change', filterAndRenderEvents);
+        sortFilter.addEventListener('change', filterAndRenderEvents);
+        
+        searchInput.addEventListener('input', function() {
+            filterAndRenderEvents();
         });
-
-        membershipOption.addEventListener('click', function() {
-            if (currentUser) {
-                googleFormModal.classList.add('active');
-                closeDropdown();
-            } else {
-                showNotification('Please sign in first', 'error');
-            }
+        
+        clearFilters.addEventListener('click', function() {
+            searchInput.value = '';
+            categoryFilter.value = '';
+            typeFilter.value = '';
+            sortFilter.value = 'date-asc';
+            filterTabs.forEach(tab => tab.classList.remove('active'));
+            document.querySelector('.filter-tab[data-filter="all"]').classList.add('active');
+            filterAndRenderEvents();
+            showNotification('Filters cleared', 'success');
         });
-
-        settingsOption.addEventListener('click', function() {
-            showNotification('Settings feature coming soon!', 'success');
-            closeDropdown();
-        });
-
-        signOutOption.addEventListener('click', function() {
-            signOut();
-            closeDropdown();
-        });
-
-        // Header Join Us button
-        headerJoinBtn.addEventListener('click', function() {
-            if (!currentUser) {
-                // User not signed in, show Google Sign-In
-                showNotification('Please sign in with Google first', 'error');
-            } else {
-                // User is signed in, show Google Form
-                googleFormModal.classList.add('active');
-            }
-        });
-
-        // Contact section Join Membership button
-        contactJoinBtn.addEventListener('click', function() {
-            if (!currentUser) {
-                // User not signed in, show Google Sign-In
-                showNotification('Please sign in with Google first', 'error');
-            } else {
-                // User is signed in, show Google Form
-                googleFormModal.classList.add('active');
-            }
-        });
-
-        // Notify Me button
-        notifyMeBtn.addEventListener('click', function() {
-            notificationModal.classList.add('active');
-        });
-
-        // Notification form submission
-        notificationForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            data.timestamp = new Date().toISOString();
-            data.source = 'event_notification_request';
-            
-            try {
-                showLoading(submitNotification);
-                
-                const message = formatNotificationWhatsAppMessage(data);
-                sendToWhatsApp(message);
-                
-                notificationModal.classList.remove('active');
-                successModal.classList.add('active');
-                
-                notificationForm.reset();
-                
-                showNotification('Notification request successful! Opening WhatsApp to send details.');
-            } catch (error) {
-                console.error('Notification request error:', error);
-                showNotification('Request failed. Please try again or contact us directly.', 'error');
-            } finally {
-                hideLoading(submitNotification);
-            }
-        });
-
+        
         // Close modals
-        closeGoogleFormModal.addEventListener('click', function() {
-            googleFormModal.classList.remove('active');
+        closeSigninModal.addEventListener('click', function() {
+            signinModal.classList.remove('active');
         });
-
-        closeNotificationModal.addEventListener('click', function() {
-            notificationModal.classList.remove('active');
-        });
-
-        closeSuccessModal.addEventListener('click', function() {
-            successModal.classList.remove('active');
-        });
-
+        
+        closeEventModal.addEventListener('click', closeEventModal);
+        
         // Close modals when clicking outside
-        googleFormModal.addEventListener('click', function(e) {
-            if (e.target === googleFormModal) {
-                googleFormModal.classList.remove('active');
+        signinModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                signinModal.classList.remove('active');
             }
         });
-
-        notificationModal.addEventListener('click', function(e) {
-            if (e.target === notificationModal) {
-                notificationModal.classList.remove('active');
+        
+        eventModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEventModal();
             }
         });
-
-        successModal.addEventListener('click', function(e) {
-            if (e.target === successModal) {
-                successModal.classList.remove('active');
+        
+        // Escape key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (signinModal.classList.contains('active')) {
+                    signinModal.classList.remove('active');
+                }
+                if (eventModal.classList.contains('active')) {
+                    closeEventModal();
+                }
             }
         });
+        
+        // Sign out option
+        const signOutOption = document.getElementById('signOutOption');
+        if (signOutOption) {
+            signOutOption.addEventListener('click', function() {
+                signOut();
+                closeDropdown();
+            });
+        }
+        
+        // Notify me button
+        if (notifyMeBtn) {
+            notifyMeBtn.addEventListener('click', function() {
+                const message = "Hi THE SONGA, I'd like to be notified about future events!";
+                window.open(`https://wa.me/254727211191?text=${encodeURIComponent(message)}`, '_blank');
+                showNotification('Opening WhatsApp to send notification request', 'info');
+            });
+        }
+    }
 
-        // Global function for Google Sign-In callback
-        window.handleGoogleSignIn = handleGoogleSignIn;
-    </script>
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializePage);
+
+    // Global function for Google Sign-In callback
+    window.handleGoogleSignIn = handleGoogleSignIn;
+    window.loadSampleEventsAndRender = loadSampleEventsAndRender;
+</script>
 </body>
 </html>
