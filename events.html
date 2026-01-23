@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    <title>Events - THE SONGA WELFARE</title>
-    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
+    <title>THE SONGA WELFARE - Events</title>
+    <!-- Preconnect to critical domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://i.postimg.cc">
+    <link rel="preconnect" href="https://accounts.google.com">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="icon" type="image/x-icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Sign-In API -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#D4AF37">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="THE SONGA WELFARE">
-    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png">
-    
+    <!-- Inline critical CSS - Matching Home Page -->
     <style>
         * {
             margin: 0;
@@ -36,10 +35,14 @@
             --dark-gray: #333333;
             --light-gray: #e0e0e0;
             --accent: #25D366;
-            --whatsapp-green: #25D366;
-            --whatsapp-dark: #128C7E;
-            --primary: #2c3e50;
-            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --warning: #f39c12;
+            --comment-bg: #f8f9fa;
+            --reply-bg: #f0f2f5;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --modal-overlay: rgba(0, 0, 0, 0.85);
         }
 
         html {
@@ -50,10 +53,165 @@
             background-color: var(--white);
             color: var(--black);
             line-height: 1.6;
-            padding-bottom: 70px;
+            padding-bottom: 80px;
+            overflow-x: hidden;
         }
 
-        /* Header Styles */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* NOTIFICATION */
+        .notification {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: var(--black);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+            box-shadow: 0 8px 25px var(--shadow);
+            font-weight: 500;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .notification.success {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .notification.info {
+            background: #3498db;
+        }
+
+        /* SIGNIN MODAL - Same as Home Page */
+        .signin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-overlay);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .signin-modal.active {
+            display: flex;
+        }
+
+        .signin-content {
+            background-color: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.4s ease-out;
+            position: relative;
+        }
+
+        @keyframes modalAppear {
+            from { 
+                transform: translateY(-20px) scale(0.95); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+
+        .signin-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .signin-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .signin-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .close-signin-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: var(--black);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-signin-modal:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .signin-body {
+            padding: 2.5rem 2rem;
+            text-align: center;
+        }
+
+        .signin-body p {
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .google-signin-container {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .google-signin-container > div {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .signin-footer {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            line-height: 1.4;
+        }
+
+        /* HEADER - Exact match with Home Page */
         header {
             background-color: var(--white);
             color: var(--black);
@@ -64,6 +222,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-bottom: 1px solid var(--light-gray);
             height: 60px;
+            backdrop-filter: blur(10px);
         }
 
         .header-container {
@@ -76,6 +235,8 @@
         .logo {
             display: flex;
             align-items: center;
+            gap: 10px;
+            cursor: pointer;
         }
 
         .logo img {
@@ -83,39 +244,58 @@
             width: auto;
         }
 
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+        }
+
         .brand-name {
             font-weight: bold;
             font-size: 1.2rem;
-            margin-left: 10px;
             color: var(--gold-dark);
         }
 
+        .brand-subtitle {
+            font-size: 0.7rem;
+            color: var(--dark-gray);
+            font-style: italic;
+        }
+
+        /* SEARCH BAR */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--gray);
+            border-radius: 20px;
+            padding: 8px 15px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .search-box i {
+            color: var(--dark-gray);
+            margin-right: 10px;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        /* USER PROFILE */
         .auth-section {
             display: flex;
             align-items: center;
             gap: 10px;
             position: relative;
-        }
-
-        .join-btn {
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 4px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .join-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
         }
 
         .user-profile {
@@ -127,6 +307,11 @@
             background: var(--gold-light);
             cursor: pointer;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: var(--gold);
         }
 
         .user-avatar {
@@ -148,23 +333,35 @@
             color: var(--black);
         }
 
-        /* User Profile Dropdown */
         .user-dropdown {
             position: absolute;
             top: 100%;
             right: 0;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            min-width: 180px;
+            box-shadow: 0 4px 20px var(--shadow);
+            min-width: 200px;
             z-index: 1000;
             display: none;
             margin-top: 5px;
             overflow: hidden;
+            border: 1px solid var(--light-gray);
         }
 
         .user-dropdown.active {
             display: block;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .dropdown-item {
@@ -191,357 +388,653 @@
             color: var(--gold-dark);
         }
 
-        /* Main Content */
+        /* MAIN CONTENT */
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 1rem;
         }
 
-        .page-title {
+        /* EVENTS HERO SECTION */
+        .events-hero {
             text-align: center;
-            margin: 1.5rem 0;
-            color: var(--gold-dark);
-            font-size: 1.8rem;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
         }
 
-        .page-subtitle {
-            text-align: center;
-            margin-bottom: 2rem;
+        .events-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .events-subtitle {
+            font-size: 1.1rem;
             color: var(--dark-gray);
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+            line-height: 1.6;
         }
 
-        /* Events Section */
-        .events-section {
+        /* EVENTS FILTERS */
+        .events-filters {
+            background: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 16px;
+            padding: 1.5rem;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 15px var(--shadow);
         }
 
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--gold-dark);
-            border-bottom: 2px solid var(--gold-light);
-            padding-bottom: 0.5rem;
-        }
-
-        .no-events-container {
-            text-align: center;
-            padding: 3rem 1.5rem;
-            background-color: var(--gray);
-            border-radius: 12px;
-            margin: 2rem 0;
-        }
-
-        .no-events-icon {
-            font-size: 4rem;
-            color: var(--gold);
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 1.5rem;
         }
 
-        .no-events-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             color: var(--gold-dark);
         }
 
-        .no-events-description {
-            margin-bottom: 2rem;
-            color: var(--dark-gray);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
 
-        .notification-options {
+        .filter-tab {
+            padding: 8px 20px;
+            background: var(--gray);
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab:hover {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+        }
+
+        .filter-tab.active {
+            background: var(--gold);
+            color: var(--black);
+            font-weight: 600;
+        }
+
+        .filter-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            max-width: 400px;
-            margin: 0 auto;
+            gap: 8px;
         }
 
-        .btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
+        .filter-label {
             font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 10px;
+            background: var(--white);
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .clear-filters {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+
+        .clear-filters:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* EVENTS GRID */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .event-card {
+            background: var(--white);
+            border: 1px solid var(--light-gray);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px var(--shadow);
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .badge-upcoming {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-ongoing {
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge-past {
+            background: var(--dark-gray);
+            color: white;
+        }
+
+        .badge-virtual {
+            background: var(--info);
+            color: white;
+        }
+
+        .badge-featured {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-header {
+            margin-bottom: 1rem;
+        }
+
+        .event-category {
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+
+        .event-description {
+            color: var(--dark-gray);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--gray);
+            border-radius: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gold-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-dark);
+            flex-shrink: 0;
+        }
+
+        .detail-text {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .event-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-tag {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .event-tag:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .event-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+
+        .stat-item i {
+            color: var(--gold);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .register-btn {
+            flex: 1;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
 
-        .btn-primary {
-            background-color: var(--gold);
-            color: var(--black);
-            font-weight: 600;
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
-        .btn-primary:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        .btn-secondary {
-            background-color: var(--light-gray);
-            color: var(--dark-gray);
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--dark-gray);
-            color: white;
-        }
-
-        .btn-whatsapp {
-            background-color: var(--whatsapp-green);
-            color: white;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: var(--whatsapp-dark);
-        }
-
-        /* Google Form Modal */
-        .google-form-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .google-form-modal.active {
-            display: flex;
-        }
-
-        .google-form-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
-        }
-
-        @keyframes modalAppear {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .google-form-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .google-form-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .google-form-body {
-            padding: 0;
-            height: 600px;
-            overflow: hidden;
-        }
-
-        .google-form-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Event Notification Modal */
-        .registration-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .registration-modal.active {
-            display: flex;
-        }
-
-        .registration-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
-        }
-
-        .registration-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .registration-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .registration-body {
-            padding: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--dark-gray);
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--light-gray);
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            border-color: var(--gold);
-            outline: none;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .submit-btn {
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 6px;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        .submit-btn:disabled {
-            background-color: var(--light-gray);
+        .register-btn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border: none;
-            color: var(--black);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .whatsapp-btn {
+            background: linear-gradient(135deg, var(--accent), #128C7E);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            font-size: 1.2rem;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
-        /* Success Modal */
-        .success-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+        .whatsapp-btn:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .success-modal.active {
-            display: flex;
-        }
-
-        .success-content {
-            background-color: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
+        /* EMPTY STATE */
+        .empty-state {
             text-align: center;
-            padding: 2.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: modalAppear 0.5s ease-out;
+            padding: 4rem 2rem;
+            grid-column: 1 / -1;
         }
 
-        .success-icon {
-            font-size: 3.5rem;
-            color: var(--gold);
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gold-light);
             margin-bottom: 1.5rem;
         }
 
-        .success-content h2 {
+        .empty-state h3 {
+            font-size: 1.8rem;
             margin-bottom: 1rem;
             color: var(--gold-dark);
         }
 
-        .success-content p {
-            margin-bottom: 1.5rem;
+        .empty-state p {
+            color: var(--dark-gray);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: var(--gray);
             color: var(--dark-gray);
         }
 
-        /* Loading spinner */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--gold);
+        .action-btn.secondary:hover {
+            background: var(--dark-gray);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* EVENT MODAL */
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-overlay);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .event-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .event-modal-content {
+            background-color: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.4s ease-out;
+        }
+
+        .event-modal-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .event-modal-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .event-modal-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .close-event-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: var(--black);
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-event-modal:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .event-modal-body {
+            padding: 2rem;
+        }
+
+        .modal-event-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .modal-event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-detail-item {
+            background: var(--gray);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .modal-detail-label {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+
+        .modal-detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+
+        .modal-section h3 {
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .modal-section p {
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .modal-requirements,
+        .modal-learning {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .modal-requirements li,
+        .modal-learning li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-requirements li:last-child,
+        .modal-learning li:last-child {
+            border-bottom: none;
+        }
+
+        .modal-requirements i,
+        .modal-learning i {
+            color: var(--gold);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gold-dark);
+            grid-column: 1 / -1;
+        }
+
+        .loading-spinner {
+            border: 4px solid var(--gold-light);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
             animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
         }
 
         @keyframes spin {
@@ -549,37 +1042,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 70px;
-            right: 20px;
-            background: var(--black);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 4px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s;
-            max-width: 300px;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .notification.error {
-            background: #e74c3c;
-        }
-
-        .notification.success {
-            background: var(--gold);
-            color: var(--black);
-        }
-
-        /* Bottom Navigation */
+        /* BOTTOM NAVIGATION */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -591,6 +1054,8 @@
             padding: 0.8rem 0;
             z-index: 100;
             border-top: 1px solid var(--light-gray);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .nav-item {
@@ -599,98 +1064,126 @@
             align-items: center;
             color: var(--dark-gray);
             text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.3s;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 12px;
         }
 
         .nav-icon {
-            font-size: 1.3rem;
-            margin-bottom: 3px;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
         }
 
         .nav-item.active {
             color: var(--gold-dark);
+            background: var(--gold-light);
+            font-weight: 600;
         }
 
         .nav-item:hover {
             color: var(--gold-dark);
+            transform: translateY(-3px);
         }
 
-        /* Contact Section */
-        .contact-section {
-            background-color: var(--gray);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .contact-section h3 {
-            margin-bottom: 1rem;
-            color: var(--gold-dark);
-        }
-
-        .contact-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 1rem;
-        }
-
-        .contact-btn {
-            background-color: var(--gold);
-            color: var(--black);
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
-            font-weight: 600;
-        }
-
-        .contact-btn:hover {
-            background-color: var(--gold-dark);
-            color: var(--white);
-        }
-
-        /* Responsive Design */
-        @media (min-width: 768px) {
-            .container {
-                max-width: 600px;
-            }
-            
-            .notification-options {
-                flex-direction: row;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .notification {
-                right: 10px;
-                left: 10px;
-                max-width: none;
-            }
-            
-            .contact-buttons {
-                flex-direction: column;
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .search-container {
+                display: none;
             }
             
             .user-name {
                 display: none;
             }
             
-            .google-form-content {
-                width: 98%;
-                height: 90vh;
+            .container {
+                padding: 0.5rem;
             }
             
-            .google-form-body {
-                height: calc(90vh - 80px);
+            .events-title {
+                font-size: 2rem;
             }
+            
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .filter-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .brand-subtitle {
+                display: none;
+            }
+            
+            .events-title {
+                font-size: 1.8rem;
+            }
+            
+            .event-card {
+                margin-bottom: 1rem;
+            }
+            
+            .event-actions {
+                flex-direction: column;
+            }
+            
+            .whatsapp-btn {
+                width: 100%;
+                height: 44px;
+            }
+            
+            .bottom-nav {
+                padding: 0.6rem 0;
+            }
+            
+            .nav-item {
+                font-size: 0.75rem;
+                padding: 6px 8px;
+            }
+            
+            .nav-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-dark);
         }
     </style>
 </head>
@@ -698,100 +1191,125 @@
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
-    <!-- Google Form Modal -->
-    <div class="google-form-modal" id="googleFormModal">
-        <div class="google-form-content">
-            <div class="google-form-header">
-                <h2>THE SONGA WELFARE Membership Registration</h2>
-                <p>Complete the form below to join our community</p>
-                <button class="close-modal" id="closeGoogleFormModal">&times;</button>
+    <!-- Sign In Modal -->
+    <div class="signin-modal" id="signinModal">
+        <div class="signin-content">
+            <div class="signin-header">
+                <h2>Welcome to THE SONGA</h2>
+                <p>UNBOUND | UNBENT | UNBROKEN</p>
+                <button class="close-signin-modal" id="closeSigninModal">&times;</button>
             </div>
-            <div class="google-form-body">
-                <iframe 
-                    src="https://docs.google.com/forms/d/e/1FAIpQLScann_IwZdMXihlYHa6jQK1gLy7qEsIVDR-mKUzc3CroZgvOQ/viewform?embedded=true" 
-                    class="google-form-iframe"
-                    frameborder="0"
-                    marginheight="0"
-                    marginwidth="0">
-                    Loading…
-                </iframe>
+            <div class="signin-body">
+                <p>Sign in to register for events, get notifications, and join our community.</p>
+                
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="123922889572-9dmjivsoese0b0o78poo5mgu7nqqm6e6.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+                
+                <div class="signin-footer">
+                    By signing in, you agree to our community guidelines and membership terms.
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Event Notification Modal -->
-    <div class="registration-modal" id="notificationModal">
-        <div class="registration-content">
-            <div class="registration-header">
-                <h2>Get Notified About Future Events</h2>
-                <p>We'll contact you when we schedule new events</p>
-                <button class="close-modal" id="closeNotificationModal">&times;</button>
+    <!-- Event Details Modal -->
+    <div class="event-modal" id="eventModal">
+        <div class="event-modal-content">
+            <div class="event-modal-header">
+                <h2 id="modalEventTitle">Event Title</h2>
+                <p id="modalEventCategory">Workshop</p>
+                <button class="close-event-modal" id="closeEventModal">&times;</button>
             </div>
-            <div class="registration-body">
-                <form id="notificationForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="notificationFirstName">First Name</label>
-                            <input type="text" id="notificationFirstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="notificationLastName">Last Name</label>
-                            <input type="text" id="notificationLastName" name="lastName" required>
-                        </div>
+            <div class="event-modal-body">
+                <div class="modal-event-image">
+                    <img id="modalEventImage" src="" alt="Event Image">
+                </div>
+                
+                <div class="modal-event-details">
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Date & Time</div>
+                        <div class="modal-detail-value" id="modalEventDate">Loading...</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="notificationEmail">Email Address</label>
-                        <input type="email" id="notificationEmail" name="email" required>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Location</div>
+                        <div class="modal-detail-value" id="modalEventLocation">Loading...</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="notificationPhone">Phone Number</label>
-                        <input type="tel" id="notificationPhone" name="phone" required>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Price</div>
+                        <div class="modal-detail-value" id="modalEventPrice">Loading...</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="notificationInterests">What types of events interest you most?</label>
-                        <select id="notificationInterests" name="interests" required>
-                            <option value="">Select your interests</option>
-                            <option value="workshops">Workshops & Seminars</option>
-                            <option value="social">Social & Networking Events</option>
-                            <option value="community">Community Service</option>
-                            <option value="coaching">Life Coaching Sessions</option>
-                            <option value="all">All Types of Events</option>
-                        </select>
+                    <div class="modal-detail-item">
+                        <div class="modal-detail-label">Seats Available</div>
+                        <div class="modal-detail-value" id="modalEventSeats">Loading...</div>
                     </div>
-                    
-                    <button type="submit" class="submit-btn" id="submitNotification">
-                        <i class="fas fa-bell"></i> Notify Me About Future Events
+                </div>
+                
+                <div class="modal-section">
+                    <h3>About This Event</h3>
+                    <p id="modalEventDescription">Loading description...</p>
+                </div>
+                
+                <div class="modal-section" id="requirementsSection" style="display: none;">
+                    <h3>Requirements</h3>
+                    <ul class="modal-requirements" id="modalRequirements"></ul>
+                </div>
+                
+                <div class="modal-section" id="learningSection" style="display: none;">
+                    <h3>What You'll Learn</h3>
+                    <ul class="modal-learning" id="modalLearning"></ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Registration</h3>
+                    <p>Click the register button below to sign up for this event. You'll be redirected to our registration form.</p>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="register-btn" id="modalRegisterBtn">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Register Now</span>
                     </button>
-                </form>
+                    <a href="#" class="whatsapp-btn" id="modalWhatsappBtn" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="success-modal" id="successModal">
-        <div class="success-content">
-            <div class="success-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h2>Registration Successful!</h2>
-            <p>Thank you for your registration. We're excited to have you!</p>
-            <p>We'll contact you shortly with more details.</p>
-            <button class="btn btn-primary" id="closeSuccessModal">
-                <i class="fas fa-thumbs-up"></i> Awesome!
-            </button>
         </div>
     </div>
 
     <!-- Header -->
     <header>
         <div class="header-container">
-            <div class="logo">
-                <img src="https://i.postimg.cc/QCfkMpcM/20251121-1617-Golden-Lion-Emblem-remix-01kak8vrfpfb9r1335qyg8w1gt.png" alt="THE SONGA WELFARE Logo">
-                <div class="brand-name">THE SONGA™</div>
+            <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <img src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="THE SONGA Logo">
+                <div class="brand-info">
+                    <div class="brand-name">THE SONGA</div>
+                    <div class="brand-subtitle">UNBOUND | UNBENT | UNBROKEN</div>
+                </div>
             </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search events, categories..." id="searchInput">
+                </div>
+            </div>
+            
             <div class="auth-section">
                 <div id="userProfile" class="user-profile" style="display: none;">
                     <div class="user-avatar">
@@ -799,101 +1317,106 @@
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
                     <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-item" id="viewProfileOption">
-                            <i class="fas fa-user"></i>
-                            <span>View Profile</span>
-                        </div>
-                        <div class="dropdown-item" id="membershipOption">
-                            <i class="fas fa-crown"></i>
-                            <span>Membership</span>
-                        </div>
-                        <div class="dropdown-item" id="settingsOption">
-                            <i class="fas fa-cog"></i>
-                            <span>Settings</span>
-                        </div>
                         <div class="dropdown-item" id="signOutOption">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Sign Out</span>
                         </div>
                     </div>
                 </div>
-                <button class="join-btn" id="headerJoinBtn">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Join Us</span>
-                </button>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="container">
-        <h1 class="page-title">Our Events</h1>
-        <p class="page-subtitle">Join us for transformative experiences and community building</p>
+        <!-- Events Hero Section -->
+        <div class="events-hero">
+            <h1 class="events-title">Community Events</h1>
+            <p class="events-subtitle">
+                Join our transformative workshops, networking sessions, and community gatherings. 
+                Connect, learn, and grow with like-minded individuals.
+            </p>
+        </div>
 
-        <!-- Upcoming Events -->
-        <div class="events-section upcoming-events">
-            <h2 class="section-title">Upcoming Events</h2>
+        <!-- Events Filters -->
+        <div class="events-filters">
+            <div class="filters-header">
+                <h3 class="filters-title">Find Events</h3>
+                <span id="eventsCount">0 events found</span>
+            </div>
             
-            <!-- No Events Message -->
-            <div class="no-events-container">
-                <div class="no-events-icon">
-                    <i class="fas fa-calendar-times"></i>
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Events</button>
+                <button class="filter-tab" data-filter="upcoming">Upcoming</button>
+                <button class="filter-tab" data-filter="ongoing">Ongoing</button>
+                <button class="filter-tab" data-filter="past">Past</button>
+                <button class="filter-tab" data-filter="virtual">Virtual</button>
+                <button class="filter-tab" data-filter="featured">Featured</button>
+            </div>
+            
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label class="filter-label">Category</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="networking">Networking</option>
+                        <option value="community">Community Service</option>
+                        <option value="social">Social Gathering</option>
+                    </select>
                 </div>
-                <h3 class="no-events-title">No Upcoming Events Scheduled</h3>
-                <p class="no-events-description">
-                    We're currently planning our next series of events and will announce them soon. 
-                    Stay connected with us to be the first to know about our upcoming workshops, 
-                    seminars, and community gatherings.
-                </p>
                 
-                <div class="notification-options">
-                    <button class="btn btn-primary" id="notifyMeBtn">
-                        <i class="fas fa-bell"></i> Notify Me About Future Events
-                    </button>
-                    <a href="https://wa.me/254727211191?text=Hi%20Mugera,%20I'm%20interested%20in%20your%20future%20events" class="btn btn-whatsapp" target="_blank">
-                        <i class="fab fa-whatsapp"></i> Contact Us on WhatsApp
-                    </a>
+                <div class="filter-group">
+                    <label class="filter-label">Type</label>
+                    <select class="filter-select" id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="virtual">Virtual</option>
+                        <option value="in-person">In-Person</option>
+                        <option value="hybrid">Hybrid</option>
+                    </select>
                 </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Sort By</label>
+                    <select class="filter-select" id="sortFilter">
+                        <option value="date-asc">Date (Earliest)</option>
+                        <option value="date-desc">Date (Latest)</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="popularity">Most Popular</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="clear-filters" id="clearFilters">
+                <i class="fas fa-times"></i>
+                Clear Filters
+            </button>
+        </div>
+
+        <!-- Events Grid -->
+        <div class="events-grid" id="eventsContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading events...</p>
             </div>
         </div>
 
-        <!-- Past Events -->
-        <div class="events-section past-events">
-            <h2 class="section-title">Past Events</h2>
-            
-            <!-- No Past Events Message -->
-            <div class="no-events-container">
-                <div class="no-events-icon">
-                    <i class="fas fa-history"></i>
-                </div>
-                <h3 class="no-events-title">Past Events Archive</h3>
-                <p class="no-events-description">
-                    Our past events archive is currently being updated. 
-                    Check back soon to see highlights from our previous workshops, 
-                    seminars, and community gatherings.
-                </p>
-                
-                <div class="notification-options">
-                    <a href="gallery.html" class="btn btn-secondary">
-                        <i class="fas fa-images"></i> View Photo Gallery
-                    </a>
-                    <a href="library.html" class="btn btn-secondary">
-                        <i class="fas fa-book"></i> Access Event Resources
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="contact-section">
-            <h3>Have Questions About Our Events?</h3>
-            <p>Contact us directly for more information or custom event inquiries:</p>
-            <div class="contact-buttons">
-                <button class="contact-btn" id="contactJoinBtn">
-                    <i class="fas fa-user-plus"></i> Join Membership
+        <!-- Empty State (Hidden by default) -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Events Found</h3>
+            <p>We're currently planning our next series of events. Check back soon or subscribe to get notified about upcoming events!</p>
+            <div class="action-buttons">
+                <button class="action-btn primary" id="notifyMeBtn">
+                    <i class="fas fa-bell"></i>
+                    Notify Me
                 </button>
-                <a href="https://wa.me/254727211191" class="contact-btn">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
+                <a href="https://wa.me/254727211191?text=Hi%20THE%20SONGA,%20I%20want%20to%20know%20about%20upcoming%20events" 
+                   class="action-btn secondary" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp Us
                 </a>
             </div>
         </div>
@@ -903,7 +1426,7 @@
     <nav class="bottom-nav">
         <a href="index.html" class="nav-item">
             <i class="fas fa-home nav-icon"></i>
-            <span>Home</span>
+            <span>Feed</span>
         </a>
         <a href="events.html" class="nav-item active">
             <i class="fas fa-calendar-alt nav-icon"></i>
@@ -913,11 +1436,17 @@
             <i class="fas fa-book nav-icon"></i>
             <span>Library</span>
         </a>
-        <a href="about.html" class="nav-item">
-            <i class="fas fa-info-circle nav-icon"></i>
-            <span>About</span>
+        <a href="community.html" class="nav-item">
+            <i class="fas fa-users nav-icon"></i>
+            <span>Network</span>
         </a>
     </nav>
+
+    <!-- Firebase and Google Sign-In SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
 
     <script>
     // Firebase configuration
