@@ -2878,19 +2878,15 @@
 
         // Initialize Firebase
         let database;
+        let firebaseInitialized = false;
         try {
             firebase.initializeApp(firebaseConfig);
             database = firebase.database();
-            console.log("Firebase initialized successfully for library");
+            firebaseInitialized = true;
+            console.log("Firebase initialized successfully");
         } catch (error) {
             console.error("Firebase initialization error:", error);
-            document.getElementById('libraryGrid').innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Connection Error</h3>
-                    <p>Unable to connect to database. Please refresh the page.</p>
-                </div>
-            `;
+            firebaseInitialized = false;
         }
 
         // Global variables
@@ -2934,6 +2930,193 @@
         const notificationsDropdown = document.getElementById('notificationsDropdown');
         const notificationBadge = document.getElementById('notificationBadge');
         const libraryBadge = document.getElementById('libraryBadge');
+
+        // Fallback sample data
+        const sampleBooks = [
+            {
+                id: "book_001",
+                title: "Atomic Habits",
+                author: "James Clear",
+                category: "Personal Growth",
+                description: "Tiny Changes, Remarkable Results: An Easy & Proven Way to Build Good Habits & Break Bad Ones.",
+                coverImage: "https://images.unsplash.com/photo-1544716278-e513176f20b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.8,
+                pages: 320,
+                publishedYear: 2018,
+                availability: "available",
+                totalCopies: 5,
+                availableCopies: 3,
+                borrowCount: 15,
+                featured: true,
+                tags: ["habits", "productivity", "self-improvement"],
+                format: "Paperback",
+                digitalLink: "https://example.com/atomic-habits",
+                location: "Shelf A-12"
+            },
+            {
+                id: "book_002",
+                title: "The Lean Startup",
+                author: "Eric Ries",
+                category: "Business",
+                description: "How Today's Entrepreneurs Use Continuous Innovation to Create Radically Successful Businesses.",
+                coverImage: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.6,
+                pages: 336,
+                publishedYear: 2011,
+                availability: "available",
+                totalCopies: 3,
+                availableCopies: 2,
+                borrowCount: 8,
+                featured: false,
+                tags: ["startup", "entrepreneurship", "innovation"],
+                format: "Hardcover"
+            },
+            {
+                id: "book_003",
+                title: "Thinking, Fast and Slow",
+                author: "Daniel Kahneman",
+                category: "Personal Growth",
+                description: "The groundbreaking work on how we make decisions and the two systems that drive the way we think.",
+                coverImage: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.7,
+                pages: 499,
+                publishedYear: 2011,
+                availability: "borrowed",
+                totalCopies: 4,
+                availableCopies: 0,
+                borrowCount: 12,
+                featured: true,
+                tags: ["psychology", "decision-making", "behavior"],
+                format: "Paperback"
+            },
+            {
+                id: "book_004",
+                title: "The Psychology of Money",
+                author: "Morgan Housel",
+                category: "Finance",
+                description: "Timeless lessons on wealth, greed, and happiness doing well with money isn't necessarily about what you know.",
+                coverImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.8,
+                pages: 256,
+                publishedYear: 2020,
+                availability: "available",
+                totalCopies: 6,
+                availableCopies: 4,
+                borrowCount: 9,
+                featured: false,
+                tags: ["money", "psychology", "finance"],
+                format: "Hardcover"
+            },
+            {
+                id: "book_005",
+                title: "Deep Work",
+                author: "Cal Newport",
+                category: "Personal Growth",
+                description: "Rules for Focused Success in a Distracted World. Master the ability to focus without distraction.",
+                coverImage: "https://images.unsplash.com/photo-1543332164-6e82f355badc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.5,
+                pages: 304,
+                publishedYear: 2016,
+                availability: "available",
+                totalCopies: 4,
+                availableCopies: 3,
+                borrowCount: 7,
+                featured: false,
+                tags: ["productivity", "focus", "work"],
+                format: "Paperback",
+                digitalLink: "https://example.com/deep-work"
+            },
+            {
+                id: "book_006",
+                title: "The 7 Habits of Highly Effective People",
+                author: "Stephen R. Covey",
+                category: "Business",
+                description: "Powerful lessons in personal change that has transformed the lives of millions worldwide.",
+                coverImage: "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
+                rating: 4.6,
+                pages: 381,
+                publishedYear: 1989,
+                availability: "available",
+                totalCopies: 8,
+                availableCopies: 5,
+                borrowCount: 25,
+                featured: true,
+                tags: ["habits", "effectiveness", "leadership"],
+                format: "Paperback"
+            }
+        ];
+
+        const sampleArticles = [
+            {
+                id: "article_001",
+                title: "The Psychology of Wealth: Mindset Matters",
+                author: "THE SONGA Team",
+                category: "Finance",
+                excerpt: "How your mindset influences your financial decisions and wealth accumulation journey.",
+                content: "Full article content about wealth psychology...",
+                coverImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                readTime: "5 min",
+                publishedDate: new Date().toISOString(),
+                views: 245,
+                featured: true
+            },
+            {
+                id: "article_002",
+                title: "Building a Morning Routine That Works",
+                author: "THE SONGA Team",
+                category: "Personal Growth",
+                excerpt: "Transform your mornings to transform your life with these practical strategies.",
+                content: "Full article content about morning routines...",
+                coverImage: "https://images.unsplash.com/photo-1544717301-9cdcb1f5940f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                readTime: "8 min",
+                publishedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                views: 189,
+                featured: true
+            },
+            {
+                id: "article_003",
+                title: "Digital Minimalism for Better Focus",
+                author: "THE SONGA Team",
+                category: "Personal Growth",
+                excerpt: "Learn how to declutter your digital life to improve focus and productivity.",
+                content: "Full article content about digital minimalism...",
+                coverImage: "https://images.unsplash.com/photo-1543332164-6e82f355badc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+                readTime: "6 min",
+                publishedDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                views: 156,
+                featured: true
+            }
+        ];
+
+        const sampleReadingGroups = [
+            {
+                id: "group_001",
+                name: "Business Leaders",
+                description: "Discuss business strategies, entrepreneurship, and leadership",
+                icon: "fas fa-briefcase",
+                memberCount: 45,
+                status: "active",
+                members: []
+            },
+            {
+                id: "group_002",
+                name: "Personal Growth",
+                description: "Share insights on self-improvement and personal development",
+                icon: "fas fa-brain",
+                memberCount: 78,
+                status: "active",
+                members: []
+            },
+            {
+                id: "group_003",
+                name: "Finance Enthusiasts",
+                description: "Discuss investments, wealth building, and financial literacy",
+                icon: "fas fa-chart-line",
+                memberCount: 32,
+                status: "active",
+                members: []
+            }
+        ];
 
         // Show notification
         function showNotification(message, type = 'success', duration = 4000) {
@@ -3009,21 +3192,36 @@
             }
         }
 
-        async function setupNotifications() {
-            if (!currentUser || !database) return;
+        function setupNotifications() {
+            if (!currentUser) return;
             
-            // Listen for notifications
-            database.ref(`users/${currentUser.uid}/notifications`).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    userNotifications = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    
-                    updateNotificationBadge();
-                    renderNotifications();
+            // Load sample notifications
+            userNotifications = [
+                {
+                    id: "notif_001",
+                    message: "Welcome to THE SONGA Library!",
+                    read: false,
+                    type: "welcome",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: "notif_002",
+                    message: "New book 'Atomic Habits' has been added to the library",
+                    read: false,
+                    type: "new_book",
+                    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+                },
+                {
+                    id: "notif_003",
+                    message: "Your borrowed book is due in 3 days",
+                    read: true,
+                    type: "due_soon",
+                    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
                 }
-            });
+            ];
+            
+            updateNotificationBadge();
+            renderNotifications();
         }
 
         function updateNotificationBadge() {
@@ -3077,10 +3275,12 @@
 
         function handleNotificationClick(notificationId) {
             // Mark as read
-            if (currentUser && database) {
-                database.ref(`users/${currentUser.uid}/notifications/${notificationId}`).update({
-                    read: true
-                });
+            const notification = userNotifications.find(n => n.id === notificationId);
+            if (notification) {
+                notification.read = true;
+                updateNotificationBadge();
+                renderNotifications();
+                showNotification('Notification marked as read', 'success');
             }
         }
 
@@ -3110,27 +3310,37 @@
             }
             
             try {
-                const bookRef = database.ref(`libraryBooks/${bookId}`);
-                const snapshot = await bookRef.once('value');
-                const book = snapshot.val();
-                
-                let likedBy = book.likedBy || [];
-                let likes = book.likes || 0;
-                
-                if (likedBy.includes(currentUser.uid)) {
-                    likedBy = likedBy.filter(id => id !== currentUser.uid);
-                    likes--;
-                    showNotification('Book unliked', 'success', 2000);
-                } else {
-                    likedBy.push(currentUser.uid);
-                    likes++;
-                    showNotification('Book liked!', 'success', 2000);
+                const bookIndex = books.findIndex(b => b.id === bookId);
+                if (bookIndex !== -1) {
+                    const book = books[bookIndex];
+                    let likedBy = book.likedBy || [];
+                    let likes = book.likes || 0;
+                    
+                    if (likedBy.includes(currentUser.uid)) {
+                        likedBy = likedBy.filter(id => id !== currentUser.uid);
+                        likes--;
+                        showNotification('Book unliked', 'success', 2000);
+                    } else {
+                        likedBy.push(currentUser.uid);
+                        likes++;
+                        showNotification('Book liked!', 'success', 2000);
+                    }
+                    
+                    books[bookIndex] = {
+                        ...book,
+                        likedBy,
+                        likes
+                    };
+                    
+                    // Update UI
+                    const likeBtn = document.querySelector(`[data-book-id="${bookId}"] .social-action-btn`);
+                    if (likeBtn) {
+                        likeBtn.classList.toggle('liked');
+                        likeBtn.innerHTML = likedBy.includes(currentUser.uid) ? 
+                            '<i class="fas fa-heart"></i> Liked' : 
+                            '<i class="far fa-heart"></i> Like';
+                    }
                 }
-                
-                await bookRef.update({
-                    likedBy: likedBy,
-                    likes: likes
-                });
                 
             } catch (error) {
                 console.error('Error toggling book like:', error);
@@ -3145,21 +3355,27 @@
             }
             
             try {
-                const userRef = database.ref(`users/${currentUser.uid}`);
-                const snapshot = await userRef.once('value');
-                const userData = snapshot.val();
-                
-                let wishlist = userData.wishlist || [];
-                
-                if (wishlist.includes(bookId)) {
-                    wishlist = wishlist.filter(id => id !== bookId);
-                    showNotification('Removed from wishlist', 'success', 2000);
-                } else {
-                    wishlist.push(bookId);
-                    showNotification('Added to wishlist!', 'success', 2000);
+                const bookIndex = books.findIndex(b => b.id === bookId);
+                if (bookIndex !== -1) {
+                    const book = books[bookIndex];
+                    
+                    if (savedBooks.includes(bookId)) {
+                        savedBooks = savedBooks.filter(id => id !== bookId);
+                        showNotification('Removed from wishlist', 'success', 2000);
+                    } else {
+                        savedBooks.push(bookId);
+                        showNotification('Added to wishlist!', 'success', 2000);
+                    }
+                    
+                    // Update UI
+                    const saveBtn = document.querySelector(`[data-book-id="${bookId}"] .social-action-btn`);
+                    if (saveBtn) {
+                        saveBtn.classList.toggle('saved');
+                        saveBtn.innerHTML = savedBooks.includes(bookId) ? 
+                            '<i class="fas fa-bookmark"></i> Saved' : 
+                            '<i class="far fa-bookmark"></i> Save';
+                    }
                 }
-                
-                await userRef.update({ wishlist: wishlist });
                 
             } catch (error) {
                 console.error('Error updating wishlist:', error);
@@ -3198,29 +3414,20 @@
         }
 
         // Reading stats
-        async function updateReadingStats() {
-            if (!currentUser || !database) return;
+        function updateReadingStats() {
+            if (!currentUser) return;
             
-            try {
-                const statsRef = database.ref(`users/${currentUser.uid}/readingStats`);
-                const snapshot = await statsRef.once('value');
-                
-                if (snapshot.exists()) {
-                    userReadingStats = snapshot.val();
-                    displayReadingStats();
-                }
-                
-                statsRef.on('value', (snapshot) => {
-                    if (snapshot.exists()) {
-                        userReadingStats = snapshot.val();
-                        displayReadingStats();
-                        updateDropdownStats();
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error fetching reading stats:', error);
-            }
+            // Sample reading stats
+            userReadingStats = {
+                totalReadingMinutes: 1250,
+                currentStreak: 7,
+                booksCompleted: 3,
+                achievements: 5,
+                booksBorrowed: 2
+            };
+            
+            displayReadingStats();
+            updateDropdownStats();
         }
 
         function displayReadingStats() {
@@ -3249,24 +3456,10 @@
         }
 
         // Reading groups
-        async function loadReadingGroups() {
-            if (!database) return;
-            
-            try {
-                const groupsRef = database.ref('readingGroups');
-                const snapshot = await groupsRef.once('value');
-                
-                if (snapshot.exists()) {
-                    readingGroups = Object.keys(snapshot.val()).map(key => ({
-                        id: key,
-                        ...snapshot.val()[key]
-                    }));
-                    displayReadingGroups();
-                }
-                
-            } catch (error) {
-                console.error('Error loading reading groups:', error);
-            }
+        function loadReadingGroups() {
+            // Load sample groups
+            readingGroups = sampleReadingGroups;
+            displayReadingGroups();
         }
 
         function displayReadingGroups() {
@@ -3294,17 +3487,15 @@
             `).join('');
         }
 
-        async function joinReadingGroup(groupId) {
+        function joinReadingGroup(groupId) {
             if (!currentUser) {
                 showNotification('Please sign in to join reading groups', 'error');
                 return;
             }
             
-            try {
-                const groupRef = database.ref(`readingGroups/${groupId}`);
-                const snapshot = await groupRef.once('value');
-                const group = snapshot.val();
-                
+            const groupIndex = readingGroups.findIndex(g => g.id === groupId);
+            if (groupIndex !== -1) {
+                const group = readingGroups[groupIndex];
                 let members = group.members || [];
                 let memberCount = group.memberCount || 0;
                 
@@ -3318,59 +3509,33 @@
                     showNotification('Joined reading group!', 'success');
                 }
                 
-                await groupRef.update({
-                    members: members,
-                    memberCount: memberCount
-                });
+                readingGroups[groupIndex] = {
+                    ...group,
+                    members,
+                    memberCount
+                };
                 
-                loadReadingGroups();
-                
-            } catch (error) {
-                console.error('Error joining reading group:', error);
-                showNotification('Error joining group', 'error');
+                displayReadingGroups();
             }
         }
 
         // Book recommendations
-        async function loadBookRecommendations() {
-            if (!currentUser || !database) return;
+        function loadBookRecommendations() {
+            if (!currentUser) return;
             
-            try {
-                const userRef = database.ref(`users/${currentUser.uid}`);
-                const snapshot = await userRef.once('value');
-                const userData = snapshot.val();
-                
-                const preferences = userData.readingPreferences || ['business', 'personal-growth'];
-                const borrowedBooks = userData.borrowedBooks || [];
-                const wishlist = userData.wishlist || [];
-                
-                const booksRef = database.ref('libraryBooks');
-                const booksSnapshot = await booksRef.once('value');
-                const allBooks = booksSnapshot.exists() ? 
-                    Object.keys(booksSnapshot.val()).map(key => ({
-                        id: key,
-                        ...booksSnapshot.val()[key]
-                    })) : [];
-                
-                bookRecommendations = allBooks
-                    .filter(book => 
-                        !borrowedBooks.includes(book.id) && 
-                        !wishlist.includes(book.id)
+            // Simple recommendation logic based on categories
+            const userPreferences = ['business', 'personal-growth'];
+            
+            bookRecommendations = books
+                .filter(book => 
+                    userPreferences.some(pref => 
+                        book.category?.toLowerCase().includes(pref)
                     )
-                    .filter(book => 
-                        preferences.some(pref => 
-                            book.category?.toLowerCase().includes(pref) ||
-                            book.tags?.some(tag => tag.toLowerCase().includes(pref))
-                        )
-                    )
-                    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
-                    .slice(0, 6);
-                
-                displayRecommendations();
-                
-            } catch (error) {
-                console.error('Error loading recommendations:', error);
-            }
+                )
+                .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                .slice(0, 6);
+            
+            displayRecommendations();
         }
 
         function displayRecommendations() {
@@ -3401,9 +3566,9 @@
             `).join('');
         }
 
-        async function refreshRecommendations() {
+        function refreshRecommendations() {
             showNotification('Refreshing recommendations...', 'info');
-            await loadBookRecommendations();
+            loadBookRecommendations();
             showNotification('Recommendations updated!', 'success');
         }
 
@@ -3425,6 +3590,734 @@
             });
         }
 
+        // Fallback data loading
+        function loadFallbackData() {
+            console.log('Loading fallback data...');
+            books = sampleBooks;
+            articles = sampleArticles;
+            
+            // Update UI with fallback data
+            updateBookCounts();
+            updateQuickStats();
+            filterAndRenderBooks();
+            renderArticles();
+            loadReadingGroups();
+            
+            showNotification('Using demo data. Sign in for full features.', 'info');
+        }
+
+        // Get book category class
+        function getBookCategoryClass(category) {
+            switch(category?.toLowerCase()) {
+                case 'fiction': return 'fiction';
+                case 'non-fiction': return 'non-fiction';
+                case 'business': return 'business';
+                case 'personal growth': return 'personal-growth';
+                case 'finance': return 'finance';
+                default: return 'non-fiction';
+            }
+        }
+
+        // Get category display name
+        function getCategoryDisplayName(category) {
+            switch(category?.toLowerCase()) {
+                case 'fiction': return 'Fiction';
+                case 'non-fiction': return 'Non-Fiction';
+                case 'business': return 'Business';
+                case 'personal growth': return 'Personal Growth';
+                case 'finance': return 'Finance';
+                default: return category || 'General';
+            }
+        }
+
+        // Get availability status
+        function getAvailabilityStatus(book) {
+            if (book.digitalLink) return 'digital-only';
+            if (book.availability === 'available') return 'available';
+            if (book.availability === 'borrowed') return 'borrowed';
+            if (book.availability === 'reserved') return 'reserved';
+            return 'available';
+        }
+
+        // Get availability text
+        function getAvailabilityText(book) {
+            if (book.digitalLink) return 'Digital Access';
+            if (book.availability === 'available') return 'Available';
+            if (book.availability === 'borrowed') return 'Borrowed';
+            if (book.availability === 'reserved') return 'Reserved';
+            return 'Available';
+        }
+
+        // Update book counts
+        function updateBookCounts() {
+            const availableBooks = books.filter(book => book.availability === 'available');
+            const featuredBooks = books.filter(book => book.featured);
+            const digitalBooks = books.filter(book => book.digitalLink);
+            
+            document.getElementById('countAll').textContent = books.length;
+            document.getElementById('countAvailable').textContent = availableBooks.length;
+            document.getElementById('countFeatured').textContent = featuredBooks.length;
+            document.getElementById('countDigital').textContent = digitalBooks.length;
+        }
+
+        // Update quick stats
+        function updateQuickStats() {
+            // Total books
+            document.getElementById('totalBooks').textContent = books.length;
+            
+            // Total borrows
+            const totalBorrows = books.reduce((sum, book) => sum + (book.borrowCount || 0), 0);
+            document.getElementById('totalBorrows').textContent = totalBorrows;
+            
+            // Total articles
+            document.getElementById('totalArticles').textContent = articles.length;
+            
+            // Active readers
+            document.getElementById('activeReaders').textContent = 42;
+        }
+
+        // Filter and render books
+        function filterAndRenderBooks() {
+            const activeFilter = document.querySelector('.filter-tab.active')?.dataset.filter || 'all';
+            const activeCategory = document.querySelector('.category-badge.active')?.dataset.category || 'all';
+            const sortFilter = document.getElementById('sortFilter').value;
+            const availabilityFilter = document.getElementById('availabilityFilter').value;
+            const formatFilter = document.getElementById('formatFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredBooks = books.filter(book => {
+                // Filter by tab
+                let filterMatch = true;
+                switch(activeFilter) {
+                    case 'available':
+                        filterMatch = book.availability === 'available';
+                        break;
+                    case 'featured':
+                        filterMatch = book.featured === true;
+                        break;
+                    case 'digital':
+                        filterMatch = !!book.digitalLink;
+                        break;
+                }
+                
+                // Filter by category
+                const categoryMatch = activeCategory === 'all' || 
+                    (book.category && book.category.toLowerCase() === activeCategory);
+                
+                // Filter by availability
+                let availabilityMatch = true;
+                switch(availabilityFilter) {
+                    case 'available':
+                        availabilityMatch = book.availability === 'available';
+                        break;
+                    case 'borrowed':
+                        availabilityMatch = book.availability === 'borrowed';
+                        break;
+                    case 'digital':
+                        availabilityMatch = !!book.digitalLink;
+                        break;
+                }
+                
+                // Filter by format
+                let formatMatch = true;
+                switch(formatFilter) {
+                    case 'physical':
+                        formatMatch = !book.digitalLink;
+                        break;
+                    case 'digital':
+                        formatMatch = !!book.digitalLink;
+                        break;
+                }
+                
+                // Filter by search term
+                const searchMatch = searchTerm === '' || 
+                    book.title.toLowerCase().includes(searchTerm) ||
+                    book.author.toLowerCase().includes(searchTerm) ||
+                    (book.tags && book.tags.some(tag => tag.toLowerCase().includes(searchTerm))) ||
+                    (book.description && book.description.toLowerCase().includes(searchTerm));
+                
+                return filterMatch && categoryMatch && availabilityMatch && formatMatch && searchMatch;
+            });
+            
+            // Sort books
+            filteredBooks.sort((a, b) => {
+                switch(sortFilter) {
+                    case 'title':
+                        return a.title.localeCompare(b.title);
+                    case 'author':
+                        return a.author.localeCompare(b.author);
+                    case 'rating':
+                        return (b.rating || 0) - (a.rating || 0);
+                    case 'date-added':
+                        return (b.publishedYear || 0) - (a.publishedYear || 0);
+                    case 'popularity':
+                    default:
+                        return (b.borrowCount || 0) - (a.borrowCount || 0);
+                }
+            });
+            
+            renderBooks(filteredBooks);
+        }
+
+        // Render books
+        function renderBooks(booksArray) {
+            if (!libraryGrid) return;
+            
+            if (!booksArray || booksArray.length === 0) {
+                const emptyTemplate = document.getElementById('emptyStateTemplate');
+                const emptyState = emptyTemplate.content.cloneNode(true);
+                libraryGrid.innerHTML = '';
+                libraryGrid.appendChild(emptyState);
+                return;
+            }
+
+            libraryGrid.innerHTML = booksArray.map(book => {
+                const categoryClass = getBookCategoryClass(book.category);
+                const categoryName = getCategoryDisplayName(book.category);
+                const availabilityStatus = getAvailabilityStatus(book);
+                const availabilityText = getAvailabilityText(book);
+                const isAvailable = book.availability === 'available';
+                const hasDigital = !!book.digitalLink;
+                const isLiked = book.likedBy?.includes(currentUser?.uid) || false;
+                const isSaved = savedBooks.includes(book.id);
+                
+                const availabilityClass = availabilityStatus === 'digital-only' ? 'digital-only' : 
+                                        availabilityStatus === 'available' ? 'available' : 
+                                        availabilityStatus === 'borrowed' ? 'borrowed' : 'reserved';
+                
+                return `
+                    <div class="book-card ${book.featured ? 'featured' : ''}" data-book-id="${book.id}">
+                        ${book.featured ? `
+                            <div class="featured-badge">
+                                <i class="fas fa-star"></i> Featured
+                            </div>
+                        ` : ''}
+                        
+                        <div class="availability-badge ${availabilityClass}">
+                            ${availabilityText}
+                        </div>
+                        
+                        <div class="book-cover">
+                            <img src="${book.coverImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${book.title}">
+                        </div>
+                        
+                        <div class="book-content">
+                            <div class="book-category ${categoryClass}">
+                                ${categoryName}
+                            </div>
+                            <h3 class="book-title">${book.title}</h3>
+                            <p class="book-author">by ${book.author}</p>
+                            
+                            <div class="book-rating">
+                                <div class="stars">
+                                    ${'★'.repeat(Math.floor(book.rating || 0))}${'☆'.repeat(5 - Math.floor(book.rating || 0))}
+                                </div>
+                                <span class="rating-value">${(book.rating || 0).toFixed(1)}</span>
+                            </div>
+                            
+                            <div class="book-meta-small">
+                                <span><i class="far fa-file"></i> ${book.pages || 'N/A'} pages</span>
+                                <span><i class="fas fa-calendar"></i> ${book.publishedYear || ''}</span>
+                            </div>
+                            
+                            <div class="book-social-actions-small">
+                                <button class="social-action-btn-small ${isLiked ? 'liked' : ''}" onclick="toggleBookLike('${book.id}')">
+                                    <i class="${isLiked ? 'fas' : 'far'} fa-heart"></i>
+                                    ${isLiked ? 'Liked' : 'Like'}
+                                </button>
+                                <button class="social-action-btn-small ${isSaved ? 'saved' : ''}" onclick="addToWishlist('${book.id}')">
+                                    <i class="${isSaved ? 'fas' : 'far'} fa-bookmark"></i>
+                                    ${isSaved ? 'Saved' : 'Save'}
+                                </button>
+                                <button class="social-action-btn-small" onclick="shareBook('${book.id}')">
+                                    <i class="fas fa-share-alt"></i>
+                                    Share
+                                </button>
+                            </div>
+                            
+                            <div class="book-actions">
+                                <button class="book-action-btn borrow-book-btn" onclick="openBorrowModal('${book.id}')">
+                                    <i class="fas fa-book-reader"></i> Borrow
+                                </button>
+                                <button class="book-action-btn details-btn" onclick="openBookDetails('${book.id}')">
+                                    <i class="fas fa-eye"></i> Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render articles
+        function renderArticles() {
+            if (!articlesGrid) return;
+            
+            const featuredArticles = articles.filter(article => article.featured).slice(0, 3);
+            
+            if (featuredArticles.length === 0) {
+                articlesGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-newspaper"></i>
+                        <h3>No Articles Available</h3>
+                        <p>Check back soon for featured articles.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            articlesGrid.innerHTML = featuredArticles.map(article => {
+                return `
+                    <div class="article-card">
+                        <div class="article-image">
+                            <img src="${article.coverImage || 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'}" alt="${article.title}">
+                        </div>
+                        <div class="article-content">
+                            <h3 class="article-title">${article.title}</h3>
+                            <p class="article-excerpt">${article.excerpt || article.content?.substring(0, 150) || 'Read this insightful article...'}</p>
+                            <div class="article-meta">
+                                <span>${article.author}</span>
+                                <span class="read-time">
+                                    <i class="far fa-clock"></i> ${article.readTime || '5 min'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open book details
+        function openBookDetails(bookId) {
+            selectedBook = books.find(b => b.id === bookId);
+            if (!selectedBook) {
+                showNotification('Book not found', 'error');
+                return;
+            }
+            
+            // Update modal content
+            document.getElementById('bookModalTitle').textContent = selectedBook.title;
+            document.getElementById('bookModalAuthor').textContent = `by ${selectedBook.author}`;
+            document.getElementById('bookModalCover').src = selectedBook.coverImage || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+            document.getElementById('bookModalRating').textContent = (selectedBook.rating || 0).toFixed(1);
+            document.getElementById('bookModalPages').textContent = `${selectedBook.pages || 'N/A'} pages`;
+            document.getElementById('bookModalYear').textContent = selectedBook.publishedYear || 'N/A';
+            document.getElementById('bookModalFormat').textContent = selectedBook.format || 'Paperback';
+            document.getElementById('bookModalDescription').textContent = selectedBook.description || selectedBook.summary || 'No description available.';
+            
+            // Update tags
+            const tagsHtml = selectedBook.tags && selectedBook.tags.length > 0 ? 
+                selectedBook.tags.map(tag => `
+                    <span class="book-tag" onclick="searchByTag('${tag}')">${tag}</span>
+                `).join('') : '<span style="color: var(--dark-gray);">No tags</span>';
+            document.getElementById('bookModalTags').innerHTML = tagsHtml;
+            
+            // Update availability
+            const availabilityStatus = getAvailabilityStatus(selectedBook);
+            const statusElement = document.getElementById('bookModalStatus');
+            statusElement.textContent = getAvailabilityText(selectedBook);
+            statusElement.className = `status-value status-${availabilityStatus.replace('-only', '')}`;
+            
+            // Update availability details
+            const detailsElement = document.getElementById('bookModalAvailabilityDetails');
+            if (selectedBook.digitalLink) {
+                detailsElement.innerHTML = `
+                    <p>Digital access available. Click the "Digital Access" button below to read online.</p>
+                `;
+                document.getElementById('digitalAccessBtn').style.display = 'flex';
+                document.getElementById('borrowFromModalBtn').style.display = 'none';
+            } else {
+                const availableCopies = selectedBook.availableCopies || 0;
+                const totalCopies = selectedBook.totalCopies || 0;
+                detailsElement.innerHTML = `
+                    <p>${availableCopies} of ${totalCopies} copies available</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                        <i class="fas fa-map-marker-alt"></i> ${selectedBook.location || 'Main Library Shelf'}
+                    </p>
+                `;
+                document.getElementById('digitalAccessBtn').style.display = 'none';
+                document.getElementById('borrowFromModalBtn').style.display = 'flex';
+            }
+            
+            // Update social buttons
+            const isLiked = selectedBook.likedBy?.includes(currentUser?.uid) || false;
+            const isSaved = savedBooks.includes(selectedBook.id);
+            
+            const likeBtn = document.getElementById('likeBookBtn');
+            const saveBtn = document.getElementById('saveBookBtn');
+            const shareBtn = document.getElementById('shareBookBtn');
+            
+            likeBtn.className = `social-action-btn ${isLiked ? 'liked' : ''}`;
+            likeBtn.innerHTML = `<i class="${isLiked ? 'fas' : 'far'} fa-heart"></i> ${isLiked ? 'Liked' : 'Like'}`;
+            likeBtn.onclick = () => toggleBookLike(selectedBook.id);
+            
+            saveBtn.className = `social-action-btn ${isSaved ? 'saved' : ''}`;
+            saveBtn.innerHTML = `<i class="${isSaved ? 'fas' : 'far'} fa-bookmark"></i> ${isSaved ? 'Saved' : 'Save'}`;
+            saveBtn.onclick = () => addToWishlist(selectedBook.id);
+            
+            shareBtn.onclick = () => shareBook(selectedBook.id);
+            
+            // Setup borrow button
+            const borrowBtn = document.getElementById('borrowFromModalBtn');
+            borrowBtn.innerHTML = '<i class="fas fa-book-reader"></i> Borrow Book';
+            borrowBtn.disabled = false;
+            borrowBtn.onclick = () => {
+                bookModal.classList.remove('active');
+                openBorrowModal(selectedBook.id);
+            };
+            
+            // Setup digital access button
+            const digitalBtn = document.getElementById('digitalAccessBtn');
+            if (selectedBook.digitalLink) {
+                digitalBtn.onclick = () => {
+                    window.open(selectedBook.digitalLink, '_blank');
+                    showNotification('Opening digital book...', 'success');
+                };
+            }
+            
+            // Show modal
+            bookModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        // Open borrow modal
+        function openBorrowModal(bookId) {
+            if (!currentUser) {
+                showNotification('Please sign in to borrow books', 'error');
+                signinModal.classList.add('active');
+                return;
+            }
+            
+            selectedBook = books.find(b => b.id === bookId);
+            if (!selectedBook) {
+                showNotification('Book not found', 'error');
+                return;
+            }
+            
+            // Update modal content
+            document.getElementById('borrowBookTitle').textContent = selectedBook.title;
+            document.getElementById('borrowBookName').textContent = selectedBook.title;
+            document.getElementById('borrowBookAuthor').textContent = selectedBook.author;
+            
+            // Calculate dates
+            const borrowDuration = selectedBook.borrowDuration || 14;
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + borrowDuration);
+            
+            document.getElementById('borrowPeriod').textContent = `${borrowDuration} days`;
+            document.getElementById('borrowDueDate').textContent = dueDate.toLocaleDateString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+            
+            document.getElementById('borrowLocation').textContent = selectedBook.location || 'Main Library - Front Desk';
+            
+            // Show modal
+            borrowModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        // Confirm borrow book
+        function confirmBorrowBook() {
+            if (!selectedBook || !currentUser) return;
+            
+            try {
+                // Update book availability
+                const bookIndex = books.findIndex(b => b.id === selectedBook.id);
+                if (bookIndex !== -1) {
+                    books[bookIndex] = {
+                        ...books[bookIndex],
+                        availableCopies: Math.max((selectedBook.availableCopies || 1) - 1, 0),
+                        borrowCount: (selectedBook.borrowCount || 0) + 1,
+                        availability: (selectedBook.availableCopies || 1) <= 1 ? 'borrowed' : 'available'
+                    };
+                    
+                    // Add to user's borrowed books
+                    userBorrowedBooks.push({
+                        id: `borrow_${Date.now()}`,
+                        bookId: selectedBook.id,
+                        bookTitle: selectedBook.title,
+                        borrowDate: new Date().toISOString(),
+                        dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+                        status: 'borrowed'
+                    });
+                    
+                    // Update UI
+                    filterAndRenderBooks();
+                    displayBorrowedBooks();
+                }
+                
+                // Close modal and show success
+                borrowModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                
+                showNotification(`Successfully borrowed "${selectedBook.title}"!`, 'success');
+                
+            } catch (error) {
+                console.error('Error borrowing book:', error);
+                showNotification('Error borrowing book. Please try again.', 'error');
+            }
+        }
+
+        // Display borrowed books
+        function displayBorrowedBooks() {
+            const borrowedBooksList = document.getElementById('borrowedBooksList');
+            const myBooksSection = document.getElementById('myBooksSection');
+            
+            if (!borrowedBooksList || !myBooksSection) return;
+            
+            if (userBorrowedBooks.length === 0) {
+                myBooksSection.style.display = 'none';
+                return;
+            }
+            
+            myBooksSection.style.display = 'block';
+            
+            // Show only first 3 borrowed books
+            const displayBooks = userBorrowedBooks.slice(0, 3);
+            
+            borrowedBooksList.innerHTML = displayBooks.map(record => {
+                const dueDate = new Date(record.dueDate);
+                const now = new Date();
+                const daysLeft = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+                const isOverdue = daysLeft < 0;
+                
+                return `
+                    <div class="borrowed-book-card">
+                        <div class="borrowed-book-cover">
+                            <img src="https://images.unsplash.com/photo-1544716278-e513176f20b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="${record.bookTitle}">
+                        </div>
+                        <div class="borrowed-book-info">
+                            <h4 class="borrowed-book-title">${record.bookTitle}</h4>
+                            <div class="due-date ${isOverdue ? 'overdue' : ''}">
+                                <i class="far fa-calendar ${isOverdue ? 'fa-exclamation-circle' : ''}"></i>
+                                ${isOverdue ? 'OVERDUE' : `Due in ${daysLeft} days`}
+                            </div>
+                        </div>
+                        <div class="borrowed-actions">
+                            <button class="renew-btn" onclick="renewBook('${record.id}')">
+                                <i class="fas fa-redo"></i> Renew
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Renew book
+        function renewBook(recordId) {
+            const recordIndex = userBorrowedBooks.findIndex(r => r.id === recordId);
+            if (recordIndex !== -1) {
+                const newDueDate = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+                userBorrowedBooks[recordIndex].dueDate = newDueDate.toISOString();
+                
+                displayBorrowedBooks();
+                showNotification('Book renewed successfully!', 'success');
+            }
+        }
+
+        // Authentication functions
+        function checkAuthStatus() {
+            libraryGrid.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading library books...</p>
+                </div>
+            `;
+
+            const storedUser = localStorage.getItem('the_songa_welfare_user');
+            if (storedUser) {
+                try {
+                    currentUser = JSON.parse(storedUser);
+                    updateUIForMember();
+                    signinModal.classList.remove('active');
+                    fetchUserData(currentUser.uid);
+                    setupRealtimeData();
+                } catch (error) {
+                    console.error("Error parsing stored user:", error);
+                    localStorage.removeItem('the_songa_welfare_user');
+                    signinModal.classList.add('active');
+                    loadFallbackData();
+                }
+            } else {
+                signinModal.classList.add('active');
+                loadFallbackData();
+            }
+        }
+
+        // Parse JWT token
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (error) {
+                console.error('Error parsing JWT:', error);
+                return {};
+            }
+        }
+
+        // Google Sign-In Handler
+        async function handleGoogleSignIn(response) {
+            try {
+                const userData = parseJwt(response.credential);
+                
+                currentUser = {
+                    uid: userData.sub,
+                    email: userData.email,
+                    firstName: userData.given_name,
+                    lastName: userData.family_name,
+                    fullName: userData.name,
+                    picture: userData.picture,
+                    emailVerified: userData.email_verified
+                };
+                
+                localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
+                
+                if (firebaseInitialized && database) {
+                    const userRef = database.ref(`users/${currentUser.uid}`);
+                    const snapshot = await userRef.once('value');
+                    
+                    if (!snapshot.exists()) {
+                        const newUser = {
+                            uid: currentUser.uid,
+                            email: currentUser.email,
+                            firstName: currentUser.firstName,
+                            lastName: currentUser.lastName,
+                            profilePicture: currentUser.picture,
+                            joinedDate: new Date().toISOString(),
+                            lastLogin: new Date().toISOString(),
+                            membershipStatus: "active",
+                            membershipTier: "explorer",
+                            borrowedBooks: [],
+                            readingPreferences: ["personal-growth", "business"],
+                            isAdmin: false,
+                            status: "active"
+                        };
+                        
+                        await userRef.set(newUser);
+                        currentUserData = newUser;
+                        showNotification(`Welcome to THE SONGA Library, ${currentUser.firstName}!`, 'success');
+                    } else {
+                        await userRef.update({ lastLogin: new Date().toISOString() });
+                        currentUserData = snapshot.val();
+                        showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+                    }
+                }
+                
+                updateUIForMember();
+                signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                
+                // Initialize enhanced features
+                initializeEnhancedFeatures();
+                
+                if (firebaseInitialized) {
+                    setupRealtimeData();
+                } else {
+                    loadFallbackData();
+                }
+                
+            } catch (error) {
+                console.error('Error in Google Sign-In:', error);
+                showNotification('Error signing in. Please try again.', 'error');
+            }
+        }
+
+        // Update UI for signed-in members
+        function updateUIForMember() {
+            if (userProfile && currentUser) {
+                userProfile.style.display = 'flex';
+                userAvatar.src = currentUser.picture || 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp';
+                userDisplayName.textContent = currentUser.firstName;
+                
+                // Show membership info
+                membershipInfo.style.display = 'flex';
+                
+                // Show reading stats
+                updateReadingStats();
+            }
+        }
+
+        // Fetch user data
+        async function fetchUserData(userId) {
+            try {
+                if (firebaseInitialized && database) {
+                    const userRef = database.ref(`users/${userId}`);
+                    const snapshot = await userRef.once('value');
+                    if (snapshot.exists()) {
+                        currentUserData = snapshot.val();
+                        updateMembershipInfo();
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+
+        // Update membership info
+        function updateMembershipInfo() {
+            if (!currentUserData) return;
+            
+            const tier = currentUserData.membershipTier || 'explorer';
+            
+            document.getElementById('membershipInfo').style.display = 'flex';
+            document.getElementById('tierBadge').textContent = tier.toUpperCase();
+            document.getElementById('tierName').textContent = `${tier.charAt(0).toUpperCase() + tier.slice(1)} Plan`;
+            document.getElementById('tierDescription').textContent = 'Access to our complete library and reading groups';
+            
+            document.getElementById('booksBorrowed').textContent = currentUserData.borrowedBooks?.length || 0;
+            document.getElementById('booksLimit').textContent = tier === 'explorer' ? '5' : 'Unlimited';
+            document.getElementById('renewalsLeft').textContent = '2';
+        }
+
+        // Setup real-time data
+        function setupRealtimeData() {
+            if (!firebaseInitialized || !database) {
+                loadFallbackData();
+                return;
+            }
+            
+            // Listen for books
+            database.ref('libraryBooks').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const booksData = snapshot.val();
+                    books = Object.keys(booksData).map(key => ({
+                        id: key,
+                        ...booksData[key]
+                    }));
+                    
+                    updateBookCounts();
+                    updateQuickStats();
+                    filterAndRenderBooks();
+                    loadBookRecommendations();
+                } else {
+                    loadFallbackData();
+                }
+            });
+            
+            // Listen for articles
+            database.ref('libraryArticles').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const articlesData = snapshot.val();
+                    articles = Object.keys(articlesData).map(key => ({
+                        id: key,
+                        ...articlesData[key]
+                    }));
+                    
+                    renderArticles();
+                } else {
+                    articles = sampleArticles;
+                    renderArticles();
+                }
+            });
+        }
+
         // Initialize enhanced features
         function initializeEnhancedFeatures() {
             window.addEventListener('scroll', handleScroll, { passive: true });
@@ -3434,22 +4327,234 @@
                 updateReadingStats();
                 loadReadingGroups();
                 loadBookRecommendations();
+                
+                // Show reading progress
+                document.getElementById('currentReadingProgress').style.display = 'block';
+                document.getElementById('currentBookProgress').innerHTML = `
+                    <h4>Atomic Habits</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span>Page 208 of 320</span>
+                        <span>65% complete</span>
+                    </div>
+                `;
             }
         }
 
-        // Add your existing library functions here...
-        // (Keep all your existing library functions from the previous code)
+        // Event listeners
+        function setupEventListeners() {
+            // User profile dropdown
+            if (userProfile) {
+                userProfile.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleDropdown();
+                });
+            }
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function() {
+                closeDropdown();
+            });
+            
+            // Filter tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterAndRenderBooks();
+                });
+            });
+            
+            // Category badges
+            document.querySelectorAll('.category-badge').forEach(badge => {
+                badge.addEventListener('click', function() {
+                    document.querySelectorAll('.category-badge').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterAndRenderBooks();
+                });
+            });
+            
+            // Filter controls
+            document.getElementById('sortFilter').addEventListener('change', filterAndRenderBooks);
+            document.getElementById('availabilityFilter').addEventListener('change', filterAndRenderBooks);
+            document.getElementById('formatFilter').addEventListener('change', filterAndRenderBooks);
+            
+            // Search input
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterAndRenderBooks();
+                }, 500);
+            });
+            
+            // Close modals
+            document.getElementById('closeBookModal').addEventListener('click', function() {
+                bookModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+            
+            document.getElementById('closeBorrowModal').addEventListener('click', function() {
+                borrowModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+            
+            document.getElementById('closeSigninModal').addEventListener('click', function() {
+                signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+            
+            // Confirm borrow button
+            document.getElementById('confirmBorrowBtn').addEventListener('click', confirmBorrowBook);
+            document.getElementById('cancelBorrowBtn').addEventListener('click', function() {
+                borrowModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+            
+            // Close modals when clicking outside
+            bookModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    bookModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                }
+            });
+            
+            borrowModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    borrowModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                }
+            });
+            
+            signinModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    signinModal.classList.remove('active');
+                }
+            });
+            
+            // Escape key to close modals
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (bookModal.classList.contains('active')) {
+                        bookModal.classList.remove('active');
+                        document.body.classList.remove('modal-open');
+                    }
+                    if (borrowModal.classList.contains('active')) {
+                        borrowModal.classList.remove('active');
+                        document.body.classList.remove('modal-open');
+                    }
+                    if (signinModal.classList.contains('active')) {
+                        signinModal.classList.remove('active');
+                    }
+                }
+            });
+            
+            // Dropdown options
+            const signOutOption = document.getElementById('signOutOption');
+            if (signOutOption) {
+                signOutOption.addEventListener('click', function() {
+                    signOut();
+                    closeDropdown();
+                });
+            }
+            
+            // Notification button
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', toggleNotifications);
+            }
+        }
+
+        // Sign out user
+        function signOut() {
+            currentUser = null;
+            currentUserData = null;
+            localStorage.removeItem('the_songa_welfare_user');
+            
+            closeDropdown();
+            signinModal.classList.add('active');
+            document.body.classList.add('modal-open');
+            showNotification('Signed out successfully', 'success');
+            
+            // Hide member-only sections
+            membershipInfo.style.display = 'none';
+            myBooksSection.style.display = 'none';
+            document.getElementById('readingStats').style.display = 'none';
+            document.getElementById('currentReadingProgress').style.display = 'none';
+            userProfile.style.display = 'none';
+            
+            // Reset data
+            books = sampleBooks;
+            articles = sampleArticles;
+            userBorrowedBooks = [];
+            userNotifications = [];
+            userReadingStats = {};
+            
+            // Update UI
+            updateBookCounts();
+            updateQuickStats();
+            filterAndRenderBooks();
+            renderArticles();
+            updateNotificationBadge();
+        }
+
+        // Utility functions
+        function showUpgradeOptions() {
+            showNotification('Upgrade options coming soon!', 'info');
+        }
+
+        function showAllBorrowedBooks() {
+            showNotification('All borrowed books view coming soon!', 'info');
+        }
+
+        function showAllGroups() {
+            showNotification('All reading groups view coming soon!', 'info');
+        }
+
+        function showMyBooks() {
+            if (userBorrowedBooks.length > 0) {
+                document.getElementById('myBooksSection').style.display = 'block';
+                document.getElementById('myBooksSection').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showNotification('You have no borrowed books yet', 'info');
+            }
+            closeDropdown();
+        }
+
+        function showWishlist() {
+            showNotification('Wishlist feature coming soon!', 'info');
+            closeDropdown();
+        }
+
+        function showReadingStats() {
+            if (Object.keys(userReadingStats).length > 0) {
+                document.getElementById('readingStats').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showNotification('No reading stats available yet', 'info');
+            }
+            closeDropdown();
+        }
+
+        function searchByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            filterAndRenderBooks();
+            showNotification(`Searching for books tagged: ${tag}`, 'info');
+        }
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize existing library functions
             checkAuthStatus();
             setupEventListeners();
             
-            // Initialize enhanced features
-            initializeEnhancedFeatures();
+            // Initialize scroll handling
+            window.addEventListener('scroll', handleScroll, { passive: true });
         });
 
+        // Global function for Google Sign-In callback
+        window.handleGoogleSignIn = handleGoogleSignIn;
+        
         // Make functions globally available
         window.scrollToTop = scrollToTop;
         window.toggleNotifications = toggleNotifications;
@@ -3459,6 +4564,17 @@
         window.shareBook = shareBook;
         window.joinReadingGroup = joinReadingGroup;
         window.refreshRecommendations = refreshRecommendations;
+        window.openBookDetails = openBookDetails;
+        window.openBorrowModal = openBorrowModal;
+        window.confirmBorrowBook = confirmBorrowBook;
+        window.renewBook = renewBook;
+        window.searchByTag = searchByTag;
+        window.showUpgradeOptions = showUpgradeOptions;
+        window.showAllBorrowedBooks = showAllBorrowedBooks;
+        window.showAllGroups = showAllGroups;
+        window.showMyBooks = showMyBooks;
+        window.showWishlist = showWishlist;
+        window.showReadingStats = showReadingStats;
     </script>
 </body>
 </html>
