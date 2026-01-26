@@ -62,6 +62,555 @@
             overflow: hidden;
         }
 
+        /* BACK TO TOP BUTTON */
+        .back-to-top {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            border: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .back-to-top i {
+            font-size: 1.5rem;
+        }
+
+        /* BOTTOM NAVIGATION - Enhanced */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            z-index: 100;
+            border-top: 1px solid var(--light-gray);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(0);
+        }
+
+        .bottom-nav.hidden {
+            transform: translateY(100%);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 16px;
+            border-radius: 16px;
+        }
+
+        .nav-icon {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            color: var(--gold-dark);
+            background: var(--gold-light);
+            font-weight: 700;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-dark);
+            transform: translateY(-3px);
+        }
+
+        .nav-notification {
+            position: absolute;
+            top: -4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid var(--white);
+        }
+
+        /* CATEGORIES FILTER */
+        .categories-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: none;
+        }
+
+        .categories-filter::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 20px;
+            background: white;
+            color: var(--dark-gray);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .category-filter-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+
+        .category-filter-btn.active {
+            background: var(--gold);
+            color: var(--black);
+            border-color: var(--gold);
+        }
+
+        /* CREATE POST BUTTON */
+        .create-post-btn {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 1.5rem;
+        }
+
+        .create-post-btn:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        /* POST CREATION MODAL */
+        .create-post-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-overlay);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .create-post-modal.active {
+            display: flex;
+        }
+
+        .create-post-content {
+            background-color: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.4);
+            animation: modalAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes modalAppear {
+            from { 
+                transform: translateY(20px) scale(0.96); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+
+        .create-post-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .create-post-header h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .close-create-post-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: var(--black);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-create-post-modal:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .create-post-body {
+            padding: 2rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .post-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .post-form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .post-form-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .post-form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .post-form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .post-form-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .post-form-tag {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .post-form-tag-remove {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .post-form-btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            min-width: 120px;
+            border: none;
+        }
+
+        .post-form-btn.primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+
+        .post-form-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .post-form-btn.secondary {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .post-form-btn.secondary:hover {
+            background: var(--dark-gray);
+            color: white;
+        }
+
+        /* POST INSIGHTS */
+        .post-insights {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--gray);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .post-insights.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .post-insights-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-insights-title {
+            font-weight: 700;
+            color: var(--black);
+            font-size: 1.1rem;
+        }
+
+        .post-insights-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .post-insight-stat {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .post-insight-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gold-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .post-insight-stat-label {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        /* FOLLOW BUTTON */
+        .follow-btn {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .follow-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .follow-btn.following {
+            background: var(--light-gray);
+            color: var(--dark-gray);
+        }
+
+        .follow-btn.following:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* NOTIFICATIONS DROPDOWN */
+        .notifications-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px var(--shadow);
+            width: 320px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            margin-top: 8px;
+            border: 1px solid var(--light-gray);
+            animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .notifications-dropdown.active {
+            display: block;
+        }
+
+        .notifications-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notifications-title {
+            font-weight: 700;
+            color: var(--black);
+            font-size: 1.1rem;
+        }
+
+        .mark-all-read {
+            background: none;
+            border: none;
+            color: var(--gold-dark);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .mark-all-read:hover {
+            background: var(--gold-light);
+        }
+
+        .notifications-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .notification-item:hover {
+            background: var(--gray);
+        }
+
+        .notification-item.unread {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .notification-item.unread:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .notification-content {
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .notification-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
         /* SIGNIN MODAL - Enhanced for Inner Circle */
         .signin-modal {
             display: none;
@@ -93,17 +642,6 @@
             position: relative;
             max-height: 90vh;
             overflow-y: auto;
-        }
-
-        @keyframes modalAppear {
-            from { 
-                transform: translateY(20px) scale(0.96); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
         }
 
         .signin-header {
@@ -649,12 +1187,45 @@
             color: #999;
         }
 
-        /* USER PROFILE */
+        /* USER PROFILE - Enhanced */
         .auth-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             position: relative;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-btn:hover {
+            background: var(--gray);
+            color: var(--gold-dark);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid var(--white);
         }
 
         .user-profile {
@@ -1433,51 +2004,6 @@
             100% { background-position: -200% 0; }
         }
 
-        /* BOTTOM NAVIGATION */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.8rem 0;
-            z-index: 100;
-            border-top: 1px solid var(--light-gray);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--dark-gray);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 8px 16px;
-            border-radius: 16px;
-        }
-
-        .nav-icon {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-
-        .nav-item.active {
-            color: var(--gold-dark);
-            background: var(--gold-light);
-            font-weight: 700;
-        }
-
-        .nav-item:hover {
-            color: var(--gold-dark);
-            transform: translateY(-3px);
-        }
-
         /* NOTIFICATION */
         .notification {
             position: fixed;
@@ -1560,9 +2086,32 @@
                 grid-template-columns: 1fr;
             }
             
-            .signin-content {
+            .signin-content,
+            .create-post-content {
                 margin: 10px;
                 max-height: 85vh;
+            }
+            
+            .notifications-dropdown {
+                width: 280px;
+                right: -20px;
+            }
+            
+            .categories-filter {
+                margin: 0.5rem 0 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 90px;
+                right: 16px;
+                width: 48px;
+                height: 48px;
+            }
+            
+            .create-post-btn {
+                bottom: 80px;
+                width: 56px;
+                height: 56px;
             }
         }
 
@@ -1612,6 +2161,11 @@
             .signin-body {
                 padding: 1.5rem;
             }
+            
+            .notifications-dropdown {
+                width: 250px;
+                right: -40px;
+            }
         }
 
         /* SCROLLBAR STYLING */
@@ -1646,9 +2200,23 @@
         .mb-2 { margin-bottom: 1rem; }
         .mb-3 { margin-bottom: 1.5rem; }
         .mb-4 { margin-bottom: 2rem; }
+        
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Create Post Button -->
+    <button class="create-post-btn" id="createPostBtn" onclick="openCreatePostModal()">
+        <i class="fas fa-plus"></i>
+    </button>
+
     <!-- Notification -->
     <div class="notification" id="notification"></div>
 
@@ -1799,6 +2367,61 @@
         </div>
     </div>
 
+    <!-- Create Post Modal -->
+    <div class="create-post-modal" id="createPostModal">
+        <div class="create-post-content">
+            <div class="create-post-header">
+                <h2>Create New Post</h2>
+                <button class="close-create-post-modal" id="closeCreatePostModal">&times;</button>
+            </div>
+            <div class="create-post-body">
+                <form id="createPostForm">
+                    <div class="post-form-group">
+                        <label for="postTitle">Title *</label>
+                        <input type="text" id="postTitle" class="post-form-input" placeholder="Enter post title" required>
+                    </div>
+                    
+                    <div class="post-form-group">
+                        <label for="postContent">Content *</label>
+                        <textarea id="postContent" class="post-form-input post-form-textarea" placeholder="Share your thoughts..." required></textarea>
+                    </div>
+                    
+                    <div class="post-form-group">
+                        <label for="postCategory">Category</label>
+                        <select id="postCategory" class="post-form-input post-form-select">
+                            <option value="announcement">Announcement</option>
+                            <option value="event">Event</option>
+                            <option value="resource">Resource</option>
+                            <option value="discussion">Discussion</option>
+                        </select>
+                    </div>
+                    
+                    <div class="post-form-group">
+                        <label for="postTags">Tags</label>
+                        <input type="text" id="postTags" class="post-form-input" placeholder="Add tags (separated by commas)">
+                        <div class="post-form-tags" id="postTagsContainer"></div>
+                    </div>
+                    
+                    <div class="post-form-group">
+                        <label>
+                            <input type="checkbox" id="postIsPinned">
+                            Pin this post to the top
+                        </label>
+                    </div>
+                    
+                    <div class="post-form-actions">
+                        <button type="button" class="post-form-btn secondary" onclick="closeCreatePostModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="post-form-btn primary">
+                            <i class="fas fa-paper-plane"></i> Publish Post
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div class="delete-confirm-modal" id="deleteConfirmModal">
         <div class="delete-confirm-content">
@@ -1843,6 +2466,30 @@
             </div>
             
             <div class="auth-section">
+                <!-- Notifications Button -->
+                <div class="notification-btn" id="notificationBtn" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge hidden" id="notificationBadge"></div>
+                </div>
+                
+                <!-- Notifications Dropdown -->
+                <div class="notifications-dropdown" id="notificationsDropdown">
+                    <div class="notifications-header">
+                        <h4 class="notifications-title">Notifications</h4>
+                        <button class="mark-all-read" onclick="markAllNotificationsAsRead()">Mark all as read</button>
+                    </div>
+                    <div class="notifications-list" id="notificationsList">
+                        <div class="notification-item unread">
+                            <div class="notification-content">
+                                <span class="notification-dot"></span>
+                                Welcome to THE SONGA Inner Circle!
+                            </div>
+                            <div class="notification-time">2 hours ago</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile -->
                 <div id="userProfile" class="user-profile" style="display: none;">
                     <div class="user-avatar">
                         <img id="userAvatar" src="" alt="User Avatar">
@@ -1881,8 +2528,27 @@
                     <span class="new-posts-indicator" id="newPostsIndicator">New Posts Available</span>
                 </h1>
                 <p style="margin-top: 10px; color: var(--dark-gray); font-size: 0.95rem;">
-                    Exclusive updates and announcements from THE SONGA Inner Circle. Sign in to interact with the community.
+                    Exclusive updates and announcements from THE SONGA Inner Circle.
                 </p>
+                
+                <!-- Categories Filter -->
+                <div class="categories-filter">
+                    <button class="category-filter-btn active" data-category="all" onclick="filterPosts('all')">
+                        All Posts
+                    </button>
+                    <button class="category-filter-btn" data-category="announcement" onclick="filterPosts('announcement')">
+                        <i class="fas fa-bullhorn"></i> Announcements
+                    </button>
+                    <button class="category-filter-btn" data-category="event" onclick="filterPosts('event')">
+                        <i class="fas fa-calendar-alt"></i> Events
+                    </button>
+                    <button class="category-filter-btn" data-category="resource" onclick="filterPosts('resource')">
+                        <i class="fas fa-book"></i> Resources
+                    </button>
+                    <button class="category-filter-btn" data-category="discussion" onclick="filterPosts('discussion')">
+                        <i class="fas fa-comments"></i> Discussions
+                    </button>
+                </div>
             </div>
 
             <!-- Posts Container -->
@@ -1903,28 +2569,12 @@
                         <div class="skeleton" style="width: 80%; height: 16px; margin-bottom: 8px;"></div>
                     </div>
                 </div>
-                
-                <div class="post-card">
-                    <div class="post-header">
-                        <div class="skeleton" style="width: 56px; height: 56px; border-radius: 50%;"></div>
-                        <div class="post-author-info">
-                            <div class="skeleton" style="width: 150px; height: 20px; margin-bottom: 8px;"></div>
-                            <div class="skeleton" style="width: 100px; height: 16px;"></div>
-                        </div>
-                    </div>
-                    <div class="post-content">
-                        <div class="skeleton" style="width: 60%; height: 24px; margin-bottom: 16px;"></div>
-                        <div class="skeleton" style="width: 100%; height: 300px; margin-bottom: 16px; border-radius: 16px;"></div>
-                        <div class="skeleton" style="width: 100%; height: 16px; margin-bottom: 8px;"></div>
-                        <div class="skeleton" style="width: 95%; height: 16px; margin-bottom: 8px;"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" id="bottomNav">
         <a href="index.html" class="nav-item active">
             <i class="fas fa-home nav-icon"></i>
             <span>Feed</span>
@@ -1994,11 +2644,20 @@
         // Inner Circle onboarding variables
         let selectedClubs = [];
         let currentStep = 1;
+        
+        // Scroll handling variables
+        let lastScrollTop = 0;
+        let isBottomNavVisible = true;
+        let isBackToTopVisible = false;
+        
+        // Current filter
+        let currentFilter = 'all';
 
         // DOM Elements
         const signinModal = document.getElementById('signinModal');
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');
         const imageModal = document.getElementById('imageModal');
+        const createPostModal = document.getElementById('createPostModal');
         const userProfile = document.getElementById('userProfile');
         const userAvatar = document.getElementById('userAvatar');
         const userDisplayName = document.getElementById('userDisplayName');
@@ -2009,6 +2668,12 @@
         const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
         const continueBtn = document.getElementById('continueBtn');
+        const bottomNav = document.getElementById('bottomNav');
+        const backToTop = document.getElementById('backToTop');
+        const createPostBtn = document.getElementById('createPostBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationsDropdown = document.getElementById('notificationsDropdown');
+        const notificationBadge = document.getElementById('notificationBadge');
 
         // Club data
         const clubs = {
@@ -2046,6 +2711,222 @@
             setTimeout(() => {
                 notification.classList.remove('show');
             }, duration);
+        }
+
+        // Scroll handling for bottom navigation and back-to-top button
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Show/hide back to top button
+            if (scrollTop > 300) {
+                if (!isBackToTopVisible) {
+                    backToTop.classList.add('visible');
+                    isBackToTopVisible = true;
+                }
+            } else {
+                if (isBackToTopVisible) {
+                    backToTop.classList.remove('visible');
+                    isBackToTopVisible = false;
+                }
+            }
+            
+            // Hide/show bottom nav based on scroll direction
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrolling down
+                if (isBottomNavVisible) {
+                    bottomNav.classList.add('hidden');
+                    isBottomNavVisible = false;
+                }
+            } else {
+                // Scrolling up
+                if (!isBottomNavVisible) {
+                    bottomNav.classList.remove('hidden');
+                    isBottomNavVisible = true;
+                }
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            
+            // Show create post button only when bottom nav is visible
+            if (isBottomNavVisible && currentUser) {
+                createPostBtn.style.display = 'flex';
+            } else {
+                createPostBtn.style.display = 'none';
+            }
+        }
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Filter posts by category
+        function filterPosts(category) {
+            currentFilter = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+            
+            // Filter and render posts
+            const filteredPosts = category === 'all' 
+                ? posts.filter(post => post.status === 'published')
+                : posts.filter(post => post.status === 'published' && post.category === category);
+            
+            filteredPosts.sort((a, b) => {
+                if (a.isPinned && !b.isPinned) return -1;
+                if (!a.isPinned && b.isPinned) return 1;
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            
+            renderPosts(filteredPosts);
+        }
+
+        // Toggle notifications dropdown
+        function toggleNotifications() {
+            notificationsDropdown.classList.toggle('active');
+            closeDropdown();
+            closePostOptions();
+        }
+
+        // Mark all notifications as read
+        function markAllNotificationsAsRead() {
+            // Implementation for Firebase
+            if (currentUser) {
+                database.ref(`users/${currentUser.uid}/notifications`).update({
+                    read: true
+                }).then(() => {
+                    notificationBadge.classList.add('hidden');
+                    showNotification('All notifications marked as read', 'success');
+                });
+            }
+        }
+
+        // Open create post modal
+        function openCreatePostModal() {
+            if (!currentUser) {
+                showNotification('Please join the Inner Circle to create posts', 'error');
+                return;
+            }
+            
+            createPostModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        // Close create post modal
+        function closeCreatePostModal() {
+            createPostModal.classList.remove('active');
+            document.body.classList.remove('modal-open');
+            document.getElementById('createPostForm').reset();
+            document.getElementById('postTagsContainer').innerHTML = '';
+        }
+
+        // Handle tag input
+        function handleTagInput(event) {
+            if (event.key === ',' || event.key === 'Enter') {
+                event.preventDefault();
+                const input = document.getElementById('postTags');
+                const tag = input.value.trim().replace(',', '');
+                
+                if (tag) {
+                    addTag(tag);
+                    input.value = '';
+                }
+            }
+        }
+
+        // Add tag to post
+        function addTag(tag) {
+            const tagsContainer = document.getElementById('postTagsContainer');
+            const tagElement = document.createElement('div');
+            tagElement.className = 'post-form-tag';
+            tagElement.innerHTML = `
+                ${tag}
+                <button type="button" class="post-form-tag-remove" onclick="removeTag(this)">&times;</button>
+            `;
+            tagsContainer.appendChild(tagElement);
+        }
+
+        // Remove tag from post
+        function removeTag(button) {
+            button.parentElement.remove();
+        }
+
+        // Submit create post form
+        async function submitCreatePostForm(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Please join the Inner Circle to create posts', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            const category = document.getElementById('postCategory').value;
+            const isPinned = document.getElementById('postIsPinned').checked;
+            
+            if (!title || !content) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Collect tags
+            const tags = [];
+            document.querySelectorAll('.post-form-tag').forEach(tagElement => {
+                tags.push(tagElement.textContent.trim().replace('×', ''));
+            });
+            
+            try {
+                const postRef = database.ref('communityPosts').push();
+                const newPost = {
+                    id: postRef.key,
+                    authorId: currentUser.uid,
+                    authorName: currentUser.fullName || currentUser.firstName,
+                    authorAvatar: currentUser.picture,
+                    title: title,
+                    content: content,
+                    category: category,
+                    tags: tags,
+                    likes: 0,
+                    likedBy: [],
+                    comments: 0,
+                    shares: 0,
+                    bookmarks: 0,
+                    views: 0,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    isPinned: isPinned,
+                    status: 'published',
+                    clubId: currentUserData?.selectedClubs?.[0] || null
+                };
+                
+                await postRef.set(newPost);
+                
+                // Add to user's posts
+                const userRef = database.ref(`users/${currentUser.uid}/posts`);
+                const userSnapshot = await userRef.once('value');
+                const userPosts = userSnapshot.val() || [];
+                userPosts.push(postRef.key);
+                await userRef.set(userPosts);
+                
+                closeCreatePostModal();
+                showNotification('Post created successfully!', 'success');
+                
+                // Reset form
+                document.getElementById('createPostForm').reset();
+                document.getElementById('postTagsContainer').innerHTML = '';
+                
+            } catch (error) {
+                console.error('Error creating post:', error);
+                showNotification('Error creating post. Please try again.', 'error');
+            }
         }
 
         // Onboarding functions
@@ -2125,8 +3006,10 @@
                     currentUser = JSON.parse(storedUser);
                     updateUIForMember();
                     signinModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
                     fetchUserData(currentUser.uid);
                     setupRealtimePosts();
+                    setupRealtimeNotifications();
                 } catch (error) {
                     console.error("Error parsing stored user:", error);
                     localStorage.removeItem('the_songa_welfare_user');
@@ -2193,6 +3076,10 @@
                         isInnerCircleMember: true,
                         selectedClubs: selectedClubs,
                         bookmarkedPosts: [],
+                        followers: [],
+                        following: [],
+                        posts: [],
+                        notifications: [],
                         isAdmin: false,
                         status: "active"
                     };
@@ -2203,6 +3090,14 @@
                     
                     // Show club welcome message
                     showNotification(`You've joined: ${selectedClubs.map(c => clubs[c].name).join(', ')}`, 'success', 5000);
+                    
+                    // Create welcome notification
+                    await database.ref(`users/${currentUser.uid}/notifications`).push().set({
+                        type: 'welcome',
+                        message: 'Welcome to THE SONGA Inner Circle!',
+                        read: false,
+                        createdAt: new Date().toISOString()
+                    });
                 } else {
                     // Existing user - update last login
                     await userRef.update({ 
@@ -2227,10 +3122,69 @@
                 if (continueBtn) continueBtn.disabled = true;
                 
                 setupRealtimePosts();
+                setupRealtimeNotifications();
                 
             } catch (error) {
                 console.error('Error in Google Sign-In:', error);
                 showNotification('Error signing in. Please try again.', 'error');
+            }
+        }
+
+        // Setup real-time notifications
+        function setupRealtimeNotifications() {
+            if (!currentUser || !database) return;
+            
+            database.ref(`users/${currentUser.uid}/notifications`).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const notifications = Object.keys(snapshot.val()).map(key => ({
+                        id: key,
+                        ...snapshot.val()[key]
+                    }));
+                    
+                    const unreadCount = notifications.filter(n => !n.read).length;
+                    
+                    // Update badge
+                    if (unreadCount > 0) {
+                        notificationBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                        notificationBadge.classList.remove('hidden');
+                    } else {
+                        notificationBadge.classList.add('hidden');
+                    }
+                    
+                    // Update notifications list
+                    renderNotifications(notifications);
+                }
+            });
+        }
+
+        // Render notifications
+        function renderNotifications(notifications) {
+            const notificationsList = document.getElementById('notificationsList');
+            if (!notificationsList) return;
+            
+            notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            notificationsList.innerHTML = notifications.slice(0, 10).map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="markNotificationAsRead('${notification.id}')">
+                    <div class="notification-content">
+                        ${!notification.read ? '<span class="notification-dot"></span>' : ''}
+                        ${notification.message}
+                    </div>
+                    <div class="notification-time">${formatTime(notification.createdAt)}</div>
+                </div>
+            `).join('');
+        }
+
+        // Mark notification as read
+        async function markNotificationAsRead(notificationId) {
+            if (!currentUser || !database) return;
+            
+            try {
+                await database.ref(`users/${currentUser.uid}/notifications/${notificationId}`).update({
+                    read: true
+                });
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
             }
         }
 
@@ -2252,6 +3206,12 @@
                         `;
                     }
                 }
+                
+                // Show create post button
+                createPostBtn.style.display = 'flex';
+                
+                // Show notification button
+                notificationBtn.style.display = 'flex';
             }
         }
 
@@ -2294,14 +3254,19 @@
                     
                     const publishedPosts = posts.filter(post => post.status === 'published');
                     
-                    publishedPosts.sort((a, b) => {
+                    // Apply current filter
+                    const filteredPosts = currentFilter === 'all' 
+                        ? publishedPosts 
+                        : publishedPosts.filter(post => post.category === currentFilter);
+                    
+                    filteredPosts.sort((a, b) => {
                         if (a.isPinned && !b.isPinned) return -1;
                         if (!a.isPinned && b.isPinned) return 1;
                         return new Date(b.createdAt) - new Date(a.createdAt);
                     });
                     
                     if (lastFetchTime) {
-                        const newestPostTime = publishedPosts[0]?.createdAt;
+                        const newestPostTime = filteredPosts[0]?.createdAt;
                         if (newestPostTime && new Date(newestPostTime) > lastFetchTime) {
                             newPostsAvailable = true;
                             if (newPostsIndicator) {
@@ -2311,9 +3276,9 @@
                     }
                     
                     lastFetchTime = new Date();
-                    renderPosts(publishedPosts);
+                    renderPosts(filteredPosts);
                     
-                    publishedPosts.forEach(post => {
+                    filteredPosts.forEach(post => {
                         setupRealtimeComments(post.id);
                     });
                 } else {
@@ -2438,6 +3403,12 @@
             return comment.likedBy.includes(currentUser.uid);
         }
 
+        // Check if user is following author
+        function isUserFollowingAuthor(authorId) {
+            if (!currentUserData || !currentUserData.following) return false;
+            return currentUserData.following.includes(authorId);
+        }
+
         // Render posts
         function renderPosts(postsArray) {
             if (!postsContainer) return;
@@ -2447,7 +3418,8 @@
                     <div class="empty-state">
                         <i class="fas fa-newspaper"></i>
                         <h3>No posts yet</h3>
-                        <p>Check back soon for updates from THE SONGA Inner Circle!</p>
+                        <p>${currentFilter === 'all' ? 'Check back soon for updates from THE SONGA Inner Circle!' : 'No posts in this category yet.'}</p>
+                        ${currentUser ? '<button class="btn-primary mt-2" onclick="openCreatePostModal()">Create First Post</button>' : ''}
                     </div>
                 `;
                 return;
@@ -2458,12 +3430,14 @@
                 const comments = post.comments || 0;
                 const shares = post.shares || 0;
                 const bookmarks = post.bookmarks || 0;
+                const views = post.views || 0;
                 const postClass = getPostCategoryClass(post.category);
                 const typeIndicator = getPostCategoryIndicator(post.category);
                 const isPinned = post.isPinned || false;
                 const hasLiked = hasUserLikedPost(post);
                 const hasBookmarked = hasUserBookmarkedPost(post.id);
                 const isPostOwner = currentUser && post.authorId === currentUser.uid;
+                const isFollowing = isUserFollowingAuthor(post.authorId);
                 
                 const tagsHtml = post.tags && post.tags.length > 0 ? `
                     <div class="post-tags">
@@ -2491,6 +3465,14 @@
                     }
                 }
                 
+                // Follow button (only for non-own posts)
+                const followButton = !isPostOwner && currentUser ? `
+                    <button class="follow-btn ${isFollowing ? 'following' : ''}" onclick="toggleFollow('${post.authorId}', event)" style="position: absolute; top: 0; right: 40px;">
+                        <i class="fas fa-${isFollowing ? 'user-check' : 'user-plus'}"></i>
+                        <span>${isFollowing ? 'Following' : 'Follow'}</span>
+                    </button>
+                ` : '';
+                
                 // Only show options if user owns the post
                 const optionsHtml = isPostOwner ? `
                     <div class="post-options">
@@ -2498,6 +3480,10 @@
                             <i class="fas fa-ellipsis-h"></i>
                         </button>
                         <div class="post-options-dropdown" id="postOptions-${post.id}">
+                            <div class="post-option-item" onclick="showPostInsights('${post.id}')">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Post Insights</span>
+                            </div>
                             <div class="post-option-item delete" onclick="confirmDeletePost('${post.id}')">
                                 <i class="fas fa-trash-alt"></i>
                                 <span>Delete Post</span>
@@ -2524,8 +3510,9 @@
                                     ${post.authorName}
                                     ${typeIndicator}
                                 </div>
-                                <div class="post-time">${formatTime(post.createdAt)}</div>
+                                <div class="post-time">${formatTime(post.createdAt)} • 👁️ ${views} views</div>
                             </div>
+                            ${followButton}
                             ${optionsHtml}
                         </div>
                         <div class="post-content">
@@ -2552,6 +3539,9 @@
                                 <span>${bookmarks}</span>
                             </button>
                         </div>
+                        
+                        <!-- Post Insights -->
+                        <div class="post-insights" id="postInsights-${post.id}"></div>
                         
                         <div class="comments-section" id="commentsSection-${post.id}">
                             <div class="comments-header">
@@ -2581,6 +3571,144 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        // Toggle follow status
+        async function toggleFollow(authorId, event) {
+            event.stopPropagation();
+            
+            if (!currentUser) {
+                showNotification('Join the Inner Circle to follow members', 'error');
+                return;
+            }
+            
+            try {
+                const userRef = database.ref(`users/${currentUser.uid}`);
+                const authorRef = database.ref(`users/${authorId}`);
+                
+                const [userSnapshot, authorSnapshot] = await Promise.all([
+                    userRef.once('value'),
+                    authorRef.once('value')
+                ]);
+                
+                const userData = userSnapshot.val();
+                const authorData = authorSnapshot.val();
+                
+                let userFollowing = userData.following || [];
+                let authorFollowers = authorData.followers || [];
+                
+                const isFollowing = userFollowing.includes(authorId);
+                
+                if (isFollowing) {
+                    // Unfollow
+                    userFollowing = userFollowing.filter(id => id !== authorId);
+                    authorFollowers = authorFollowers.filter(id => id !== currentUser.uid);
+                    
+                    await Promise.all([
+                        userRef.update({ following: userFollowing }),
+                        authorRef.update({ followers: authorFollowers })
+                    ]);
+                    
+                    showNotification('Unfollowed', 'success', 2000);
+                    
+                    // Update button
+                    const button = event.target.closest('.follow-btn');
+                    button.classList.remove('following');
+                    button.innerHTML = `
+                        <i class="fas fa-user-plus"></i>
+                        <span>Follow</span>
+                    `;
+                    
+                } else {
+                    // Follow
+                    userFollowing.push(authorId);
+                    authorFollowers.push(currentUser.uid);
+                    
+                    await Promise.all([
+                        userRef.update({ following: userFollowing }),
+                        authorRef.update({ followers: authorFollowers })
+                    ]);
+                    
+                    showNotification('Followed!', 'success', 2000);
+                    
+                    // Create notification for the author
+                    await database.ref(`users/${authorId}/notifications`).push().set({
+                        type: 'follow',
+                        message: `${currentUser.firstName} started following you`,
+                        read: false,
+                        createdAt: new Date().toISOString()
+                    });
+                    
+                    // Update button
+                    const button = event.target.closest('.follow-btn');
+                    button.classList.add('following');
+                    button.innerHTML = `
+                        <i class="fas fa-user-check"></i>
+                        <span>Following</span>
+                    `;
+                }
+                
+                // Update current user data
+                await fetchUserData(currentUser.uid);
+                
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+                showNotification('Error updating follow status', 'error');
+            }
+        }
+
+        // Show post insights
+        async function showPostInsights(postId) {
+            const insightsContainer = document.getElementById(`postInsights-${postId}`);
+            
+            if (insightsContainer.classList.contains('active')) {
+                insightsContainer.classList.remove('active');
+                return;
+            }
+            
+            try {
+                const postRef = database.ref(`communityPosts/${postId}`);
+                const snapshot = await postRef.once('value');
+                const post = snapshot.val();
+                
+                if (!post) return;
+                
+                const engagementRate = post.likes > 0 ? ((post.comments + post.shares) / post.likes * 100).toFixed(1) : 0;
+                
+                insightsContainer.innerHTML = `
+                    <div class="post-insights-header">
+                        <h4 class="post-insights-title">Post Insights</h4>
+                        <button class="close-comments" onclick="showPostInsights('${postId}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="post-insights-stats">
+                        <div class="post-insight-stat">
+                            <div class="post-insight-stat-value">${post.views || 0}</div>
+                            <div class="post-insight-stat-label">Views</div>
+                        </div>
+                        <div class="post-insight-stat">
+                            <div class="post-insight-stat-value">${post.likes || 0}</div>
+                            <div class="post-insight-stat-label">Likes</div>
+                        </div>
+                        <div class="post-insight-stat">
+                            <div class="post-insight-stat-value">${post.comments || 0}</div>
+                            <div class="post-insight-stat-label">Comments</div>
+                        </div>
+                        <div class="post-insight-stat">
+                            <div class="post-insight-stat-value">${engagementRate}%</div>
+                            <div class="post-insight-stat-label">Engagement</div>
+                        </div>
+                    </div>
+                `;
+                
+                insightsContainer.classList.add('active');
+                closePostOptions();
+                
+            } catch (error) {
+                console.error('Error loading post insights:', error);
+                showNotification('Error loading insights', 'error');
+            }
         }
 
         // Render comments
@@ -3113,6 +4241,7 @@
             dropdownOpen = false;
             const dropdown = document.getElementById('userDropdown');
             if (dropdown) dropdown.classList.remove('active');
+            if (notificationsDropdown) notificationsDropdown.classList.remove('active');
         }
 
         // Sign out user
@@ -3140,9 +4269,14 @@
             closeDropdown();
             closeDeleteConfirmModal();
             closeImageModal();
+            closeCreatePostModal();
             signinModal.classList.add('active');
             document.body.classList.add('modal-open');
             showNotification('Signed out successfully', 'success');
+            
+            // Hide create post button
+            createPostBtn.style.display = 'none';
+            notificationBtn.style.display = 'none';
             
             // Reset onboarding
             selectedClubs = [];
@@ -3199,6 +4333,9 @@
             }
             
             setupEventListeners();
+            
+            // Initialize scroll handling
+            window.addEventListener('scroll', handleScroll, { passive: true });
         }
 
         // Load sample posts
@@ -3225,6 +4362,7 @@
                             comments: 8,
                             shares: 3,
                             bookmarks: 15,
+                            views: 156,
                             createdAt: new Date().toISOString(),
                             isPinned: true,
                             status: "published"
@@ -3243,6 +4381,7 @@
                             comments: 5,
                             shares: 2,
                             bookmarks: 8,
+                            views: 89,
                             createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
                             isPinned: false,
                             status: "published"
@@ -3261,6 +4400,7 @@
                             comments: 3,
                             shares: 1,
                             bookmarks: 5,
+                            views: 45,
                             createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
                             isPinned: false,
                             status: "published"
@@ -3316,9 +4456,26 @@
                 });
             }
             
+            const closeCreatePostModal = document.getElementById('closeCreatePostModal');
+            if (closeCreatePostModal) {
+                closeCreatePostModal.addEventListener('click', closeCreatePostModal);
+            }
+            
             const closeImageModalBtn = document.getElementById('closeImageModal');
             if (closeImageModalBtn) {
                 closeImageModalBtn.addEventListener('click', closeImageModal);
+            }
+            
+            // Create post form
+            const createPostForm = document.getElementById('createPostForm');
+            if (createPostForm) {
+                createPostForm.addEventListener('submit', submitCreatePostForm);
+            }
+            
+            // Tag input handling
+            const postTagsInput = document.getElementById('postTags');
+            if (postTagsInput) {
+                postTagsInput.addEventListener('keydown', handleTagInput);
             }
             
             // Close modals when clicking outside
@@ -3347,6 +4504,14 @@
                 });
             }
             
+            if (createPostModal) {
+                createPostModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeCreatePostModal();
+                    }
+                });
+            }
+            
             // Escape key to close modals
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
@@ -3359,6 +4524,9 @@
                     if (signinModal && signinModal.classList.contains('active')) {
                         signinModal.classList.remove('active');
                         document.body.classList.remove('modal-open');
+                    }
+                    if (createPostModal && createPostModal.classList.contains('active')) {
+                        closeCreatePostModal();
                     }
                 }
             });
@@ -3389,7 +4557,7 @@
             // New posts indicator
             if (newPostsIndicator) {
                 newPostsIndicator.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    scrollToTop();
                     newPostsAvailable = false;
                     newPostsIndicator.style.display = 'none';
                     showNotification('Showing latest posts', 'success', 2000);
@@ -3433,6 +4601,18 @@
         window.handleReplyKeypress = handleReplyKeypress;
         window.togglePostOptions = togglePostOptions;
         window.searchByTag = searchByTag;
+        window.scrollToTop = scrollToTop;
+        window.openCreatePostModal = openCreatePostModal;
+        window.closeCreatePostModal = closeCreatePostModal;
+        window.filterPosts = filterPosts;
+        window.toggleFollow = toggleFollow;
+        window.showPostInsights = showPostInsights;
+        window.toggleNotifications = toggleNotifications;
+        window.markAllNotificationsAsRead = markAllNotificationsAsRead;
+        window.markNotificationAsRead = markNotificationAsRead;
+        window.handleTagInput = handleTagInput;
+        window.addTag = addTag;
+        window.removeTag = removeTag;
     </script>
 </body>
 </html>
