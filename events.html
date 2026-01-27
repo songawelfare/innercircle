@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>THE SONGA - Events</title>
     <!-- Preconnect to critical domains -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -18,11 +18,13 @@
     
     <!-- Inline critical CSS -->
     <style>
+        /* RESET AND BASE STYLES */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -32,8 +34,8 @@
             --black: #000000;
             --white: #ffffff;
             --gray: #f5f5f5;
-            --dark-gray: #333333;
-            --light-gray: #e0e0e0;
+            --dark-gray: #666666;
+            --light-gray: #e5e5e5;
             --accent: #25D366;
             --event-live: #e74c3c;
             --event-upcoming: #3498db;
@@ -41,282 +43,187 @@
             --event-virtual: #9b59b6;
             --event-inperson: #2ecc71;
             --shadow: rgba(0, 0, 0, 0.1);
-            --modal-overlay: rgba(0, 0, 0, 0.85);
+            --modal-overlay: rgba(0, 0, 0, 0.92);
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --background: #fafafa;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --info: #3498db;
         }
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
-            background-color: var(--white);
+            background-color: var(--background);
             color: var(--black);
-            line-height: 1.6;
-            padding-bottom: 80px;
+            line-height: 1.5;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding-bottom: 80px;
+            min-height: 100vh;
         }
 
         body.modal-open {
             overflow: hidden;
+            height: 100vh;
         }
 
-        /* EVENT REGISTRATION MODAL */
-        .event-modal {
-            display: none;
+        /* SESSION STATUS */
+        .session-status {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--modal-overlay);
-            z-index: 3000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .event-modal.active {
-            display: flex;
-        }
-
-        .event-modal-content {
-            background-color: white;
+            top: 80px;
+            right: 10px;
+            background: var(--gold);
+            color: var(--black);
+            padding: 8px 12px;
             border-radius: 16px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: modalAppear 0.4s ease-out;
-            position: relative;
-        }
-
-        @keyframes modalAppear {
-            from { 
-                transform: translateY(-20px) scale(0.95); 
-                opacity: 0; 
-            }
-            to { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
-        }
-
-        .event-modal-header {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            padding: 1.8rem 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .event-modal-header h2 {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-            font-weight: 700;
-        }
-
-        .event-modal-header p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .close-event-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.15);
-            border: none;
-            color: var(--black);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 9999;
+            display: none;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.4rem;
-            transition: all 0.3s ease;
-            z-index: 10;
+            gap: 6px;
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+            max-width: 200px;
+            animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
         }
-
-        .close-event-modal:hover {
-            background: rgba(0, 0, 0, 0.25);
-            transform: rotate(90deg);
-        }
-
-        .event-modal-body {
-            padding: 2rem;
-        }
-
-        .event-details {
-            background: var(--gray);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .event-detail-item {
+        
+        .session-status.visible {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            gap: 12px;
         }
-
-        .event-detail-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .event-detail-item i {
-            color: var(--gold-dark);
-            width: 20px;
-            margin-top: 2px;
-        }
-
-        .event-detail-label {
-            font-weight: 600;
-            color: var(--dark-gray);
-            min-width: 100px;
-        }
-
-        .event-detail-value {
-            flex: 1;
-            color: var(--black);
-        }
-
-        .registration-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: var(--dark-gray);
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group select {
-            padding: 12px 16px;
-            border: 2px solid var(--light-gray);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-        }
-
-        .event-modal-footer {
-            display: flex;
-            gap: 12px;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        .register-btn {
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: var(--black);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            flex: 1;
-            text-align: center;
-        }
-
-        .register-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .register-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .whatsapp-btn {
-            background: linear-gradient(135deg, var(--accent), #128C7E);
+        
+        .session-status.restored {
+            background: #2ecc71;
             color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            flex: 1;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
-        .whatsapp-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-        }
-
-        /* SIGNIN MODAL (Copied from feed) */
-        .signin-modal {
-            display: none;
+        /* BACK TO TOP BUTTON */
+        .back-to-top {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--modal-overlay);
-            z-index: 3500;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .signin-modal.active {
+            bottom: 90px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 22px;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--black);
+            cursor: pointer;
+            z-index: 98;
+            box-shadow: 0 3px 12px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            border: none;
         }
 
-        .signin-content {
-            background-color: white;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 420px;
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            animation: modalAppear 0.4s ease-out;
-            position: relative;
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
         }
 
-        .signin-header {
+        .back-to-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* NOTIFICATION TOAST */
+        .notification-toast {
+            position: fixed;
+            top: 80px;
+            right: 10px;
+            background: var(--black);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: calc(100vw - 40px);
+            box-shadow: 0 5px 20px var(--shadow);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            font-size: 0.85rem;
+        }
+
+        .notification-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification-toast.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .notification-toast.success {
             background: linear-gradient(135deg, var(--gold), var(--gold-dark));
             color: var(--black);
-            padding: 2rem;
-            text-align: center;
-            position: relative;
         }
 
-        .signin-header h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+        .notification-toast.info {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        /* BOTTOM NAVIGATION */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 100;
+            border-top: 1px solid var(--light-gray);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            transform: translateY(0);
+        }
+
+        .bottom-nav.hidden {
+            transform: translateY(100%);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 12px;
+            border-radius: 12px;
+            min-width: 56px;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-item.active {
+            color: var(--gold-dark);
+            background: var(--gold-light);
             font-weight: 700;
+        }
+
+        .nav-item:hover {
+            color: var(--gold-dark);
         }
 
         /* HEADER */
@@ -327,10 +234,10 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid var(--light-gray);
-            height: 60px;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            height: 56px;
+            backdrop-filter: blur(20px);
+            border-bottom: none;
         }
 
         .header-container {
@@ -338,6 +245,8 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
         }
 
         .logo {
@@ -345,81 +254,110 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            text-decoration: none;
+            min-width: 0;
+            flex-shrink: 0;
         }
 
         .logo img {
-            height: 40px;
-            width: auto;
+            height: 36px;
+            width: 36px;
+            border-radius: 10px;
+            object-fit: cover;
         }
 
         .brand-info {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .brand-name {
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 800;
+            font-size: 1rem;
             color: var(--gold-dark);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .brand-subtitle {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: var(--dark-gray);
             font-style: italic;
-        }
-
-        /* SEARCH BAR */
-        .search-container {
-            flex: 1;
-            max-width: 400px;
-            margin: 0 20px;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: var(--gray);
-            border-radius: 20px;
-            padding: 8px 15px;
-            border: 1px solid var(--light-gray);
-        }
-
-        .search-box i {
-            color: var(--dark-gray);
-            margin-right: 10px;
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            outline: none;
-            width: 100%;
-            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* USER PROFILE */
         .auth-section {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             position: relative;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--dark-gray);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 6px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+
+        .notification-btn:hover {
+            background: var(--gray);
+            color: var(--gold-dark);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 16px;
+            height: 16px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid var(--white);
+            color: white;
+            font-size: 0.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 5px 10px;
+            gap: 8px;
+            padding: 6px 10px;
             border-radius: 20px;
             background: var(--gold-light);
             cursor: pointer;
             position: relative;
             transition: all 0.3s ease;
+            border: 1px solid transparent;
+            min-width: 0;
+            display: none;
         }
 
         .user-profile:hover {
             background: var(--gold);
+            border-color: var(--gold-dark);
         }
 
         .user-avatar {
@@ -427,6 +365,8 @@
             height: 32px;
             border-radius: 50%;
             overflow: hidden;
+            border: 2px solid var(--gold);
+            flex-shrink: 0;
         }
 
         .user-avatar img {
@@ -437,49 +377,55 @@
 
         .user-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--black);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80px;
         }
 
         .user-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px var(--shadow);
-            min-width: 200px;
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px var(--shadow);
+            min-width: 180px;
             z-index: 1000;
             display: none;
-            margin-top: 5px;
             overflow: hidden;
             border: 1px solid var(--light-gray);
+            animation: slideDown 0.2s ease;
+            max-width: calc(100vw - 20px);
         }
 
         .user-dropdown.active {
             display: block;
-            animation: slideDown 0.2s ease-out;
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-10px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
         .dropdown-item {
-            padding: 12px 16px;
+            padding: 14px 16px;
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
             transition: background-color 0.2s;
             border-bottom: 1px solid var(--light-gray);
+            color: var(--dark-gray);
+            font-size: 0.9rem;
         }
 
         .dropdown-item:last-child {
@@ -488,86 +434,88 @@
 
         .dropdown-item:hover {
             background-color: var(--gold-light);
+            color: var(--black);
         }
 
         .dropdown-item i {
-            width: 20px;
+            width: 18px;
             text-align: center;
             color: var(--gold-dark);
+            font-size: 0.95rem;
+            flex-shrink: 0;
         }
 
         /* MAIN CONTENT */
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
+            padding-bottom: 1rem;
         }
 
         /* EVENTS HEADER */
         .events-header {
-            margin: 2rem 0 1.5rem 0;
-            text-align: center;
+            margin: 1.5rem 0 1rem 0;
         }
 
         .events-title {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             color: var(--gold-dark);
             font-weight: 800;
             margin-bottom: 0.5rem;
-            position: relative;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .events-title:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--gold), var(--gold-dark));
-            border-radius: 2px;
+        .inner-circle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            white-space: nowrap;
         }
 
         .events-subtitle {
-            font-size: 1.1rem;
             color: var(--dark-gray);
-            margin-top: 1.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.7;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
         }
 
         /* FILTERS SECTION */
         .filters-section {
             background: white;
             border-radius: 16px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px var(--shadow);
-            border: 1px solid var(--light-gray);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: none;
         }
 
         .filter-tabs {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            gap: 8px;
+            margin-bottom: 1.25rem;
         }
 
         .filter-tab {
-            padding: 10px 24px;
-            border: 2px solid var(--light-gray);
+            padding: 8px 16px;
+            border: 1.5px solid var(--light-gray);
             background: white;
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
         .filter-tab.active {
@@ -584,10 +532,10 @@
         .filter-tab .count {
             background: var(--white);
             color: var(--black);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 10px;
-            font-size: 0.8rem;
-            margin-left: 4px;
+            font-size: 0.7rem;
+            margin-left: 2px;
         }
 
         .filter-tab.active .count {
@@ -597,7 +545,7 @@
 
         .filter-controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
         }
 
@@ -610,17 +558,28 @@
         .filter-group label {
             font-weight: 600;
             color: var(--dark-gray);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .filter-group select {
-            padding: 12px 16px;
-            border: 2px solid var(--light-gray);
-            border-radius: 10px;
-            font-size: 0.95rem;
+            padding: 10px 12px;
+            border: 1.5px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 0.85rem;
             outline: none;
             background: white;
             transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 36px;
         }
 
         .filter-group select:focus {
@@ -628,59 +587,100 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
         }
 
+        /* SEARCH BAR */
+        .search-container {
+            margin: 1rem 0 1.5rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 16px;
+            padding: 12px 16px;
+            border: 1.5px solid var(--light-gray);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .search-box i {
+            color: var(--dark-gray);
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--black);
+        }
+
+        .search-box input::placeholder {
+            color: var(--dark-gray);
+        }
+
         /* EVENTS GRID */
         .events-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         /* EVENT CARD */
         .event-card {
             background: var(--white);
-            border: 1px solid var(--light-gray);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px var(--shadow);
+            box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
             position: relative;
+            border: none;
         }
 
         .event-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 25px var(--shadow);
+            transform: translateY(-4px);
+            box-shadow: var(--hover-shadow);
         }
 
         .event-card.featured {
-            border: 3px solid var(--gold);
+            border: 2px solid var(--gold);
         }
 
         .featured-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 12px;
+            right: 12px;
             background: var(--gold);
             color: var(--black);
-            padding: 6px 12px;
+            padding: 6px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 700;
             z-index: 2;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .event-status-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 6px 12px;
+            top: 12px;
+            left: 12px;
+            padding: 6px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 700;
             z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .status-live {
@@ -699,7 +699,7 @@
         }
 
         .event-cover {
-            height: 200px;
+            height: 180px;
             width: 100%;
             overflow: hidden;
             position: relative;
@@ -718,55 +718,56 @@
 
         .event-type {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
+            bottom: 12px;
+            left: 12px;
             background: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            backdrop-filter: blur(4px);
         }
 
         .event-content {
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
 
         .event-date {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
+            gap: 8px;
+            margin-bottom: 0.75rem;
             color: var(--gold-dark);
             font-weight: 600;
         }
 
         .event-date i {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
         }
 
         .event-date-text {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
         }
 
         .event-title {
-            font-size: 1.4rem;
-            color: var(--gold-dark);
-            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
             line-height: 1.3;
             font-weight: 700;
         }
 
         .event-description {
             color: var(--dark-gray);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            margin-bottom: 1.2rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -775,17 +776,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 0.75rem 0;
             border-top: 1px solid var(--light-gray);
-            margin-top: 1rem;
+            margin-top: 0.75rem;
         }
 
         .event-registration {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--dark-gray);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .event-registration i {
@@ -794,17 +795,22 @@
 
         .event-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .event-action-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             border: none;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .register-event-btn {
@@ -820,7 +826,7 @@
         .details-btn {
             background: var(--gray);
             color: var(--dark-gray);
-            border: 1px solid var(--light-gray);
+            border: 1.5px solid var(--light-gray);
         }
 
         .details-btn:hover {
@@ -831,28 +837,30 @@
         .event-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 1rem;
+            gap: 6px;
+            margin-top: 0.75rem;
         }
 
         .event-tag {
             background: var(--gold-light);
             color: var(--gold-dark);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
         }
 
         .event-tag:hover {
             background: var(--gold);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2);
         }
 
-        /* EVENT DETAILS MODAL */
-        .event-details-modal {
+        /* MODALS */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -860,32 +868,272 @@
             width: 100%;
             height: 100%;
             background-color: var(--modal-overlay);
-            z-index: 4000;
+            z-index: 2000;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
         }
 
-        .event-details-modal.active {
+        .modal.active {
             display: flex;
         }
 
-        .event-details-content {
-            background-color: white;
+        .modal-content {
+            background-color: var(--white);
             border-radius: 16px;
             width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .modal-header p {
+            font-size: 0.9rem;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: var(--black);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* SIGNIN MODAL */
+        .signin-modal .modal-content {
+            max-width: 420px;
+        }
+
+        .signin-body {
+            text-align: center;
+        }
+
+        .signin-body p {
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+            line-height: 1.5;
+        }
+
+        .google-signin-container {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .g_id_signin {
+            margin: 0 auto;
+        }
+
+        .signin-footer {
+            font-size: 0.75rem;
+            color: var(--dark-gray);
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+            line-height: 1.4;
+        }
+
+        /* EVENT REGISTRATION MODAL */
+        .event-details {
+            background: var(--gray);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .event-detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            gap: 10px;
+        }
+
+        .event-detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .event-detail-item i {
+            color: var(--gold-dark);
+            width: 18px;
+            margin-top: 2px;
+            font-size: 0.9rem;
+        }
+
+        .event-detail-label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            min-width: 80px;
+            font-size: 0.85rem;
+        }
+
+        .event-detail-value {
+            flex: 1;
+            color: var(--black);
+            font-size: 0.85rem;
+        }
+
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 14px;
+            border: 1.5px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+            transition: all 0.3s ease;
+            color: var(--black);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .event-modal-footer {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            flex: 1;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .register-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, var(--accent), #128C7E);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            flex: 1;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        /* EVENT DETAILS MODAL */
+        .event-details-modal .modal-content {
             max-width: 800px;
             max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            animation: modalAppear 0.4s ease-out;
         }
 
         .event-details-header {
-            height: 300px;
+            height: 200px;
             position: relative;
             overflow: hidden;
-            border-radius: 16px 16px 0 0;
         }
 
         .event-details-header img {
@@ -904,12 +1152,12 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
-            padding: 2rem;
+            padding: 1.5rem;
             color: white;
         }
 
         .event-details-title {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
@@ -918,65 +1166,38 @@
             display: inline-block;
             background: var(--gold);
             color: var(--black);
-            padding: 6px 16px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: 16px;
             font-weight: 600;
-            margin-top: 1rem;
-        }
-
-        .close-details-modal {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .close-details-modal:hover {
-            background: rgba(0, 0, 0, 0.7);
-            transform: rotate(90deg);
-        }
-
-        .event-details-body {
-            padding: 2rem;
+            font-size: 0.8rem;
         }
 
         .event-info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .info-card {
             background: var(--gray);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.25rem;
         }
 
         .info-card h4 {
             color: var(--gold-dark);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .info-card p {
             color: var(--dark-gray);
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.85rem;
         }
 
         .info-list {
@@ -988,6 +1209,7 @@
             border-bottom: 1px solid var(--light-gray);
             display: flex;
             justify-content: space-between;
+            font-size: 0.85rem;
         }
 
         .info-list li:last-child {
@@ -1005,43 +1227,45 @@
         }
 
         .event-description-full {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .event-description-full h3 {
             color: var(--gold-dark);
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
         }
 
         .event-description-full p {
             color: var(--dark-gray);
-            line-height: 1.7;
+            line-height: 1.6;
             white-space: pre-line;
+            font-size: 0.9rem;
         }
 
         .event-actions-details {
             display: flex;
-            gap: 15px;
-            padding-top: 2rem;
+            gap: 0.75rem;
+            padding-top: 1.25rem;
             border-top: 1px solid var(--light-gray);
         }
 
         /* LOADING AND EMPTY STATES */
         .loading {
             text-align: center;
-            padding: 4rem;
+            padding: 3rem 1rem;
             color: var(--gold-dark);
+            grid-column: 1 / -1;
         }
 
         .loading-spinner {
-            border: 4px solid var(--gold-light);
-            border-top: 4px solid var(--gold);
+            border: 3px solid var(--gold-light);
+            border-top: 3px solid var(--gold);
             border-radius: 50%;
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 1rem;
         }
 
         @keyframes spin {
@@ -1051,132 +1275,76 @@
 
         .empty-state {
             text-align: center;
-            padding: 4rem;
+            padding: 3rem 1rem;
             color: var(--dark-gray);
             grid-column: 1 / -1;
         }
 
         .empty-state i {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             color: var(--gold-light);
-            margin-bottom: 1.5rem;
         }
 
         .empty-state h3 {
-            font-size: 1.4rem;
-            margin-bottom: 0.8rem;
-            color: var(--gold-dark);
-        }
-
-        /* NOTIFICATION */
-        .notification {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: var(--black);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 12px;
-            z-index: 1000;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            max-width: 300px;
-            box-shadow: 0 8px 25px var(--shadow);
-            font-weight: 500;
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .notification.error {
-            background: #e74c3c;
-        }
-
-        .notification.success {
-            background: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
             color: var(--black);
+            font-weight: 700;
         }
 
-        .notification.info {
-            background: #3498db;
+        /* Skeleton Loading */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 10px;
         }
 
-        /* BOTTOM NAVIGATION */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.8rem 0;
-            z-index: 100;
-            border-top: 1px solid var(--light-gray);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--dark-gray);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 8px 12px;
-            border-radius: 12px;
+        /* UTILITY CLASSES */
+        .hidden {
+            display: none !important;
         }
 
-        .nav-icon {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-
-        .nav-item.active {
-            color: var(--gold-dark);
-            background: var(--gold-light);
-            font-weight: 600;
-        }
-
-        .nav-item:hover {
-            color: var(--gold-dark);
-            transform: translateY(-3px);
-        }
-
-        /* RESPONSIVE DESIGN */
-        @media (max-width: 992px) {
+        /* RESPONSIVE */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+                padding: 1rem 1.5rem;
+            }
+            
             .events-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+                gap: 1.25rem;
             }
             
-            .event-info-grid {
-                grid-template-columns: 1fr;
+            .event-cover {
+                height: 200px;
+            }
+            
+            .modal-content {
+                border-radius: 20px;
+            }
+            
+            .modal-header {
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .event-details-header {
+                height: 250px;
+            }
+            
+            .event-details-title {
+                font-size: 1.8rem;
             }
         }
 
-        @media (max-width: 768px) {
-            .search-container {
-                display: none;
-            }
-            
-            .user-name {
-                display: none;
-            }
-            
-            .filter-tabs {
-                justify-content: center;
-            }
-            
-            .filter-controls {
-                grid-template-columns: 1fr;
-            }
-            
+        @media (max-width: 480px) {
             .events-grid {
                 grid-template-columns: 1fr;
             }
@@ -1187,180 +1355,69 @@
             
             .event-action-btn {
                 width: 100%;
-                text-align: center;
+                justify-content: center;
             }
             
             .event-modal-footer {
                 flex-direction: column;
             }
             
-            .event-details-header {
-                height: 200px;
+            .filter-controls {
+                grid-template-columns: 1fr;
             }
             
-            .event-details-title {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .brand-subtitle {
-                display: none;
+            .info-card {
+                padding: 1rem;
             }
             
-            .events-title {
-                font-size: 1.8rem;
-            }
-            
-            .events-subtitle {
-                font-size: 1rem;
-            }
-            
-            .filter-tab {
-                padding: 8px 16px;
-                font-size: 0.9rem;
-            }
-            
-            .event-title {
-                font-size: 1.2rem;
-            }
-            
-            .bottom-nav {
-                padding: 0.6rem 0;
-            }
-            
-            .nav-item {
-                font-size: 0.75rem;
-                padding: 6px 8px;
-            }
-            
-            .nav-icon {
-                font-size: 1.2rem;
+            .event-actions-details {
+                flex-direction: column;
             }
         }
 
         /* SCROLLBAR STYLING */
-        ::-webkit-scrollbar {
-            width: 10px;
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--light-gray);
-            border-radius: 5px;
+        .modal-body::-webkit-scrollbar-track {
+            background: transparent;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-dark);
-        }
-
-        /* CALENDAR VIEW */
-        .calendar-view {
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background: var(--light-gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .calendar-header {
-            background: var(--gold);
-            color: var(--black);
-            padding: 1rem;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .calendar-day {
-            background: white;
-            padding: 1rem;
-            min-height: 120px;
-            position: relative;
-        }
-
-        .calendar-day.empty {
-            background: var(--gray);
-        }
-
-        .calendar-day.has-event {
-            background: #f8f6f0;
-            cursor: pointer;
-        }
-
-        .calendar-day-number {
-            font-weight: 700;
-            color: var(--dark-gray);
-            margin-bottom: 0.5rem;
-        }
-
-        .calendar-event {
+        .modal-body::-webkit-scrollbar-thumb {
             background: var(--gold-light);
-            padding: 4px 8px;
-            border-radius: 6px;
-            margin-bottom: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 3px;
         }
 
-        .calendar-event:hover {
+        .modal-body::-webkit-scrollbar-thumb:hover {
             background: var(--gold);
-            transform: translateX(2px);
-        }
-
-        .view-toggle {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .view-toggle-btn {
-            padding: 10px 24px;
-            border: 2px solid var(--light-gray);
-            background: white;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .view-toggle-btn.active {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: var(--black);
-        }
-
-        .view-toggle-btn:hover:not(.active) {
-            border-color: var(--gold);
-            color: var(--gold-dark);
         }
     </style>
 </head>
 <body>
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
+    <!-- Session Status Indicator -->
+    <div class="session-status" id="sessionStatus">
+        <i class="fas fa-check-circle"></i>
+        <span>Session restored</span>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Notification Toast -->
+    <div class="notification-toast" id="notificationToast"></div>
 
     <!-- Sign In Modal -->
-    <div class="signin-modal" id="signinModal">
-        <div class="signin-content">
-            <div class="signin-header">
-                <h2>Welcome to THE SONGA</h2>
+    <div class="modal signin-modal" id="signinModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join THE SONGA Events</h2>
                 <p>UNBOUND | UNBENT | UNBROKEN</p>
-                <button class="close-signin-modal" id="closeSigninModal">&times;</button>
+                <button class="close-modal" id="closeSigninModal">&times;</button>
             </div>
-            <div class="signin-body">
+            <div class="modal-body signin-body">
                 <p>Sign in to register for events, save your favorites, and connect with our community.</p>
                 
                 <div class="google-signin-container">
@@ -1389,14 +1446,14 @@
     </div>
 
     <!-- Event Registration Modal -->
-    <div class="event-modal" id="eventModal">
-        <div class="event-modal-content">
-            <div class="event-modal-header">
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h2 id="eventModalTitle">Register for Event</h2>
                 <p id="eventModalDate">Loading event details...</p>
-                <button class="close-event-modal" id="closeEventModal">&times;</button>
+                <button class="close-modal" id="closeEventModal">&times;</button>
             </div>
-            <div class="event-modal-body">
+            <div class="modal-body">
                 <div class="event-details" id="eventModalDetails">
                     <!-- Event details will be populated here -->
                 </div>
@@ -1410,7 +1467,7 @@
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </button>
                     <button class="register-btn" id="directRegisterBtn">
-                        Register Now
+                        <i class="fas fa-calendar-plus"></i> Register Now
                     </button>
                 </div>
             </div>
@@ -1418,17 +1475,17 @@
     </div>
 
     <!-- Event Details Modal -->
-    <div class="event-details-modal" id="eventDetailsModal">
-        <div class="event-details-content">
+    <div class="modal event-details-modal" id="eventDetailsModal">
+        <div class="modal-content">
             <div class="event-details-header" id="eventDetailsHeader">
                 <img id="eventDetailsImage" src="" alt="Event Cover">
                 <div class="event-details-overlay">
                     <h2 class="event-details-title" id="eventDetailsTitle"></h2>
                     <div class="event-details-category" id="eventDetailsCategory"></div>
                 </div>
-                <button class="close-details-modal" id="closeDetailsModal">&times;</button>
+                <button class="close-modal" id="closeDetailsModal">&times;</button>
             </div>
-            <div class="event-details-body">
+            <div class="modal-body">
                 <div class="event-info-grid" id="eventInfoGrid">
                     <!-- Event info will be populated here -->
                 </div>
@@ -1444,7 +1501,7 @@
                 
                 <div class="event-actions-details">
                     <button class="event-action-btn register-event-btn" id="registerFromDetailsBtn">
-                        Register Now
+                        <i class="fas fa-calendar-plus"></i> Register Now
                     </button>
                     <button class="event-action-btn details-btn" onclick="shareEvent()">
                         <i class="fas fa-share"></i> Share Event
@@ -1457,7 +1514,7 @@
     <!-- Header -->
     <header>
         <div class="header-container">
-            <div class="logo" onclick="window.location.href='index.html'">
+            <div class="logo" id="logo">
                 <img src="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp" alt="THE SONGA Logo">
                 <div class="brand-info">
                     <div class="brand-name">THE SONGA</div>
@@ -1465,20 +1522,26 @@
                 </div>
             </div>
             
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search events..." id="searchInput">
-                </div>
-            </div>
-            
             <div class="auth-section">
-                <div id="userProfile" class="user-profile" style="display: none;">
+                <div class="notification-btn" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge hidden" id="notificationBadge"></div>
+                </div>
+                
+                <div id="userProfile" class="user-profile">
                     <div class="user-avatar">
                         <img id="userAvatar" src="" alt="User Avatar">
                     </div>
                     <div class="user-name" id="userDisplayName"></div>
                     <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-item" id="myEventsOption">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>My Events</span>
+                        </div>
+                        <div class="dropdown-item" id="myProfileOption">
+                            <i class="fas fa-user-circle"></i>
+                            <span>My Profile</span>
+                        </div>
                         <div class="dropdown-item" id="signOutOption">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Sign Out</span>
@@ -1492,21 +1555,22 @@
     <!-- Main Content -->
     <main class="container">
         <div class="events-header">
-            <h1 class="events-title">Upcoming Events</h1>
+            <h1 class="events-title">
+                Events
+                <span class="inner-circle-badge">Inner Circle</span>
+            </h1>
             <p class="events-subtitle">
                 Join our community events for networking, learning, and personal growth. 
                 From workshops to social gatherings, there's something for everyone.
             </p>
         </div>
 
-        <!-- View Toggle -->
-        <div class="view-toggle">
-            <button class="view-toggle-btn active" data-view="grid">
-                <i class="fas fa-th-large"></i> Grid View
-            </button>
-            <button class="view-toggle-btn" data-view="calendar">
-                <i class="fas fa-calendar-alt"></i> Calendar View
-            </button>
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search events by name, tag, or description..." id="searchInput">
+            </div>
         </div>
 
         <!-- Filters Section -->
@@ -1566,33 +1630,17 @@
             </div>
         </div>
 
-        <!-- Events Grid View -->
+        <!-- Events Grid -->
         <div class="events-grid" id="eventsGrid">
             <div class="loading">
                 <div class="loading-spinner"></div>
                 <p>Loading events...</p>
             </div>
         </div>
-
-        <!-- Calendar View -->
-        <div class="calendar-view" id="calendarView">
-            <div class="calendar-grid" id="calendarGrid">
-                <!-- Calendar will be generated here -->
-            </div>
-        </div>
-
-        <!-- Empty State Template -->
-        <template id="emptyStateTemplate">
-            <div class="empty-state">
-                <i class="fas fa-calendar-times"></i>
-                <h3>No Events Found</h3>
-                <p>Check back soon for upcoming events or try different filters.</p>
-            </div>
-        </template>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
+    <nav class="bottom-nav" id="bottomNav">
         <a href="index.html" class="nav-item">
             <i class="fas fa-home nav-icon"></i>
             <span>Feed</span>
@@ -1615,10 +1663,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <script>
-        // Firebase configuration (same as feed page)
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
             authDomain: "the-songa-77b1b.firebaseapp.com",
@@ -1630,20 +1678,17 @@
         };
 
         // Initialize Firebase
+        let firebaseApp;
         let database;
+        let auth;
+        
         try {
-            firebase.initializeApp(firebaseConfig);
+            firebaseApp = firebase.initializeApp(firebaseConfig);
             database = firebase.database();
-            console.log("Firebase initialized successfully for events");
+            auth = firebase.auth();
+            console.log("Firebase initialized successfully");
         } catch (error) {
             console.error("Firebase initialization error:", error);
-            document.getElementById('eventsGrid').innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h3>Connection Error</h3>
-                    <p>Unable to connect to database. Please refresh the page.</p>
-                </div>
-            `;
         }
 
         // Global variables
@@ -1652,135 +1697,212 @@
         let events = [];
         let filteredEvents = [];
         let selectedEvent = null;
-        let dropdownOpen = false;
-        let currentView = 'grid';
+        let realtimeListeners = [];
 
         // DOM Elements
-        const signinModal = document.getElementById('signinModal');
-        const eventModal = document.getElementById('eventModal');
-        const eventDetailsModal = document.getElementById('eventDetailsModal');
-        const userProfile = document.getElementById('userProfile');
-        const userAvatar = document.getElementById('userAvatar');
-        const userDisplayName = document.getElementById('userDisplayName');
-        const notification = document.getElementById('notification');
-        const eventsGrid = document.getElementById('eventsGrid');
-        const calendarView = document.getElementById('calendarView');
-        const calendarGrid = document.getElementById('calendarGrid');
+        const elements = {
+            // Session
+            sessionStatus: document.getElementById('sessionStatus'),
+            
+            // Buttons
+            backToTop: document.getElementById('backToTop'),
+            notificationBtn: document.getElementById('notificationBtn'),
+            
+            // Modals
+            signinModal: document.getElementById('signinModal'),
+            eventModal: document.getElementById('eventModal'),
+            eventDetailsModal: document.getElementById('eventDetailsModal'),
+            
+            // Modal close buttons
+            closeSigninModal: document.getElementById('closeSigninModal'),
+            closeEventModal: document.getElementById('closeEventModal'),
+            closeDetailsModal: document.getElementById('closeDetailsModal'),
+            
+            // User profile
+            userProfile: document.getElementById('userProfile'),
+            userAvatar: document.getElementById('userAvatar'),
+            userDisplayName: document.getElementById('userDisplayName'),
+            userDropdown: document.getElementById('userDropdown'),
+            
+            // Notification
+            notificationToast: document.getElementById('notificationToast'),
+            notificationBadge: document.getElementById('notificationBadge'),
+            
+            // Events
+            eventsGrid: document.getElementById('eventsGrid'),
+            searchInput: document.getElementById('searchInput'),
+            
+            // Filter elements
+            filterTabs: document.getElementById('filterTabs'),
+            categoryFilter: document.getElementById('categoryFilter'),
+            typeFilter: document.getElementById('typeFilter'),
+            sortFilter: document.getElementById('sortFilter'),
+            
+            // Count elements
+            countAll: document.getElementById('countAll'),
+            countUpcoming: document.getElementById('countUpcoming'),
+            countLive: document.getElementById('countLive'),
+            countPast: document.getElementById('countPast'),
+            
+            // Registration modal elements
+            eventModalTitle: document.getElementById('eventModalTitle'),
+            eventModalDate: document.getElementById('eventModalDate'),
+            eventModalDetails: document.getElementById('eventModalDetails'),
+            registrationForm: document.getElementById('registrationForm'),
+            whatsappRegisterBtn: document.getElementById('whatsappRegisterBtn'),
+            directRegisterBtn: document.getElementById('directRegisterBtn'),
+            
+            // Details modal elements
+            eventDetailsImage: document.getElementById('eventDetailsImage'),
+            eventDetailsTitle: document.getElementById('eventDetailsTitle'),
+            eventDetailsCategory: document.getElementById('eventDetailsCategory'),
+            eventInfoGrid: document.getElementById('eventInfoGrid'),
+            eventFullDescription: document.getElementById('eventFullDescription'),
+            eventDetailsTags: document.getElementById('eventDetailsTags'),
+            registerFromDetailsBtn: document.getElementById('registerFromDetailsBtn'),
+            
+            // Navigation
+            signOutOption: document.getElementById('signOutOption'),
+            logo: document.getElementById('logo'),
+            bottomNav: document.getElementById('bottomNav')
+        };
 
         // Show notification
         function showNotification(message, type = 'success', duration = 4000) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification show ${type}`;
+            const toast = elements.notificationToast;
+            toast.textContent = message;
+            toast.className = `notification-toast show ${type}`;
             setTimeout(() => {
-                notification.classList.remove('show');
+                toast.classList.remove('show');
             }, duration);
+        }
+
+        // Show session status
+        function showSessionStatus(message, type = 'restored') {
+            const status = elements.sessionStatus;
+            status.innerHTML = `
+                <i class="fas fa-${type === 'restored' ? 'check-circle' : 'sync'}"></i>
+                <span>${message}</span>
+            `;
+            status.className = `session-status visible ${type}`;
+            
+            setTimeout(() => {
+                status.classList.remove('visible');
+            }, 3000);
+        }
+
+        // Format date for display
+        function formatEventDate(dateString) {
+            if (!dateString) return 'Date TBD';
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(date - now);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) return 'Today';
+            if (diffDays === 1) return 'Tomorrow';
+            if (diffDays < 7) return `${diffDays} days`;
+            
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format time for display
+        function formatEventTime(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
         }
 
         // Check authentication status
         function checkAuthStatus() {
-            eventsGrid.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading events...</p>
-                </div>
-            `;
-
-            const storedUser = localStorage.getItem('the_songa_welfare_user');
-            if (storedUser) {
+            const storedUser = localStorage.getItem('the_songa_user');
+            const storedToken = localStorage.getItem('the_songa_token');
+            const sessionTime = localStorage.getItem('the_songa_session_time');
+            
+            // Check if session is still valid (24 hours)
+            const isSessionValid = sessionTime && (Date.now() - parseInt(sessionTime)) < (24 * 60 * 60 * 1000);
+            
+            if (storedUser && storedToken && isSessionValid) {
                 try {
                     currentUser = JSON.parse(storedUser);
+                    showSessionStatus('Session restored', 'restored');
+                    
+                    // Update UI
                     updateUIForMember();
-                    signinModal.classList.remove('active');
+                    
+                    // Hide signin modal if open
+                    elements.signinModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                    
+                    // Fetch user data
                     fetchUserData(currentUser.uid);
-                    setupRealtimeEvents();
+                    
+                    // Setup realtime listeners
+                    setupRealtimeListeners();
+                    
+                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+                    
+                    return true;
                 } catch (error) {
                     console.error("Error parsing stored user:", error);
-                    localStorage.removeItem('the_songa_welfare_user');
-                    signinModal.classList.add('active');
+                    clearUserSession();
+                    showSigninModal();
+                    return false;
                 }
             } else {
-                signinModal.classList.add('active');
-                setupRealtimeEvents();
+                clearUserSession();
+                showSigninModal();
+                return false;
             }
         }
 
-        // Parse JWT token
-        function parseJwt(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
-                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-                ).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (error) {
-                console.error('Error parsing JWT:', error);
-                return {};
-            }
+        // Store user session
+        function storeUserSession(user, token) {
+            localStorage.setItem('the_songa_user', JSON.stringify(user));
+            localStorage.setItem('the_songa_token', token);
+            localStorage.setItem('the_songa_session_time', Date.now().toString());
         }
 
-        // Google Sign-In Handler
-        async function handleGoogleSignIn(response) {
-            try {
-                const userData = parseJwt(response.credential);
-                
-                currentUser = {
-                    uid: userData.sub,
-                    email: userData.email,
-                    firstName: userData.given_name,
-                    lastName: userData.family_name,
-                    fullName: userData.name,
-                    picture: userData.picture,
-                    emailVerified: userData.email_verified
-                };
-                
-                localStorage.setItem('the_songa_welfare_user', JSON.stringify(currentUser));
-                
-                const userRef = database.ref(`users/${currentUser.uid}`);
-                const snapshot = await userRef.once('value');
-                
-                if (!snapshot.exists()) {
-                    const newUser = {
-                        uid: currentUser.uid,
-                        email: currentUser.email,
-                        firstName: currentUser.firstName,
-                        lastName: currentUser.lastName,
-                        profilePicture: currentUser.picture,
-                        joinedDate: new Date().toISOString(),
-                        lastLogin: new Date().toISOString(),
-                        membershipStatus: "active",
-                        membershipTier: "explorer",
-                        attendedEvents: [],
-                        isAdmin: false,
-                        status: "active"
-                    };
-                    
-                    await userRef.set(newUser);
-                    currentUserData = newUser;
-                    showNotification(`Welcome to THE SONGA, ${currentUser.firstName}!`, 'success');
-                } else {
-                    await userRef.update({ lastLogin: new Date().toISOString() });
-                    currentUserData = snapshot.val();
-                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+        // Clear user session
+        function clearUserSession() {
+            localStorage.removeItem('the_songa_user');
+            localStorage.removeItem('the_songa_token');
+            localStorage.removeItem('the_songa_session_time');
+            
+            // Remove realtime listeners
+            realtimeListeners.forEach(listener => {
+                if (typeof listener === 'function') {
+                    listener();
                 }
-                
-                updateUIForMember();
-                signinModal.classList.remove('active');
-                setupRealtimeEvents();
-                
-            } catch (error) {
-                console.error('Error in Google Sign-In:', error);
-                showNotification('Error signing in. Please try again.', 'error');
-            }
+            });
+            realtimeListeners = [];
         }
 
-        // Update UI for signed-in members
+        // Show signin modal
+        function showSigninModal() {
+            elements.signinModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+
+        // Update UI for member
         function updateUIForMember() {
-            if (userProfile && currentUser) {
-                userProfile.style.display = 'flex';
-                userAvatar.src = currentUser.picture;
-                userDisplayName.textContent = currentUser.firstName;
+            if (currentUser) {
+                // Show user profile
+                elements.userProfile.style.display = 'flex';
+                elements.userAvatar.src = currentUser.picture;
+                elements.userDisplayName.textContent = currentUser.firstName;
+                
+                // Show notification button
+                elements.notificationBtn.style.display = 'flex';
             }
         }
 
@@ -1797,36 +1919,60 @@
             }
         }
 
-        // Setup real-time events listener
-        function setupRealtimeEvents() {
-            if (!database) {
-                console.error("Database not initialized");
-                showNotification("Database connection error", "error");
-                return;
-            }
-            
-            database.ref('events').on('value', (snapshot) => {
+        // Setup realtime listeners
+        function setupRealtimeListeners() {
+            // Clear existing listeners
+            realtimeListeners.forEach(listener => {
+                if (typeof listener === 'function') {
+                    listener();
+                }
+            });
+            realtimeListeners = [];
+
+            if (!currentUser || !database) return;
+
+            // Listen for events
+            const eventsListener = database.ref('events').orderByChild('date').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const eventsData = snapshot.val();
                     events = Object.keys(eventsData).map(key => ({
                         id: key,
                         ...eventsData[key]
-                    }));
+                    })).filter(event => event.status !== 'cancelled');
                     
+                    // Update event counts
                     updateEventCounts();
+                    
+                    // Filter and render events
                     filterAndRenderEvents();
-                    generateCalendar();
                 } else {
                     events = [];
                     renderEvents([]);
                 }
-            }, (error) => {
-                console.error("Firebase real-time listener error:", error);
-                showNotification("Error loading events", "error");
             });
+            realtimeListeners.push(() => database.ref('events').off('value', eventsListener));
+
+            // Listen for notifications
+            const notificationsListener = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(20).on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const notifications = snapshot.val();
+                    const unreadCount = Object.values(notifications).filter(n => !n.read).length;
+                    
+                    // Update badge
+                    if (unreadCount > 0) {
+                        elements.notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                        elements.notificationBadge.classList.remove('hidden');
+                    } else {
+                        elements.notificationBadge.classList.add('hidden');
+                    }
+                } else {
+                    elements.notificationBadge.classList.add('hidden');
+                }
+            });
+            realtimeListeners.push(() => database.ref(`notifications/${currentUser.uid}`).off('value', notificationsListener));
         }
 
-        // Update event count badges
+        // Update event counts
         function updateEventCounts() {
             const now = new Date();
             
@@ -1846,19 +1992,40 @@
                 return eventDate < now && event.status !== 'cancelled';
             });
             
-            document.getElementById('countAll').textContent = events.length;
-            document.getElementById('countUpcoming').textContent = upcomingEvents.length;
-            document.getElementById('countLive').textContent = liveEvents.length;
-            document.getElementById('countPast').textContent = pastEvents.length;
+            elements.countAll.textContent = events.length;
+            elements.countUpcoming.textContent = upcomingEvents.length;
+            elements.countLive.textContent = liveEvents.length;
+            elements.countPast.textContent = pastEvents.length;
+        }
+
+        // Get event status
+        function getEventStatus(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            const endDate = event.endDate ? new Date(event.endDate) : new Date(eventDate.getTime() + 2 * 60 * 60 * 1000);
+            
+            if (now >= eventDate && now <= endDate) {
+                return 'live';
+            } else if (eventDate > now) {
+                return 'upcoming';
+            } else {
+                return 'past';
+            }
+        }
+
+        // Check if user is registered for event
+        function isUserRegistered(eventId) {
+            if (!currentUser || !currentUserData || !currentUserData.attendedEvents) return false;
+            return currentUserData.attendedEvents && currentUserData.attendedEvents.includes(eventId);
         }
 
         // Filter and render events
         function filterAndRenderEvents() {
             const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const typeFilter = document.getElementById('typeFilter').value;
-            const sortFilter = document.getElementById('sortFilter').value;
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = elements.categoryFilter.value;
+            const typeFilter = elements.typeFilter.value;
+            const sortFilter = elements.sortFilter.value;
+            const searchTerm = elements.searchInput.value.toLowerCase();
             const now = new Date();
             
             filteredEvents = events.filter(event => {
@@ -1890,7 +2057,7 @@
                 // Filter by search term
                 const searchMatch = searchTerm === '' || 
                     event.title.toLowerCase().includes(searchTerm) ||
-                    event.description.toLowerCase().includes(searchTerm) ||
+                    (event.description && event.description.toLowerCase().includes(searchTerm)) ||
                     (event.tags && event.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
                 
                 return statusMatch && categoryMatch && typeMatch && searchMatch && event.status !== 'cancelled';
@@ -1919,69 +2086,23 @@
                 }
             });
             
-            if (currentView === 'grid') {
-                renderEvents(filteredEvents);
-            } else {
-                generateCalendar();
-            }
-        }
-
-        // Format date for display
-        function formatEventDate(dateString) {
-            const date = new Date(dateString);
-            const options = { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            };
-            return date.toLocaleDateString('en-US', options);
-        }
-
-        // Format date for time display
-        function formatEventTime(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-        }
-
-        // Get event status
-        function getEventStatus(event) {
-            const now = new Date();
-            const eventDate = new Date(event.date);
-            const endDate = event.endDate ? new Date(event.endDate) : new Date(eventDate.getTime() + 2 * 60 * 60 * 1000);
-            
-            if (now >= eventDate && now <= endDate) {
-                return 'live';
-            } else if (eventDate > now) {
-                return 'upcoming';
-            } else {
-                return 'past';
-            }
-        }
-
-        // Check if user is registered for event
-        function isUserRegistered(eventId) {
-            if (!currentUser || !currentUserData || !currentUserData.attendedEvents) return false;
-            return currentUserData.attendedEvents.includes(eventId);
+            renderEvents(filteredEvents);
         }
 
         // Render events grid
         function renderEvents(eventsArray) {
-            if (!eventsGrid) return;
-            
             if (!eventsArray || eventsArray.length === 0) {
-                const emptyTemplate = document.getElementById('emptyStateTemplate');
-                const emptyState = emptyTemplate.content.cloneNode(true);
-                eventsGrid.innerHTML = '';
-                eventsGrid.appendChild(emptyState);
+                elements.eventsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Events Found</h3>
+                        <p>Check back soon for upcoming events or try different filters.</p>
+                    </div>
+                `;
                 return;
             }
 
-            eventsGrid.innerHTML = eventsArray.map(event => {
+            elements.eventsGrid.innerHTML = eventsArray.map(event => {
                 const eventDate = new Date(event.date);
                 const endDate = event.endDate ? new Date(event.endDate) : new Date(eventDate.getTime() + 2 * 60 * 60 * 1000);
                 const status = getEventStatus(event);
@@ -2051,7 +2172,7 @@
                             </div>
                             
                             <h3 class="event-title">${event.title}</h3>
-                            <p class="event-description">${event.description}</p>
+                            <p class="event-description">${event.description || ''}</p>
                             
                             ${tagsHtml}
                             
@@ -2070,92 +2191,18 @@
             }).join('');
         }
 
-        // Generate calendar view
-        function generateCalendar() {
-            if (!calendarGrid) return;
-            
-            // Get current month
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            
-            // Get first day of month
-            const firstDay = new Date(currentYear, currentMonth, 1);
-            // Get last day of month
-            const lastDay = new Date(currentYear, currentMonth + 1, 0);
-            
-            // Calculate days in month
-            const daysInMonth = lastDay.getDate();
-            
-            // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
-            const firstDayOfWeek = firstDay.getDay();
-            
-            // Calendar header
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-                              "July", "August", "September", "October", "November", "December"];
-            
-            // Generate calendar grid
-            let calendarHTML = `
-                <div class="calendar-header" style="grid-column: span 7;">
-                    ${monthNames[currentMonth]} ${currentYear}
-                </div>
-                <div class="calendar-header">Sun</div>
-                <div class="calendar-header">Mon</div>
-                <div class="calendar-header">Tue</div>
-                <div class="calendar-header">Wed</div>
-                <div class="calendar-header">Thu</div>
-                <div class="calendar-header">Fri</div>
-                <div class="calendar-header">Sat</div>
-            `;
-            
-            // Empty cells before first day
-            for (let i = 0; i < firstDayOfWeek; i++) {
-                calendarHTML += `<div class="calendar-day empty"></div>`;
-            }
-            
-            // Days of the month
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayEvents = filteredEvents.filter(event => {
-                    const eventDate = new Date(event.date);
-                    return eventDate.getDate() === day && 
-                           eventDate.getMonth() === currentMonth && 
-                           eventDate.getFullYear() === currentYear;
-                });
-                
-                const hasEvents = dayEvents.length > 0;
-                
-                calendarHTML += `
-                    <div class="calendar-day ${hasEvents ? 'has-event' : ''}" data-date="${dateStr}">
-                        <div class="calendar-day-number">${day}</div>
-                        ${dayEvents.slice(0, 2).map(event => `
-                            <div class="calendar-event" onclick="openEventDetails('${event.id}')">
-                                <i class="fas ${event.type === 'virtual' ? 'fa-laptop' : 'fa-map-marker-alt'}"></i>
-                                ${event.title.substring(0, 20)}${event.title.length > 20 ? '...' : ''}
-                            </div>
-                        `).join('')}
-                        ${dayEvents.length > 2 ? `<div class="calendar-event">+${dayEvents.length - 2} more</div>` : ''}
-                    </div>
-                `;
-            }
-            
-            // Fill remaining cells
-            const totalCells = 42; // 6 rows * 7 columns
-            const usedCells = firstDayOfWeek + daysInMonth;
-            const remainingCells = totalCells - usedCells;
-            
-            for (let i = 0; i < remainingCells; i++) {
-                calendarHTML += `<div class="calendar-day empty"></div>`;
-            }
-            
-            calendarGrid.innerHTML = calendarHTML;
+        // Filter by tag
+        function filterByTag(tag) {
+            elements.searchInput.value = tag;
+            filterAndRenderEvents();
+            showNotification(`Searching for events tagged: ${tag}`, 'info');
         }
 
         // Open registration modal
         async function openRegistrationModal(eventId) {
             if (!currentUser) {
-                showNotification('Please sign in to register for events', 'error');
-                signinModal.classList.add('active');
+                showNotification('Please join the Inner Circle to register for events', 'error');
+                elements.signinModal.classList.add('active');
                 return;
             }
             
@@ -2180,8 +2227,8 @@
             }
             
             // Update modal title and date
-            document.getElementById('eventModalTitle').textContent = `Register for: ${selectedEvent.title}`;
-            document.getElementById('eventModalDate').textContent = formatEventDate(selectedEvent.date);
+            elements.eventModalTitle.textContent = `Register for: ${selectedEvent.title}`;
+            elements.eventModalDate.textContent = formatEventDate(selectedEvent.date);
             
             // Populate event details
             const detailsHtml = `
@@ -2193,7 +2240,7 @@
                 <div class="event-detail-item">
                     <i class="fas ${selectedEvent.type === 'virtual' ? 'fa-laptop' : 'fa-map-marker-alt'}"></i>
                     <div class="event-detail-label">Location:</div>
-                    <div class="event-detail-value">${selectedEvent.location}</div>
+                    <div class="event-detail-value">${selectedEvent.location || 'TBD'}</div>
                 </div>
                 <div class="event-detail-item">
                     <i class="fas fa-users"></i>
@@ -2209,7 +2256,7 @@
                 ` : ''}
             `;
             
-            document.getElementById('eventModalDetails').innerHTML = detailsHtml;
+            elements.eventModalDetails.innerHTML = detailsHtml;
             
             // Populate registration form
             const formHtml = `
@@ -2232,27 +2279,27 @@
                 ${selectedEvent.requirements && selectedEvent.requirements.length > 0 ? `
                 <div class="form-group">
                     <label>Requirements:</label>
-                    <div style="font-size: 0.9rem; color: var(--dark-gray);">
+                    <div style="font-size: 0.85rem; color: var(--dark-gray);">
                         ${selectedEvent.requirements.map(req => `• ${req}`).join('<br>')}
                     </div>
                 </div>
                 ` : ''}
             `;
             
-            document.getElementById('registrationForm').innerHTML = formHtml;
+            elements.registrationForm.innerHTML = formHtml;
             
             // Setup WhatsApp button
-            const whatsappBtn = document.getElementById('whatsappRegisterBtn');
+            const whatsappBtn = elements.whatsappRegisterBtn;
             const message = `Hello! I'd like to register for: ${selectedEvent.title} on ${formatEventDate(selectedEvent.date)}. My name is ${currentUser.firstName} ${currentUser.lastName}.`;
             const whatsappUrl = `https://wa.me/${selectedEvent.whatsappLink?.match(/\d+/g)?.join('') || '254727211191'}?text=${encodeURIComponent(message)}`;
             whatsappBtn.onclick = () => window.open(whatsappUrl, '_blank');
             
             // Setup direct registration button
-            const directBtn = document.getElementById('directRegisterBtn');
+            const directBtn = elements.directRegisterBtn;
             directBtn.onclick = () => registerForEvent();
             
             // Show modal
-            eventModal.classList.add('active');
+            elements.eventModal.classList.add('active');
             document.body.classList.add('modal-open');
         }
 
@@ -2309,8 +2356,16 @@
                     currentUserData.attendedEvents = attendedEvents;
                 }
                 
+                // Create notification
+                await createNotification(currentUser.uid, 'event_registration', {
+                    eventId: selectedEvent.id,
+                    eventTitle: selectedEvent.title,
+                    userId: currentUser.uid,
+                    userName: currentUser.fullName || currentUser.firstName
+                });
+                
                 // Close modal
-                eventModal.classList.remove('active');
+                elements.eventModal.classList.remove('active');
                 document.body.classList.remove('modal-open');
                 
                 // Show success notification
@@ -2325,6 +2380,25 @@
             }
         }
 
+        // Create notification
+        async function createNotification(userId, type, data) {
+            try {
+                const notificationRef = database.ref(`notifications/${userId}`).push();
+                const notification = {
+                    id: notificationRef.key,
+                    type: type,
+                    data: data,
+                    read: false,
+                    timestamp: new Date().toISOString()
+                };
+                
+                await notificationRef.set(notification);
+                
+            } catch (error) {
+                console.error('Error creating notification:', error);
+            }
+        }
+
         // Open event details modal
         async function openEventDetails(eventId) {
             selectedEvent = events.find(e => e.id === eventId);
@@ -2334,9 +2408,9 @@
             }
             
             // Set cover image and title
-            document.getElementById('eventDetailsImage').src = selectedEvent.coverImage || 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-            document.getElementById('eventDetailsTitle').textContent = selectedEvent.title;
-            document.getElementById('eventDetailsCategory').textContent = selectedEvent.category || 'General';
+            elements.eventDetailsImage.src = selectedEvent.coverImage || 'https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+            elements.eventDetailsTitle.textContent = selectedEvent.title;
+            elements.eventDetailsCategory.textContent = selectedEvent.category || 'General';
             
             // Populate event info grid
             const eventDate = new Date(selectedEvent.date);
@@ -2365,8 +2439,8 @@
                 
                 <div class="info-card">
                     <h4><i class="fas ${selectedEvent.type === 'virtual' ? 'fa-laptop' : 'fa-map-marker-alt'}"></i> Location</h4>
-                    <p>${selectedEvent.location}</p>
-                    ${selectedEvent.address ? `<p style="margin-top: 0.5rem; font-size: 0.9rem;">${selectedEvent.address}</p>` : ''}
+                    <p>${selectedEvent.location || 'TBD'}</p>
+                    ${selectedEvent.address ? `<p style="margin-top: 0.5rem; font-size: 0.85rem;">${selectedEvent.address}</p>` : ''}
                     ${selectedEvent.type === 'virtual' && selectedEvent.registrationLink ? `
                         <p style="margin-top: 0.5rem;">
                             <a href="${selectedEvent.registrationLink}" target="_blank" style="color: var(--gold-dark); text-decoration: underline;">
@@ -2419,20 +2493,20 @@
                 ` : ''}
             `;
             
-            document.getElementById('eventInfoGrid').innerHTML = infoGridHtml;
+            elements.eventInfoGrid.innerHTML = infoGridHtml;
             
             // Set full description
-            document.getElementById('eventFullDescription').textContent = selectedEvent.description || 'No description available.';
+            elements.eventFullDescription.textContent = selectedEvent.description || 'No description available.';
             
             // Populate tags
             const tagsHtml = selectedEvent.tags && selectedEvent.tags.length > 0 ? 
                 selectedEvent.tags.map(tag => `
                     <span class="event-tag" onclick="filterByTag('${tag}')">${tag}</span>
-                `).join('') : '<span style="color: var(--dark-gray);">No tags</span>';
-            document.getElementById('eventDetailsTags').innerHTML = tagsHtml;
+                `).join('') : '<span style="color: var(--dark-gray); font-size: 0.85rem;">No tags</span>';
+            elements.eventDetailsTags.innerHTML = tagsHtml;
             
             // Setup register button
-            const registerBtn = document.getElementById('registerFromDetailsBtn');
+            const registerBtn = elements.registerFromDetailsBtn;
             if (isRegistered) {
                 registerBtn.innerHTML = '<i class="fas fa-check-circle"></i> Already Registered';
                 registerBtn.disabled = true;
@@ -2446,13 +2520,13 @@
                 registerBtn.disabled = false;
                 registerBtn.style.opacity = '1';
                 registerBtn.onclick = () => {
-                    eventDetailsModal.classList.remove('active');
+                    elements.eventDetailsModal.classList.remove('active');
                     openRegistrationModal(selectedEvent.id);
                 };
             }
             
             // Show modal
-            eventDetailsModal.classList.add('active');
+            elements.eventDetailsModal.classList.add('active');
             document.body.classList.add('modal-open');
         }
 
@@ -2478,91 +2552,133 @@
             }
         }
 
-        // Filter by tag
-        function filterByTag(tag) {
-            document.getElementById('searchInput').value = tag;
-            filterAndRenderEvents();
-            showNotification(`Searching for events tagged: ${tag}`, 'info');
-        }
-
-        // Toggle dropdown
-        function toggleDropdown() {
-            dropdownOpen = !dropdownOpen;
-            const dropdown = document.getElementById('userDropdown');
-            if (dropdownOpen) {
-                dropdown.classList.add('active');
-            } else {
-                dropdown.classList.remove('active');
+        // Google Sign-In Handler
+        async function handleGoogleSignIn(response) {
+            try {
+                const credential = response.credential;
+                const userData = parseJwt(credential);
+                
+                currentUser = {
+                    uid: userData.sub,
+                    email: userData.email,
+                    firstName: userData.given_name,
+                    lastName: userData.family_name,
+                    fullName: userData.name,
+                    picture: userData.picture,
+                    emailVerified: userData.email_verified
+                };
+                
+                // Store session
+                storeUserSession(currentUser, credential);
+                
+                const userRef = database.ref(`users/${currentUser.uid}`);
+                const snapshot = await userRef.once('value');
+                
+                if (!snapshot.exists()) {
+                    // New user
+                    const newUser = {
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        firstName: currentUser.firstName,
+                        lastName: currentUser.lastName,
+                        profilePicture: currentUser.picture,
+                        joinedDate: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        membershipStatus: "active",
+                        membershipTier: "explorer",
+                        attendedEvents: [],
+                        isAdmin: false,
+                        status: "active"
+                    };
+                    
+                    await userRef.set(newUser);
+                    currentUserData = newUser;
+                    showNotification(`Welcome to THE SONGA, ${currentUser.firstName}!`, 'success');
+                } else {
+                    // Existing user
+                    await userRef.update({ 
+                        lastLogin: new Date().toISOString()
+                    });
+                    currentUserData = snapshot.val();
+                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+                }
+                
+                updateUIForMember();
+                elements.signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                
+                // Setup realtime listeners
+                setupRealtimeListeners();
+                
+            } catch (error) {
+                console.error('Error in Google Sign-In:', error);
+                showNotification('Error signing in. Please try again.', 'error');
             }
         }
 
-        // Close dropdown
-        function closeDropdown() {
-            dropdownOpen = false;
-            const dropdown = document.getElementById('userDropdown');
-            if (dropdown) dropdown.classList.remove('active');
+        // Parse JWT token
+        function parseJwt(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+                ).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (error) {
+                console.error('Error parsing JWT:', error);
+                return {};
+            }
         }
 
-        // Sign out user
+        // Sign out
         function signOut() {
+            clearUserSession();
             currentUser = null;
             currentUserData = null;
-            localStorage.removeItem('the_songa_welfare_user');
             
-            if (database) {
-                database.ref('events').off();
-            }
-            
-            closeDropdown();
-            signinModal.classList.add('active');
-            document.body.classList.remove('modal-open');
-            showNotification('Signed out successfully', 'success');
-            eventsGrid.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading events...</p>
-                </div>
-            `;
-        }
-
-        // Toggle view
-        function toggleView(view) {
-            currentView = view;
-            
-            // Update button states
-            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.view === view);
+            // Close all modals
+            document.querySelectorAll('.modal.active').forEach(modal => {
+                modal.classList.remove('active');
             });
+            document.body.classList.remove('modal-open');
             
-            // Show/hide views
-            if (view === 'grid') {
-                eventsGrid.style.display = 'grid';
-                calendarView.style.display = 'none';
-                renderEvents(filteredEvents);
+            // Update UI
+            elements.userProfile.style.display = 'none';
+            elements.notificationBtn.style.display = 'none';
+            
+            // Show signin modal
+            showSigninModal();
+            
+            showNotification('Signed out successfully', 'success');
+            showSessionStatus('Signed out', 'restored');
+        }
+
+        // Toggle user dropdown
+        function toggleUserDropdown() {
+            elements.userDropdown.classList.toggle('active');
+        }
+
+        // Handle scroll
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Show/hide back to top button
+            if (scrollTop > 300) {
+                elements.backToTop.classList.add('visible');
             } else {
-                eventsGrid.style.display = 'none';
-                calendarView.style.display = 'block';
-                generateCalendar();
+                elements.backToTop.classList.remove('visible');
+            }
+            
+            // Hide/show bottom nav on scroll
+            if (scrollTop > 100) {
+                elements.bottomNav.classList.add('hidden');
+            } else {
+                elements.bottomNav.classList.remove('hidden');
             }
         }
 
-        // Initialize the page
-        function initializePage() {
-            checkAuthStatus();
-            
-            // Load sample events if empty
-            if (database) {
-                database.ref('events').once('value').then(snapshot => {
-                    if (!snapshot.exists()) {
-                        loadSampleEvents();
-                    }
-                });
-            }
-            
-            setupEventListeners();
-        }
-
-        // Load sample events
+        // Load sample events if none exist
         async function loadSampleEvents() {
             if (!database) return;
             
@@ -2572,8 +2688,8 @@
                 
                 if (!snapshot.exists()) {
                     const sampleEvents = {
-                        event_001: {
-                            id: "event_001",
+                        event1: {
+                            id: "event1",
                             title: "Wealth Building Masterclass",
                             description: "A comprehensive workshop covering investment strategies, passive income generation, and wealth preservation techniques. Perfect for beginners and intermediate investors.",
                             category: "workshop",
@@ -2581,55 +2697,55 @@
                             date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
                             endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
                             location: "Virtual - Zoom",
-                            address: "Online Event",
-                            coverImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-                            organizer: "THE SONGA WELFARE",
-                            organizerId: "admin_001",
-                            speakers: ["Mugera W.", "Financial Expert Guest"],
+                            coverImage: "https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                             capacity: 100,
                             registeredCount: 45,
                             price: 0,
                             currency: "KSh",
-                            registrationLink: "https://docs.google.com/forms/d/e/example",
-                            whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Wealth%20Building%20Masterclass",
                             tags: ["finance", "investment", "workshop", "free", "wealth"],
                             status: "upcoming",
-                            visibility: "public",
                             isFeatured: true,
                             requirements: ["Basic financial knowledge", "Notebook", "Internet connection"],
-                            whatYouLearn: [
-                                "Investment fundamentals",
-                                "Passive income streams",
-                                "Risk management",
-                                "Wealth preservation"
-                            ],
                             createdAt: new Date().toISOString(),
                             updatedAt: new Date().toISOString()
                         },
-                        event_002: {
-                            id: "event_002",
+                        event2: {
+                            id: "event2",
                             title: "Community Networking Mixer",
                             description: "Connect with fellow members, share experiences, and build meaningful relationships within our community. Light refreshments will be served.",
                             category: "networking",
                             type: "in-person",
                             date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
                             endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-                            location: "THE SONGA Headquarters",
-                            address: "Nairobi Business District, Nairobi",
-                            coverImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-                            organizer: "THE SONGA WELFARE",
-                            organizerId: "admin_001",
-                            speakers: [],
+                            location: "THE SONGA Headquarters, Nairobi",
+                            coverImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
                             capacity: 50,
                             registeredCount: 28,
                             price: 500,
                             currency: "KSh",
-                            registrationLink: "https://docs.google.com/forms/d/e/example2",
-                            whatsappLink: "https://wa.me/254727211191?text=Interested%20in%20Networking%20Mixer",
                             tags: ["networking", "community", "social", "in-person", "connections"],
                             status: "upcoming",
-                            visibility: "members",
                             isFeatured: true,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        },
+                        event3: {
+                            id: "event3",
+                            title: "Personal Branding Workshop",
+                            description: "Learn how to build and maintain a strong personal brand that stands out in today's competitive market. Perfect for professionals and entrepreneurs.",
+                            category: "workshop",
+                            type: "hybrid",
+                            date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                            endDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
+                            location: "THE SONGA HQ & Virtual",
+                            coverImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+                            capacity: 75,
+                            registeredCount: 75,
+                            price: 1000,
+                            currency: "KSh",
+                            tags: ["branding", "career", "workshop", "professional"],
+                            status: "past",
+                            isFeatured: false,
                             createdAt: new Date().toISOString(),
                             updatedAt: new Date().toISOString()
                         }
@@ -2643,21 +2759,29 @@
             }
         }
 
-        // Setup event listeners
-        function setupEventListeners() {
-            // User profile dropdown
-            if (userProfile) {
-                userProfile.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleDropdown();
-                });
-            }
-            
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', function() {
-                closeDropdown();
+        // Initialize event listeners
+        function initEventListeners() {
+            // Logo click
+            elements.logo.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
-            
+
+            // Back to top
+            elements.backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // User profile dropdown
+            elements.userProfile.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleUserDropdown();
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', () => {
+                elements.userDropdown.classList.remove('active');
+            });
+
             // Filter tabs
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -2666,97 +2790,91 @@
                     filterAndRenderEvents();
                 });
             });
-            
+
             // Filter controls
-            document.getElementById('categoryFilter').addEventListener('change', filterAndRenderEvents);
-            document.getElementById('typeFilter').addEventListener('change', filterAndRenderEvents);
-            document.getElementById('sortFilter').addEventListener('change', filterAndRenderEvents);
-            
+            elements.categoryFilter.addEventListener('change', filterAndRenderEvents);
+            elements.typeFilter.addEventListener('change', filterAndRenderEvents);
+            elements.sortFilter.addEventListener('change', filterAndRenderEvents);
+
             // Search input
-            const searchInput = document.getElementById('searchInput');
             let searchTimeout;
-            searchInput.addEventListener('input', function() {
+            elements.searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     filterAndRenderEvents();
                 }, 500);
             });
-            
-            // View toggle buttons
-            document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    toggleView(this.dataset.view);
+
+            // Sign out
+            elements.signOutOption.addEventListener('click', signOut);
+
+            // Modal close buttons
+            elements.closeSigninModal.addEventListener('click', () => {
+                elements.signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+
+            elements.closeEventModal.addEventListener('click', () => {
+                elements.eventModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+
+            elements.closeDetailsModal.addEventListener('click', () => {
+                elements.eventDetailsModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+
+            // Close modals when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        document.body.classList.remove('modal-open');
+                    }
                 });
             });
-            
-            // Close modals
-            document.getElementById('closeEventModal').addEventListener('click', function() {
-                eventModal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            });
-            
-            document.getElementById('closeDetailsModal').addEventListener('click', function() {
-                eventDetailsModal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            });
-            
-            document.getElementById('closeSigninModal').addEventListener('click', function() {
-                signinModal.classList.remove('active');
-            });
-            
-            // Close modals when clicking outside
-            eventModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    eventModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-            });
-            
-            eventDetailsModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    eventDetailsModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-            });
-            
-            signinModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    signinModal.classList.remove('active');
-                }
-            });
-            
+
             // Escape key to close modals
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    if (eventModal.classList.contains('active')) {
-                        eventModal.classList.remove('active');
+                    document.querySelectorAll('.modal.active').forEach(modal => {
+                        modal.classList.remove('active');
                         document.body.classList.remove('modal-open');
-                    }
-                    if (eventDetailsModal.classList.contains('active')) {
-                        eventDetailsModal.classList.remove('active');
-                        document.body.classList.remove('modal-open');
-                    }
-                    if (signinModal.classList.contains('active')) {
-                        signinModal.classList.remove('active');
-                    }
+                    });
                 }
             });
+
+            // Scroll handling
+            window.addEventListener('scroll', handleScroll);
+        }
+
+        // Initialize the app
+        function initializeApp() {
+            // Check authentication
+            const isAuthenticated = checkAuthStatus();
             
-            // Dropdown options
-            const signOutOption = document.getElementById('signOutOption');
-            if (signOutOption) {
-                signOutOption.addEventListener('click', function() {
-                    signOut();
-                    closeDropdown();
+            // Initialize event listeners
+            initEventListeners();
+            
+            // Load sample events if empty
+            if (database) {
+                database.ref('events').once('value').then(snapshot => {
+                    if (!snapshot.exists()) {
+                        loadSampleEvents();
+                    }
                 });
             }
         }
 
         // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', initializePage);
+        document.addEventListener('DOMContentLoaded', initializeApp);
 
-        // Global function for Google Sign-In callback
+        // Make functions available globally
         window.handleGoogleSignIn = handleGoogleSignIn;
+        window.openRegistrationModal = openRegistrationModal;
+        window.openEventDetails = openEventDetails;
+        window.filterByTag = filterByTag;
+        window.shareEvent = shareEvent;
     </script>
 </body>
 </html>
