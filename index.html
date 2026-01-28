@@ -2427,607 +2427,310 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-storage-compat.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-            <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
-            authDomain: "the-songa-77b1b.firebaseapp.com",
-            databaseURL: "https://the-songa-77b1b-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "the-songa-77b1b",
-            storageBucket: "the-songa-77b1b.firebasestorage.app",
-            messagingSenderId: "123922889572",
-            appId: "1:123922889572:web:482b2a624930baaf92d871"
-        };
+    <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBDZicoo7dFLtSmgRPvQE_gdm-tNOyCTXA",
+        authDomain: "the-songa-77b1b.firebaseapp.com",
+        databaseURL: "https://the-songa-77b1b-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "the-songa-77b1b",
+        storageBucket: "the-songa-77b1b.firebasestorage.app",
+        messagingSenderId: "123922889572",
+        appId: "1:123922889572:web:482b2a624930baaf92d871"
+    };
 
-        // Initialize Firebase with error handling for multiple initializations
-        let firebaseApp;
-        let database;
-        let auth;
-        let storage;
+    // Initialize Firebase with error handling for multiple initializations
+    let firebaseApp;
+    let database;
+    let auth;
+    let storage;
+    
+    try {
+        // Check if Firebase is already initialized
+        if (!firebase.apps.length) {
+            firebaseApp = firebase.initializeApp(firebaseConfig);
+            console.log("Firebase initialized successfully");
+        } else {
+            firebaseApp = firebase.app(); // Use existing app
+            console.log("Firebase already initialized, using existing instance");
+        }
         
+        database = firebase.database();
+        auth = firebase.auth();
+        storage = firebase.storage();
+    } catch (error) {
+        console.error("Firebase initialization error:", error);
+        // Try to get existing app
         try {
-            // Check if Firebase is already initialized
-            if (!firebase.apps.length) {
-                firebaseApp = firebase.initializeApp(firebaseConfig);
-                console.log("Firebase initialized successfully");
-            } else {
-                firebaseApp = firebase.app(); // Use existing app
-                console.log("Firebase already initialized, using existing instance");
-            }
-            
+            firebaseApp = firebase.app();
             database = firebase.database();
             auth = firebase.auth();
             storage = firebase.storage();
-        } catch (error) {
-            console.error("Firebase initialization error:", error);
-            // Try to get existing app
+        } catch (e) {
+            console.error("Could not initialize Firebase:", e);
+        }
+    }
+
+    // Global variables
+    let currentUser = null;
+    let currentUserData = null;
+    let posts = [];
+    let selectedClubs = [];
+    let currentStep = 1;
+    let currentFilter = 'all';
+    let postToDelete = null;
+    let realtimeListeners = [];
+    let currentImageFile = null;
+
+    // DOM Elements
+    const elements = {
+        // Session
+        sessionStatus: document.getElementById('sessionStatus'),
+        
+        // Buttons
+        backToTop: document.getElementById('backToTop'),
+        createPostBtn: document.getElementById('createPostBtn'),
+        notificationBtn: document.getElementById('notificationBtn'),
+        
+        // Modals
+        notificationsModal: document.getElementById('notificationsModal'),
+        signinModal: document.getElementById('signinModal'),
+        createPostModal: document.getElementById('createPostModal'),
+        deleteConfirmModal: document.getElementById('deleteConfirmModal'),
+        
+        // Modal close buttons
+        closeNotificationsModal: document.getElementById('closeNotificationsModal'),
+        closeSigninModal: document.getElementById('closeSigninModal'),
+        closeCreatePostModal: document.getElementById('closeCreatePostModal'),
+        cancelCreatePostBtn: document.getElementById('cancelCreatePostBtn'),
+        cancelDeleteBtn: document.getElementById('cancelDeleteBtn'),
+        confirmDeleteBtn: document.getElementById('confirmDeleteBtn'),
+        
+        // User profile
+        userProfile: document.getElementById('userProfile'),
+        userAvatar: document.getElementById('userAvatar'),
+        userDisplayName: document.getElementById('userDisplayName'),
+        userDropdown: document.getElementById('userDropdown'),
+        
+        // Notification
+        notificationToast: document.getElementById('notificationToast'),
+        notificationBadge: document.getElementById('notificationBadge'),
+        notificationsList: document.getElementById('notificationsList'),
+        
+        // Posts
+        postsContainer: document.getElementById('postsContainer'),
+        newPostsIndicator: document.getElementById('newPostsIndicator'),
+        
+        // Filter buttons
+        filterAllBtn: document.getElementById('filterAllBtn'),
+        filterAnnouncementBtn: document.getElementById('filterAnnouncementBtn'),
+        filterEventBtn: document.getElementById('filterEventBtn'),
+        filterResourceBtn: document.getElementById('filterResourceBtn'),
+        filterDiscussionBtn: document.getElementById('filterDiscussionBtn'),
+        
+        // Onboarding
+        startOnboardingBtn: document.getElementById('startOnboardingBtn'),
+        backToStep1Btn: document.getElementById('backToStep1Btn'),
+        continueToStep3Btn: document.getElementById('continueToStep3Btn'),
+        backToStep2Btn: document.getElementById('backToStep2Btn'),
+        selectedClubsList: document.getElementById('selectedClubsList'),
+        
+        // Forms
+        createPostForm: document.getElementById('createPostForm'),
+        postTags: document.getElementById('postTags'),
+        postTagsContainer: document.getElementById('postTagsContainer'),
+        postImage: document.getElementById('postImage'),
+        imagePreview: document.getElementById('imagePreview'),
+        previewImage: document.getElementById('previewImage'),
+        removeImageBtn: document.getElementById('removeImageBtn'),
+        fileSizeWarning: document.getElementById('fileSizeWarning'),
+        uploadProgress: document.getElementById('uploadProgress'),
+        uploadProgressFill: document.getElementById('uploadProgressFill'),
+        uploadProgressText: document.getElementById('uploadProgressText'),
+        submitPostBtn: document.getElementById('submitPostBtn'),
+        
+        // Navigation
+        signOutOption: document.getElementById('signOutOption'),
+        logo: document.getElementById('logo'),
+        bottomNav: document.getElementById('bottomNav'),
+        navFeed: document.getElementById('navFeed')
+    };
+
+    // Club data
+    const clubs = {
+        logos: {
+            name: 'Logos',
+            description: 'Reading & Literature Club',
+            icon: 'fas fa-book-open',
+            color: '#3498db'
+        },
+        workfit: {
+            name: 'WorkFit',
+            description: 'Fitness & Wellness Club',
+            icon: 'fas fa-dumbbell',
+            color: '#2ecc71'
+        },
+        talantae: {
+            name: 'Talantae',
+            description: 'Talent Development Club',
+            icon: 'fas fa-star',
+            color: '#9b59b6'
+        },
+        stratum: {
+            name: 'Stratum',
+            description: 'Professional & Business Club',
+            icon: 'fas fa-briefcase',
+            color: '#e74c3c'
+        }
+    };
+
+    // Show notification toast
+    function showNotification(message, type = 'success', duration = 4000) {
+        const toast = elements.notificationToast;
+        if (!toast) return;
+        
+        toast.textContent = message;
+        toast.className = `notification-toast show ${type}`;
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, duration);
+    }
+
+    // Show session status
+    function showSessionStatus(message, type = 'restored') {
+        const status = elements.sessionStatus;
+        if (!status) return;
+        
+        status.innerHTML = `
+            <i class="fas fa-${type === 'restored' ? 'check-circle' : 'sync'}"></i>
+            <span>${message}</span>
+        `;
+        status.className = `session-status visible ${type}`;
+        
+        setTimeout(() => {
+            status.classList.remove('visible');
+        }, 3000);
+    }
+
+    // Format time
+    function formatTime(timestamp) {
+        if (!timestamp) return 'Recently';
+        const now = new Date();
+        const postTime = new Date(timestamp);
+        const diffInSeconds = Math.floor((now - postTime) / 1000);
+        
+        if (diffInSeconds < 60) return 'Just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+        if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        
+        return postTime.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: postTime.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+        });
+    }
+
+    // Check authentication status
+    function checkAuthStatus() {
+        const storedUser = localStorage.getItem('the_songa_user');
+        const storedToken = localStorage.getItem('the_songa_token');
+        const sessionTime = localStorage.getItem('the_songa_session_time');
+        
+        // Check if session is still valid (24 hours)
+        const isSessionValid = sessionTime && (Date.now() - parseInt(sessionTime)) < (24 * 60 * 60 * 1000);
+        
+        if (storedUser && storedToken && isSessionValid) {
             try {
-                firebaseApp = firebase.app();
-                database = firebase.database();
-                auth = firebase.auth();
-                storage = firebase.storage();
-            } catch (e) {
-                console.error("Could not initialize Firebase:", e);
-            }
-        }
-
-        // Global variables
-        let currentUser = null;
-        let currentUserData = null;
-        let posts = [];
-        let selectedClubs = [];
-        let currentStep = 1;
-        let currentFilter = 'all';
-        let postToDelete = null;
-        let realtimeListeners = [];
-        let currentImageFile = null;
-
-        // DOM Elements
-        const elements = {
-            // Session
-            sessionStatus: document.getElementById('sessionStatus'),
-            
-            // Buttons
-            backToTop: document.getElementById('backToTop'),
-            createPostBtn: document.getElementById('createPostBtn'),
-            notificationBtn: document.getElementById('notificationBtn'),
-            
-            // Modals
-            notificationsModal: document.getElementById('notificationsModal'),
-            signinModal: document.getElementById('signinModal'),
-            createPostModal: document.getElementById('createPostModal'),
-            deleteConfirmModal: document.getElementById('deleteConfirmModal'),
-            
-            // Modal close buttons
-            closeNotificationsModal: document.getElementById('closeNotificationsModal'),
-            closeSigninModal: document.getElementById('closeSigninModal'),
-            closeCreatePostModal: document.getElementById('closeCreatePostModal'),
-            cancelCreatePostBtn: document.getElementById('cancelCreatePostBtn'),
-            cancelDeleteBtn: document.getElementById('cancelDeleteBtn'),
-            confirmDeleteBtn: document.getElementById('confirmDeleteBtn'),
-            
-            // User profile
-            userProfile: document.getElementById('userProfile'),
-            userAvatar: document.getElementById('userAvatar'),
-            userDisplayName: document.getElementById('userDisplayName'),
-            userDropdown: document.getElementById('userDropdown'),
-            
-            // Notification
-            notificationToast: document.getElementById('notificationToast'),
-            notificationBadge: document.getElementById('notificationBadge'),
-            notificationsList: document.getElementById('notificationsList'),
-            
-            // Posts
-            postsContainer: document.getElementById('postsContainer'),
-            newPostsIndicator: document.getElementById('newPostsIndicator'),
-            
-            // Filter buttons
-            filterAllBtn: document.getElementById('filterAllBtn'),
-            filterAnnouncementBtn: document.getElementById('filterAnnouncementBtn'),
-            filterEventBtn: document.getElementById('filterEventBtn'),
-            filterResourceBtn: document.getElementById('filterResourceBtn'),
-            filterDiscussionBtn: document.getElementById('filterDiscussionBtn'),
-            
-            // Onboarding
-            startOnboardingBtn: document.getElementById('startOnboardingBtn'),
-            backToStep1Btn: document.getElementById('backToStep1Btn'),
-            continueToStep3Btn: document.getElementById('continueToStep3Btn'),
-            backToStep2Btn: document.getElementById('backToStep2Btn'),
-            selectedClubsList: document.getElementById('selectedClubsList'),
-            
-            // Forms
-            createPostForm: document.getElementById('createPostForm'),
-            postTags: document.getElementById('postTags'),
-            postTagsContainer: document.getElementById('postTagsContainer'),
-            postImage: document.getElementById('postImage'),
-            imagePreview: document.getElementById('imagePreview'),
-            previewImage: document.getElementById('previewImage'),
-            removeImageBtn: document.getElementById('removeImageBtn'),
-            fileSizeWarning: document.getElementById('fileSizeWarning'),
-            uploadProgress: document.getElementById('uploadProgress'),
-            uploadProgressFill: document.getElementById('uploadProgressFill'),
-            uploadProgressText: document.getElementById('uploadProgressText'),
-            submitPostBtn: document.getElementById('submitPostBtn'),
-            
-            // Navigation
-            signOutOption: document.getElementById('signOutOption'),
-            logo: document.getElementById('logo'),
-            bottomNav: document.getElementById('bottomNav'),
-            navFeed: document.getElementById('navFeed')
-        };
-
-        // Club data
-        const clubs = {
-            logos: {
-                name: 'Logos',
-                description: 'Reading & Literature Club',
-                icon: 'fas fa-book-open',
-                color: '#3498db'
-            },
-            workfit: {
-                name: 'WorkFit',
-                description: 'Fitness & Wellness Club',
-                icon: 'fas fa-dumbbell',
-                color: '#2ecc71'
-            },
-            talantae: {
-                name: 'Talantae',
-                description: 'Talent Development Club',
-                icon: 'fas fa-star',
-                color: '#9b59b6'
-            },
-            stratum: {
-                name: 'Stratum',
-                description: 'Professional & Business Club',
-                icon: 'fas fa-briefcase',
-                color: '#e74c3c'
-            }
-        };
-
-        // Show notification toast
-        function showNotification(message, type = 'success', duration = 4000) {
-            const toast = elements.notificationToast;
-            if (!toast) return;
-            
-            toast.textContent = message;
-            toast.className = `notification-toast show ${type}`;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, duration);
-        }
-
-        // Show session status
-        function showSessionStatus(message, type = 'restored') {
-            const status = elements.sessionStatus;
-            if (!status) return;
-            
-            status.innerHTML = `
-                <i class="fas fa-${type === 'restored' ? 'check-circle' : 'sync'}"></i>
-                <span>${message}</span>
-            `;
-            status.className = `session-status visible ${type}`;
-            
-            setTimeout(() => {
-                status.classList.remove('visible');
-            }, 3000);
-        }
-
-        // Format time
-        function formatTime(timestamp) {
-            if (!timestamp) return 'Recently';
-            const now = new Date();
-            const postTime = new Date(timestamp);
-            const diffInSeconds = Math.floor((now - postTime) / 1000);
-            
-            if (diffInSeconds < 60) return 'Just now';
-            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-            if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-            
-            return postTime.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: postTime.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
-            });
-        }
-
-        // Check authentication status
-        function checkAuthStatus() {
-            const storedUser = localStorage.getItem('the_songa_user');
-            const storedToken = localStorage.getItem('the_songa_token');
-            const sessionTime = localStorage.getItem('the_songa_session_time');
-            
-            // Check if session is still valid (24 hours)
-            const isSessionValid = sessionTime && (Date.now() - parseInt(sessionTime)) < (24 * 60 * 60 * 1000);
-            
-            if (storedUser && storedToken && isSessionValid) {
-                try {
-                    currentUser = JSON.parse(storedUser);
-                    showSessionStatus('Session restored', 'restored');
-                    
-                    // Update UI
-                    updateUIForMember();
-                    
-                    // Hide signin modal if open
-                    if (elements.signinModal) {
-                        elements.signinModal.classList.remove('active');
-                        document.body.classList.remove('modal-open');
-                    }
-                    
-                    // Fetch user data
-                    fetchUserData(currentUser.uid);
-                    
-                    // Setup realtime listeners
-                    setupRealtimeListeners();
-                    
-                    // Only show welcome back if on homepage
-                    if (window.location.pathname.includes('index.html') || 
-                        window.location.pathname === '/' || 
-                        window.location.pathname.includes('feed')) {
-                        showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
-                    }
-                    
-                    return true;
-                } catch (error) {
-                    console.error("Error parsing stored user:", error);
-                    clearUserSession();
-                    if (elements.signinModal) {
-                        showSigninModal();
-                    }
-                    return false;
+                currentUser = JSON.parse(storedUser);
+                showSessionStatus('Session restored', 'restored');
+                
+                // Update UI
+                updateUIForMember();
+                
+                // Hide signin modal if open
+                if (elements.signinModal) {
+                    elements.signinModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
                 }
-            } else {
+                
+                // Fetch user data
+                fetchUserData(currentUser.uid);
+                
+                // Setup realtime listeners
+                setupRealtimeListeners();
+                
+                // Only show welcome back if on homepage
+                if (window.location.pathname.includes('index.html') || 
+                    window.location.pathname === '/' || 
+                    window.location.pathname.includes('feed')) {
+                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+                }
+                
+                return true;
+            } catch (error) {
+                console.error("Error parsing stored user:", error);
                 clearUserSession();
                 if (elements.signinModal) {
                     showSigninModal();
                 }
                 return false;
             }
-        }
-
-        // Setup realtime listeners
-        function setupRealtimeListeners() {
-            // Clear existing listeners
-            realtimeListeners.forEach(listener => {
-                if (typeof listener === 'function') {
-                    listener();
-                }
-            });
-            realtimeListeners = [];
-
-            if (!currentUser || !database) return;
-
-            // Listen for notifications (works on all pages)
-            const notificationsListener = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const notifications = snapshot.val();
-                    const unreadCount = Object.values(notifications).filter(n => !n.read).length;
-                    
-                    // Update badge if element exists
-                    if (elements.notificationBadge) {
-                        if (unreadCount > 0) {
-                            elements.notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                            elements.notificationBadge.classList.remove('hidden');
-                        } else {
-                            elements.notificationBadge.classList.add('hidden');
-                        }
-                    }
-                    
-                    // Update notifications modal if open
-                    if (elements.notificationsModal && elements.notificationsModal.classList.contains('active')) {
-                        loadNotifications();
-                    }
-                } else if (elements.notificationBadge) {
-                    elements.notificationBadge.classList.add('hidden');
-                }
-            });
-            realtimeListeners.push(() => database.ref(`notifications/${currentUser.uid}`).off('value', notificationsListener));
-
-            // Only setup post listeners on feed page
-            if (window.location.pathname.includes('index.html') || 
-                window.location.pathname === '/' || 
-                window.location.pathname.includes('feed') ||
-                document.getElementById('postsContainer')) {
-                
-                // Listen for new posts
-                const postsListener = database.ref('communityPosts').orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
-                    if (snapshot.exists()) {
-                        const postsData = snapshot.val();
-                        posts = Object.keys(postsData).map(key => ({
-                            id: key,
-                            ...postsData[key]
-                        })).filter(post => post.status === 'published');
-                        
-                        // Update posts display if on feed page
-                        if (elements.postsContainer) {
-                            filterPosts(currentFilter);
-                            checkNewPosts();
-                        }
-                    }
-                });
-                realtimeListeners.push(() => database.ref('communityPosts').off('value', postsListener));
+        } else {
+            clearUserSession();
+            if (elements.signinModal) {
+                showSigninModal();
             }
-
-            // Listen for user data updates
-            const userListener = database.ref(`users/${currentUser.uid}`).on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    currentUserData = snapshot.val();
-                }
-            });
-            realtimeListeners.push(() => database.ref(`users/${currentUser.uid}`).off('value', userListener));
+            return false;
         }
+    }
 
-        // Check for new posts (feed page only)
-        function checkNewPosts() {
-            if (!elements.newPostsIndicator) return;
-            
-            const lastViewed = localStorage.getItem('the_songa_last_viewed') || Date.now();
-            const newPostsCount = posts.filter(post => 
-                new Date(post.createdAt) > new Date(parseInt(lastViewed))
-            ).length;
-            
-            if (newPostsCount > 0) {
-                elements.newPostsIndicator.textContent = `${newPostsCount} New Posts`;
-                elements.newPostsIndicator.style.display = 'inline-flex';
-            } else {
-                elements.newPostsIndicator.style.display = 'none';
+    // Setup realtime listeners
+    function setupRealtimeListeners() {
+        // Clear existing listeners
+        realtimeListeners.forEach(listener => {
+            if (typeof listener === 'function') {
+                listener();
             }
-        }
+        });
+        realtimeListeners = [];
 
-        // Mark posts as viewed (feed page only)
-        function markPostsAsViewed() {
-            if (!elements.newPostsIndicator) return;
-            
-            localStorage.setItem('the_songa_last_viewed', Date.now().toString());
-            elements.newPostsIndicator.style.display = 'none';
-        }
+        if (!currentUser || !database) return;
 
-        // Store user session
-        function storeUserSession(user, token) {
-            localStorage.setItem('the_songa_user', JSON.stringify(user));
-            localStorage.setItem('the_songa_token', token);
-            localStorage.setItem('the_songa_session_time', Date.now().toString());
-            localStorage.setItem('the_songa_selected_clubs', JSON.stringify(selectedClubs));
-        }
-
-        // Clear user session
-        function clearUserSession() {
-            localStorage.removeItem('the_songa_user');
-            localStorage.removeItem('the_songa_token');
-            localStorage.removeItem('the_songa_session_time');
-            localStorage.removeItem('the_songa_selected_clubs');
-            
-            // Remove realtime listeners
-            realtimeListeners.forEach(listener => {
-                if (typeof listener === 'function') {
-                    listener();
-                }
-            });
-            realtimeListeners = [];
-        }
-
-        // Show signin modal
-        function showSigninModal() {
-            if (!elements.signinModal) return;
-            
-            elements.signinModal.classList.add('active');
-            document.body.classList.add('modal-open');
-            
-            // Try to restore selected clubs
-            const storedClubs = localStorage.getItem('the_songa_selected_clubs');
-            if (storedClubs) {
-                try {
-                    selectedClubs = JSON.parse(storedClubs);
-                    selectedClubs.forEach(clubId => {
-                        const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
-                        if (clubCard) {
-                            clubCard.classList.add('selected');
-                        }
-                    });
-                    updateContinueButton();
-                } catch (error) {
-                    console.error("Error parsing stored clubs:", error);
-                }
-            }
-        }
-
-        // Update UI for member
-        function updateUIForMember() {
-            if (currentUser) {
-                // Show user profile if element exists
-                if (elements.userProfile) {
-                    elements.userProfile.style.display = 'flex';
-                    if (elements.userAvatar) elements.userAvatar.src = currentUser.picture;
-                    if (elements.userDisplayName) elements.userDisplayName.textContent = currentUser.firstName;
-                }
+        // Listen for notifications (works on all pages)
+        const notificationsListener = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+            if (snapshot.exists()) {
+                const notifications = snapshot.val();
+                const unreadCount = Object.values(notifications).filter(n => !n.read).length;
                 
-                // Show create post button if element exists
-                if (elements.createPostBtn) {
-                    elements.createPostBtn.style.display = 'flex';
-                }
-                
-                // Show notification button if element exists
-                if (elements.notificationBtn) {
-                    elements.notificationBtn.style.display = 'flex';
-                }
-            }
-        }
-
-        // Fetch user data
-        async function fetchUserData(userId) {
-            try {
-                const userRef = database.ref(`users/${userId}`);
-                const snapshot = await userRef.once('value');
-                if (snapshot.exists()) {
-                    currentUserData = snapshot.val();
-                    // Update selectedClubs from database
-                    if (currentUserData.selectedClubs) {
-                        selectedClubs = currentUserData.selectedClubs;
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        }
-
-        // Load notifications with proper error handling
-        async function loadNotifications() {
-            if (!currentUser || !database) {
-                showNotification('Please sign in to view notifications', 'error');
-                return;
-            }
-            
-            try {
-                const notificationsRef = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(50);
-                const snapshot = await notificationsRef.once('value');
-                
-                const notificationsList = elements.notificationsList;
-                if (!notificationsList) {
-                    console.error('Notifications list element not found');
-                    return;
-                }
-                
-                if (snapshot.exists()) {
-                    const notificationsData = snapshot.val();
-                    const notifications = Object.keys(notificationsData).map(key => ({
-                        id: key,
-                        ...notificationsData[key]
-                    })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    
-                    // Clear and build notifications list
-                    notificationsList.innerHTML = '';
-                    
-                    notifications.forEach(notification => {
-                        const timeAgo = formatTime(notification.timestamp);
-                        let notificationText = '';
-                        let icon = 'fas fa-bell';
-                        let avatarUrl = 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp';
-                        
-                        // Handle different notification types
-                        switch(notification.type) {
-                            case 'like':
-                                notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> liked your post`;
-                                if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
-                                icon = 'fas fa-heart';
-                                break;
-                            case 'comment':
-                                notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> commented on your post`;
-                                if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
-                                icon = 'fas fa-comment';
-                                break;
-                            case 'share':
-                                notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> shared your post`;
-                                if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
-                                icon = 'fas fa-share';
-                                break;
-                            case 'follow':
-                                notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> started following you`;
-                                if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
-                                icon = 'fas fa-user-plus';
-                                break;
-                            case 'post':
-                                notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> created a new post`;
-                                if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
-                                icon = 'fas fa-newspaper';
-                                break;
-                            default:
-                                notificationText = `New notification`;
-                                icon = 'fas fa-bell';
-                        }
-                        
-                        const notificationItem = document.createElement('div');
-                        notificationItem.className = `notification-item ${notification.read ? '' : 'unread'}`;
-                        notificationItem.innerHTML = `
-                            <div class="notification-avatar">
-                                <img src="${avatarUrl}" alt="User">
-                            </div>
-                            <div class="notification-content">
-                                <div class="notification-text">
-                                    <i class="${icon}"></i> ${notificationText}
-                                </div>
-                                <div class="notification-time">${timeAgo}</div>
-                            </div>
-                            ${notification.read ? '' : '<div class="notification-dot"></div>'}
-                        `;
-                        
-                        // Add click handler
-                        notificationItem.addEventListener('click', () => {
-                            viewNotification(notification.id, notification.data?.postId);
-                        });
-                        
-                        notificationsList.appendChild(notificationItem);
-                    });
-                } else {
-                    notificationsList.innerHTML = `
-                        <div class="no-notifications">
-                            <i class="fas fa-bell-slash"></i>
-                            <p>No notifications yet</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading notifications:', error);
-                if (elements.notificationsList) {
-                    elements.notificationsList.innerHTML = `
-                        <div class="no-notifications">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <p>Error loading notifications. Please try again.</p>
-                        </div>
-                    `;
-                }
-                showNotification('Error loading notifications', 'error');
-            }
-        }
-
-        // View notification and mark as read
-        async function viewNotification(notificationId, postId = null) {
-            try {
-                // Mark notification as read
-                const notificationRef = database.ref(`notifications/${currentUser.uid}/${notificationId}`);
-                await notificationRef.update({ read: true });
-                
-                // Close notifications modal
-                if (elements.notificationsModal) {
-                    elements.notificationsModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-                
-                // Handle notification action based on type
-                if (postId) {
-                    // If it's a post-related notification, navigate to the post
-                    const isOnFeedPage = window.location.pathname.includes('index.html') || 
-                                        window.location.pathname === '/' || 
-                                        window.location.pathname.includes('feed');
-                    
-                    if (isOnFeedPage) {
-                        // Scroll to post on feed page
-                        const postElement = document.getElementById(`post-${postId}`);
-                        if (postElement) {
-                            postElement.scrollIntoView({ behavior: 'smooth' });
-                            postElement.classList.add('real-time-update');
-                            setTimeout(() => {
-                                postElement.classList.remove('real-time-update');
-                            }, 2000);
-                        }
+                // Update badge if element exists
+                if (elements.notificationBadge) {
+                    if (unreadCount > 0) {
+                        elements.notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                        elements.notificationBadge.classList.remove('hidden');
                     } else {
-                        // Redirect to feed page with post anchor
-                        window.location.href = `index.html#post-${postId}`;
+                        elements.notificationBadge.classList.add('hidden');
                     }
                 }
-            } catch (error) {
-                console.error('Error viewing notification:', error);
-                showNotification('Error processing notification', 'error');
-            }
-        }
-
-        // Load posts (feed page only)
-        async function loadPosts() {
-            if (!elements.postsContainer) return;
-            
-            try {
-                const postsRef = database.ref('communityPosts').orderByChild('createdAt').limitToLast(50);
-                const snapshot = await postsRef.once('value');
                 
+                // Update notifications modal if open
+                if (elements.notificationsModal && elements.notificationsModal.classList.contains('active')) {
+                    loadNotifications();
+                }
+            } else if (elements.notificationBadge) {
+                elements.notificationBadge.classList.add('hidden');
+            }
+        });
+        realtimeListeners.push(() => database.ref(`notifications/${currentUser.uid}`).off('value', notificationsListener));
+
+        // Only setup post listeners on feed page
+        if (window.location.pathname.includes('index.html') || 
+            window.location.pathname === '/' || 
+            window.location.pathname.includes('feed') ||
+            document.getElementById('postsContainer')) {
+            
+            // Listen for new posts
+            const postsListener = database.ref('communityPosts').orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const postsData = snapshot.val();
                     posts = Object.keys(postsData).map(key => ({
@@ -3035,530 +2738,827 @@
                         ...postsData[key]
                     })).filter(post => post.status === 'published');
                     
-                    filterPosts(currentFilter);
-                    checkNewPosts();
-                } else {
-                    // Load sample posts if none exist
-                    loadSamplePosts();
-                    renderPosts([]);
+                    // Update posts display if on feed page
+                    if (elements.postsContainer) {
+                        filterPosts(currentFilter);
+                        checkNewPosts();
+                    }
                 }
-            } catch (error) {
-                console.error('Error loading posts:', error);
-                showNotification('Error loading posts', 'error');
-                renderPosts([]);
-            }
-        }
-
-        // Load sample posts
-        async function loadSamplePosts() {
-            if (!database || !elements.postsContainer) return;
-            
-            try {
-                const postsRef = database.ref('communityPosts');
-                const snapshot = await postsRef.once('value');
-                
-                if (!snapshot.exists()) {
-                    const samplePosts = {
-                        post1: {
-                            id: "post1",
-                            authorId: "admin1",
-                            authorName: "THE SONGA",
-                            authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
-                            title: "Welcome to the Inner Circle!",
-                            content: "We're thrilled to have you as part of THE SONGA Inner Circle. This is your exclusive space to connect, learn, and grow with like-minded individuals.\n\nWhat to expect:\n📚 Exclusive content from your selected clubs\n🎯 Practical strategies and workshops\n🤝 Networking with ambitious members\n💡 Priority updates and announcements\n🌟 Member success stories\n\nWelcome aboard!\n- The SONGA Team",
-                            category: "announcement",
-                            tags: ["welcome", "inner-circle", "community"],
-                            likes: 24,
-                            likedBy: [],
-                            comments: 8,
-                            shares: 3,
-                            bookmarks: 15,
-                            views: 156,
-                            createdAt: new Date().toISOString(),
-                            isPinned: true,
-                            status: "published"
-                        },
-                        post2: {
-                            id: "post2",
-                            authorId: "admin1",
-                            authorName: "THE SONGA",
-                            authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
-                            title: "Wealth Building Workshop - This Saturday!",
-                            content: "Join us for an exclusive Inner Circle workshop where we'll dive deep into practical wealth creation strategies.\n\nWorkshop Highlights:\n• Investment strategies for beginners\n• Passive income opportunities\n• Wealth preservation techniques\n\nDate: This Saturday, 2:00 PM\nLocation: Virtual - Members Portal\n\nExclusively for Inner Circle members!",
-                            category: "event",
-                            tags: ["workshop", "finance", "wealth", "inner-circle"],
-                            likes: 18,
-                            likedBy: [],
-                            comments: 5,
-                            shares: 2,
-                            bookmarks: 8,
-                            views: 89,
-                            createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-                            isPinned: false,
-                            status: "published"
-                        },
-                        post3: {
-                            id: "post3",
-                            authorId: "admin2",
-                            authorName: "Logos Club",
-                            authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
-                            title: "March Reading Challenge",
-                            content: "Logos Club members, get ready for our March reading challenge! This month's theme: 'Financial Literacy'.\n\nFeatured Books:\n• The Psychology of Money\n• Rich Dad Poor Dad\n• The Intelligent Investor\n\nJoin our weekly discussions every Thursday at 7 PM.",
-                            category: "discussion",
-                            tags: ["logos", "reading", "challenge", "books"],
-                            likes: 12,
-                            likedBy: [],
-                            comments: 3,
-                            shares: 1,
-                            bookmarks: 5,
-                            views: 45,
-                            createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-                            isPinned: false,
-                            status: "published"
-                        }
-                    };
-                    
-                    await postsRef.set(samplePosts);
-                    console.log("Sample posts loaded");
-                }
-            } catch (error) {
-                console.error('Error loading sample posts:', error);
-            }
-        }
-
-        // Onboarding functions
-        function nextStep(step) {
-            // Validate step 2
-            if (step === 3 && selectedClubs.length === 0) {
-                showNotification('Please select at least one club to continue', 'error');
-                return;
-            }
-            
-            // Update step indicators
-            document.querySelectorAll('.step-indicator').forEach(indicator => {
-                indicator.classList.remove('active');
             });
-            document.querySelector(`.step-indicator[data-step="${step}"]`)?.classList.add('active');
-            
-            // Hide current step
-            document.querySelectorAll('.onboarding-slide').forEach(slide => {
-                slide.classList.remove('active');
-            });
-            
-            // Show next step
-            const stepElement = document.getElementById(`step${step}`);
-            if (stepElement) {
-                stepElement.classList.add('active');
-                currentStep = step;
-                
-                // Update selected clubs display for step 3
-                if (step === 3) {
-                    updateSelectedClubsDisplay();
-                }
+            realtimeListeners.push(() => database.ref('communityPosts').off('value', postsListener));
+        }
+
+        // Listen for user data updates
+        const userListener = database.ref(`users/${currentUser.uid}`).on('value', (snapshot) => {
+            if (snapshot.exists()) {
+                currentUserData = snapshot.val();
             }
-        }
+        });
+        realtimeListeners.push(() => database.ref(`users/${currentUser.uid}`).off('value', userListener));
+    }
 
-        function prevStep() {
-            const prevStep = currentStep - 1;
-            if (prevStep >= 1) {
-                nextStep(prevStep);
+    // Check for new posts (feed page only)
+    function checkNewPosts() {
+        if (!elements.newPostsIndicator) return;
+        
+        const lastViewed = localStorage.getItem('the_songa_last_viewed') || Date.now();
+        const newPostsCount = posts.filter(post => 
+            new Date(post.createdAt) > new Date(parseInt(lastViewed))
+        ).length;
+        
+        if (newPostsCount > 0) {
+            elements.newPostsIndicator.textContent = `${newPostsCount} New Posts`;
+            elements.newPostsIndicator.style.display = 'inline-flex';
+        } else {
+            elements.newPostsIndicator.style.display = 'none';
+        }
+    }
+
+    // Mark posts as viewed (feed page only)
+    function markPostsAsViewed() {
+        if (!elements.newPostsIndicator) return;
+        
+        localStorage.setItem('the_songa_last_viewed', Date.now().toString());
+        elements.newPostsIndicator.style.display = 'none';
+    }
+
+    // Store user session
+    function storeUserSession(user, token) {
+        localStorage.setItem('the_songa_user', JSON.stringify(user));
+        localStorage.setItem('the_songa_token', token);
+        localStorage.setItem('the_songa_session_time', Date.now().toString());
+        localStorage.setItem('the_songa_selected_clubs', JSON.stringify(selectedClubs));
+    }
+
+    // Clear user session
+    function clearUserSession() {
+        localStorage.removeItem('the_songa_user');
+        localStorage.removeItem('the_songa_token');
+        localStorage.removeItem('the_songa_session_time');
+        localStorage.removeItem('the_songa_selected_clubs');
+        
+        // Remove realtime listeners
+        realtimeListeners.forEach(listener => {
+            if (typeof listener === 'function') {
+                listener();
             }
-        }
+        });
+        realtimeListeners = [];
+    }
 
-        function toggleClubSelection(clubId) {
-            const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
-            const index = selectedClubs.indexOf(clubId);
-            
-            if (index === -1) {
-                selectedClubs.push(clubId);
-                clubCard?.classList.add('selected');
-            } else {
-                selectedClubs.splice(index, 1);
-                clubCard?.classList.remove('selected');
-            }
-            
-            updateContinueButton();
-        }
-
-        function updateContinueButton() {
-            const continueBtn = elements.continueToStep3Btn;
-            if (continueBtn) {
-                continueBtn.disabled = selectedClubs.length === 0;
-            }
-        }
-
-        function updateSelectedClubsDisplay() {
-            const selectedClubsList = elements.selectedClubsList;
-            if (!selectedClubsList) return;
-            
-            selectedClubsList.innerHTML = selectedClubs.map(clubId => {
-                const club = clubs[clubId];
-                return `
-                    <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: white; border-radius: 16px; border: 1.5px solid ${club.color}20;">
-                        <i class="${club.icon}" style="color: ${club.color}; font-size: 0.9rem;"></i>
-                        <span style="font-weight: 600; font-size: 0.85rem;">${club.name}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Google Sign-In Handler
-        async function handleGoogleSignIn(response) {
+    // Show signin modal
+    function showSigninModal() {
+        if (!elements.signinModal) return;
+        
+        elements.signinModal.classList.add('active');
+        document.body.classList.add('modal-open');
+        
+        // Try to restore selected clubs
+        const storedClubs = localStorage.getItem('the_songa_selected_clubs');
+        if (storedClubs) {
             try {
-                const credential = response.credential;
-                const userData = parseJwt(credential);
-                
-                currentUser = {
-                    uid: userData.sub,
-                    email: userData.email,
-                    firstName: userData.given_name,
-                    lastName: userData.family_name,
-                    fullName: userData.name,
-                    picture: userData.picture,
-                    emailVerified: userData.email_verified
-                };
-                
-                // Store session
-                storeUserSession(currentUser, credential);
-                
-                const userRef = database.ref(`users/${currentUser.uid}`);
-                const snapshot = await userRef.once('value');
-                
-                if (!snapshot.exists()) {
-                    // New user
-                    const newUser = {
-                        uid: currentUser.uid,
-                        email: currentUser.email,
-                        firstName: currentUser.firstName,
-                        lastName: currentUser.lastName,
-                        profilePicture: currentUser.picture,
-                        joinedDate: new Date().toISOString(),
-                        lastLogin: new Date().toISOString(),
-                        membershipStatus: "active",
-                        membershipTier: "inner-circle",
-                        selectedClubs: selectedClubs,
-                        bookmarkedPosts: [],
-                        followers: [],
-                        following: [],
-                        isAdmin: false,
-                        status: "active"
-                    };
-                    
-                    await userRef.set(newUser);
-                    currentUserData = newUser;
-                    showNotification(`Welcome to THE SONGA Inner Circle, ${currentUser.firstName}!`, 'success');
-                } else {
-                    // Existing user
-                    await userRef.update({ 
-                        lastLogin: new Date().toISOString(),
-                        selectedClubs: selectedClubs
-                    });
-                    currentUserData = snapshot.val();
-                    showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
-                }
-                
-                updateUIForMember();
-                if (elements.signinModal) {
-                    elements.signinModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                }
-                
-                // Setup realtime listeners
-                setupRealtimeListeners();
-                
-                // Reset onboarding
-                selectedClubs = [];
-                currentStep = 1;
-                document.querySelectorAll('.club-card').forEach(card => {
-                    card.classList.remove('selected');
+                selectedClubs = JSON.parse(storedClubs);
+                selectedClubs.forEach(clubId => {
+                    const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
+                    if (clubCard) {
+                        clubCard.classList.add('selected');
+                    }
                 });
                 updateContinueButton();
-                
             } catch (error) {
-                console.error('Error in Google Sign-In:', error);
-                showNotification('Error signing in. Please try again.', 'error');
+                console.error("Error parsing stored clubs:", error);
             }
         }
+    }
 
-        // Parse JWT token
-        function parseJwt(token) {
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
-                    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-                ).join(''));
-                return JSON.parse(jsonPayload);
-            } catch (error) {
-                console.error('Error parsing JWT:', error);
-                return {};
-            }
-        }
-
-        // Sign out
-        function signOut() {
-            clearUserSession();
-            currentUser = null;
-            currentUserData = null;
-            selectedClubs = [];
-            
-            // Close all modals
-            document.querySelectorAll('.modal.active').forEach(modal => {
-                modal.classList.remove('active');
-            });
-            document.body.classList.remove('modal-open');
-            
-            // Update UI
-            if (elements.userProfile) elements.userProfile.style.display = 'none';
-            if (elements.createPostBtn) elements.createPostBtn.style.display = 'none';
-            if (elements.notificationBtn) elements.notificationBtn.style.display = 'none';
-            
-            // Reset onboarding
-            currentStep = 1;
-            document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
-                slide.classList.toggle('active', index === 0);
-            });
-            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
-                indicator.classList.toggle('active', index === 0);
-            });
-            
-            // Show signin modal
-            if (elements.signinModal) {
-                showSigninModal();
+    // Update UI for member
+    function updateUIForMember() {
+        if (currentUser) {
+            // Show user profile if element exists
+            if (elements.userProfile) {
+                elements.userProfile.style.display = 'flex';
+                if (elements.userAvatar) elements.userAvatar.src = currentUser.picture;
+                if (elements.userDisplayName) elements.userDisplayName.textContent = currentUser.firstName;
             }
             
-            showNotification('Signed out successfully', 'success');
-            showSessionStatus('Signed out', 'restored');
+            // Show create post button if element exists
+            if (elements.createPostBtn) {
+                elements.createPostBtn.style.display = 'flex';
+            }
+            
+            // Show notification button if element exists
+            if (elements.notificationBtn) {
+                elements.notificationBtn.style.display = 'flex';
+            }
         }
+    }
 
-        // Open create post modal
-        function openCreatePostModal() {
-            if (!currentUser) {
-                showNotification('Please join the Inner Circle to create posts', 'error');
+    // Fetch user data
+    async function fetchUserData(userId) {
+        try {
+            const userRef = database.ref(`users/${userId}`);
+            const snapshot = await userRef.once('value');
+            if (snapshot.exists()) {
+                currentUserData = snapshot.val();
+                // Update selectedClubs from database
+                if (currentUserData.selectedClubs) {
+                    selectedClubs = currentUserData.selectedClubs;
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+
+    // Load notifications with proper error handling
+    async function loadNotifications() {
+        if (!currentUser || !database) {
+            showNotification('Please sign in to view notifications', 'error');
+            return;
+        }
+        
+        try {
+            const notificationsRef = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(50);
+            const snapshot = await notificationsRef.once('value');
+            
+            const notificationsList = elements.notificationsList;
+            if (!notificationsList) {
+                console.error('Notifications list element not found');
                 return;
             }
             
-            if (elements.createPostModal) {
-                elements.createPostModal.classList.add('active');
-                document.body.classList.add('modal-open');
-            }
-        }
-
-        // Initialize event listeners
-        function initEventListeners() {
-            // Logo click
-            if (elements.logo) {
-                elements.logo.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            // Back to top
-            if (elements.backToTop) {
-                elements.backToTop.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            // Create post button
-            if (elements.createPostBtn) {
-                elements.createPostBtn.addEventListener('click', openCreatePostModal);
-            }
-
-            // Notification button
-            if (elements.notificationBtn) {
-                elements.notificationBtn.addEventListener('click', () => {
-                    if (!currentUser) {
-                        showNotification('Please join the Inner Circle to view notifications', 'error');
-                        return;
+            if (snapshot.exists()) {
+                const notificationsData = snapshot.val();
+                const notifications = Object.keys(notificationsData).map(key => ({
+                    id: key,
+                    ...notificationsData[key]
+                })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                // Clear and build notifications list
+                notificationsList.innerHTML = '';
+                
+                notifications.forEach(notification => {
+                    const timeAgo = formatTime(notification.timestamp);
+                    let notificationText = '';
+                    let icon = 'fas fa-bell';
+                    let avatarUrl = 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp';
+                    
+                    // Handle different notification types
+                    switch(notification.type) {
+                        case 'like':
+                            notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> liked your post`;
+                            if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
+                            icon = 'fas fa-heart';
+                            break;
+                        case 'comment':
+                            notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> commented on your post`;
+                            if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
+                            icon = 'fas fa-comment';
+                            break;
+                        case 'share':
+                            notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> shared your post`;
+                            if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
+                            icon = 'fas fa-share';
+                            break;
+                        case 'follow':
+                            notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> started following you`;
+                            if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
+                            icon = 'fas fa-user-plus';
+                            break;
+                        case 'post':
+                            notificationText = `<strong>${notification.data?.userName || 'Someone'}</strong> created a new post`;
+                            if (notification.data?.userAvatar) avatarUrl = notification.data.userAvatar;
+                            icon = 'fas fa-newspaper';
+                            break;
+                        default:
+                            notificationText = `New notification`;
+                            icon = 'fas fa-bell';
                     }
-                    if (elements.notificationsModal) {
-                        elements.notificationsModal.classList.add('active');
-                        document.body.classList.add('modal-open');
-                        loadNotifications();
-                    }
-                });
-            }
-
-            // User profile dropdown
-            if (elements.userProfile) {
-                elements.userProfile.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (elements.userDropdown) {
-                        elements.userDropdown.classList.toggle('active');
-                    }
-                });
-            }
-
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', () => {
-                if (elements.userDropdown) {
-                    elements.userDropdown.classList.remove('active');
-                }
-            });
-
-            // Filter buttons (feed page only)
-            if (elements.filterAllBtn) {
-                elements.filterAllBtn.addEventListener('click', () => filterPosts('all'));
-                elements.filterAnnouncementBtn.addEventListener('click', () => filterPosts('announcement'));
-                elements.filterEventBtn.addEventListener('click', () => filterPosts('event'));
-                elements.filterResourceBtn.addEventListener('click', () => filterPosts('resource'));
-                elements.filterDiscussionBtn.addEventListener('click', () => filterPosts('discussion'));
-            }
-
-            // New posts indicator (feed page only)
-            if (elements.newPostsIndicator) {
-                elements.newPostsIndicator.addEventListener('click', () => {
-                    markPostsAsViewed();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            // Onboarding buttons
-            if (elements.startOnboardingBtn) elements.startOnboardingBtn.addEventListener('click', () => nextStep(2));
-            if (elements.backToStep1Btn) elements.backToStep1Btn.addEventListener('click', () => prevStep());
-            if (elements.continueToStep3Btn) elements.continueToStep3Btn.addEventListener('click', () => nextStep(3));
-            if (elements.backToStep2Btn) elements.backToStep2Btn.addEventListener('click', () => prevStep());
-
-            // Club selection
-            document.querySelectorAll('.club-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const clubId = card.dataset.club;
-                    toggleClubSelection(clubId);
-                });
-            });
-
-            // Sign out
-            if (elements.signOutOption) {
-                elements.signOutOption.addEventListener('click', signOut);
-            }
-
-            // Modal close buttons
-            if (elements.closeSigninModal) {
-                elements.closeSigninModal.addEventListener('click', () => {
-                    elements.signinModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                });
-            }
-
-            if (elements.closeNotificationsModal) {
-                elements.closeNotificationsModal.addEventListener('click', () => {
-                    elements.notificationsModal.classList.remove('active');
-                    document.body.classList.remove('modal-open');
-                });
-            }
-
-            if (elements.closeCreatePostModal) {
-                elements.closeCreatePostModal.addEventListener('click', closeCreatePostModal);
-            }
-            if (elements.cancelCreatePostBtn) {
-                elements.cancelCreatePostBtn.addEventListener('click', closeCreatePostModal);
-            }
-            if (elements.cancelDeleteBtn) {
-                elements.cancelDeleteBtn.addEventListener('click', () => {
-                    if (elements.deleteConfirmModal) {
-                        elements.deleteConfirmModal.classList.remove('active');
-                        document.body.classList.remove('modal-open');
-                        postToDelete = null;
-                    }
-                });
-            }
-            if (elements.confirmDeleteBtn) {
-                elements.confirmDeleteBtn.addEventListener('click', deletePost);
-            }
-
-            // Close modals when clicking outside
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('active');
-                        document.body.classList.remove('modal-open');
-                        if (modal.id === 'deleteConfirmModal') {
-                            postToDelete = null;
-                        }
-                    }
-                });
-            });
-
-            // Escape key to close modals
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    document.querySelectorAll('.modal.active').forEach(modal => {
-                        modal.classList.remove('active');
-                        document.body.classList.remove('modal-open');
+                    
+                    const notificationItem = document.createElement('div');
+                    notificationItem.className = `notification-item ${notification.read ? '' : 'unread'}`;
+                    notificationItem.innerHTML = `
+                        <div class="notification-avatar">
+                            <img src="${avatarUrl}" alt="User">
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-text">
+                                <i class="${icon}"></i> ${notificationText}
+                            </div>
+                            <div class="notification-time">${timeAgo}</div>
+                        </div>
+                        ${notification.read ? '' : '<div class="notification-dot"></div>'}
+                    `;
+                    
+                    // Add click handler
+                    notificationItem.addEventListener('click', () => {
+                        viewNotification(notification.id, notification.data?.postId);
                     });
-                    if (elements.deleteConfirmModal && elements.deleteConfirmModal.classList.contains('active')) {
+                    
+                    notificationsList.appendChild(notificationItem);
+                });
+            } else {
+                notificationsList.innerHTML = `
+                    <div class="no-notifications">
+                        <i class="fas fa-bell-slash"></i>
+                        <p>No notifications yet</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading notifications:', error);
+            if (elements.notificationsList) {
+                elements.notificationsList.innerHTML = `
+                    <div class="no-notifications">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Error loading notifications. Please try again.</p>
+                    </div>
+                `;
+            }
+            showNotification('Error loading notifications', 'error');
+        }
+    }
+
+    // View notification and mark as read
+    async function viewNotification(notificationId, postId = null) {
+        try {
+            // Mark notification as read
+            const notificationRef = database.ref(`notifications/${currentUser.uid}/${notificationId}`);
+            await notificationRef.update({ read: true });
+            
+            // Close notifications modal
+            if (elements.notificationsModal) {
+                elements.notificationsModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
+            
+            // Handle notification action based on type
+            if (postId) {
+                // If it's a post-related notification, navigate to the post
+                const isOnFeedPage = window.location.pathname.includes('index.html') || 
+                                    window.location.pathname === '/' || 
+                                    window.location.pathname.includes('feed');
+                
+                if (isOnFeedPage) {
+                    // Scroll to post on feed page
+                    const postElement = document.getElementById(`post-${postId}`);
+                    if (postElement) {
+                        postElement.scrollIntoView({ behavior: 'smooth' });
+                        postElement.classList.add('real-time-update');
+                        setTimeout(() => {
+                            postElement.classList.remove('real-time-update');
+                        }, 2000);
+                    }
+                } else {
+                    // Redirect to feed page with post anchor
+                    window.location.href = `index.html#post-${postId}`;
+                }
+            }
+        } catch (error) {
+            console.error('Error viewing notification:', error);
+            showNotification('Error processing notification', 'error');
+        }
+    }
+
+    // Load posts (feed page only)
+    async function loadPosts() {
+        if (!elements.postsContainer) return;
+        
+        try {
+            const postsRef = database.ref('communityPosts').orderByChild('createdAt').limitToLast(50);
+            const snapshot = await postsRef.once('value');
+            
+            if (snapshot.exists()) {
+                const postsData = snapshot.val();
+                posts = Object.keys(postsData).map(key => ({
+                    id: key,
+                    ...postsData[key]
+                })).filter(post => post.status === 'published');
+                
+                filterPosts(currentFilter);
+                checkNewPosts();
+            } else {
+                // Load sample posts if none exist
+                loadSamplePosts();
+                renderPosts([]);
+            }
+        } catch (error) {
+            console.error('Error loading posts:', error);
+            showNotification('Error loading posts', 'error');
+            renderPosts([]);
+        }
+    }
+
+    // Load sample posts
+    async function loadSamplePosts() {
+        if (!database || !elements.postsContainer) return;
+        
+        try {
+            const postsRef = database.ref('communityPosts');
+            const snapshot = await postsRef.once('value');
+            
+            if (!snapshot.exists()) {
+                const samplePosts = {
+                    post1: {
+                        id: "post1",
+                        authorId: "admin1",
+                        authorName: "THE SONGA",
+                        authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
+                        title: "Welcome to the Inner Circle!",
+                        content: "We're thrilled to have you as part of THE SONGA Inner Circle. This is your exclusive space to connect, learn, and grow with like-minded individuals.\n\nWhat to expect:\n📚 Exclusive content from your selected clubs\n🎯 Practical strategies and workshops\n🤝 Networking with ambitious members\n💡 Priority updates and announcements\n🌟 Member success stories\n\nWelcome aboard!\n- The SONGA Team",
+                        category: "announcement",
+                        tags: ["welcome", "inner-circle", "community"],
+                        likes: 24,
+                        likedBy: [],
+                        comments: 8,
+                        shares: 3,
+                        bookmarks: 15,
+                        views: 156,
+                        createdAt: new Date().toISOString(),
+                        isPinned: true,
+                        status: "published"
+                    },
+                    post2: {
+                        id: "post2",
+                        authorId: "admin1",
+                        authorName: "THE SONGA",
+                        authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
+                        title: "Wealth Building Workshop - This Saturday!",
+                        content: "Join us for an exclusive Inner Circle workshop where we'll dive deep into practical wealth creation strategies.\n\nWorkshop Highlights:\n• Investment strategies for beginners\n• Passive income opportunities\n• Wealth preservation techniques\n\nDate: This Saturday, 2:00 PM\nLocation: Virtual - Members Portal\n\nExclusively for Inner Circle members!",
+                        category: "event",
+                        tags: ["workshop", "finance", "wealth", "inner-circle"],
+                        likes: 18,
+                        likedBy: [],
+                        comments: 5,
+                        shares: 2,
+                        bookmarks: 8,
+                        views: 89,
+                        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+                        isPinned: false,
+                        status: "published"
+                    },
+                    post3: {
+                        id: "post3",
+                        authorId: "admin2",
+                        authorName: "Logos Club",
+                        authorAvatar: "https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp",
+                        title: "March Reading Challenge",
+                        content: "Logos Club members, get ready for our March reading challenge! This month's theme: 'Financial Literacy'.\n\nFeatured Books:\n• The Psychology of Money\n• Rich Dad Poor Dad\n• The Intelligent Investor\n\nJoin our weekly discussions every Thursday at 7 PM.",
+                        category: "discussion",
+                        tags: ["logos", "reading", "challenge", "books"],
+                        likes: 12,
+                        likedBy: [],
+                        comments: 3,
+                        shares: 1,
+                        bookmarks: 5,
+                        views: 45,
+                        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                        isPinned: false,
+                        status: "published"
+                    }
+                };
+                
+                await postsRef.set(samplePosts);
+                console.log("Sample posts loaded");
+            }
+        } catch (error) {
+            console.error('Error loading sample posts:', error);
+        }
+    }
+
+    // Onboarding functions
+    function nextStep(step) {
+        // Validate step 2
+        if (step === 3 && selectedClubs.length === 0) {
+            showNotification('Please select at least one club to continue', 'error');
+            return;
+        }
+        
+        // Update step indicators
+        document.querySelectorAll('.step-indicator').forEach(indicator => {
+            indicator.classList.remove('active');
+        });
+        document.querySelector(`.step-indicator[data-step="${step}"]`)?.classList.add('active');
+        
+        // Hide current step
+        document.querySelectorAll('.onboarding-slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Show next step
+        const stepElement = document.getElementById(`step${step}`);
+        if (stepElement) {
+            stepElement.classList.add('active');
+            currentStep = step;
+            
+            // Update selected clubs display for step 3
+            if (step === 3) {
+                updateSelectedClubsDisplay();
+            }
+        }
+    }
+
+    function prevStep() {
+        const prevStep = currentStep - 1;
+        if (prevStep >= 1) {
+            nextStep(prevStep);
+        }
+    }
+
+    function toggleClubSelection(clubId) {
+        const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
+        const index = selectedClubs.indexOf(clubId);
+        
+        if (index === -1) {
+            selectedClubs.push(clubId);
+            clubCard?.classList.add('selected');
+        } else {
+            selectedClubs.splice(index, 1);
+            clubCard?.classList.remove('selected');
+        }
+        
+        updateContinueButton();
+    }
+
+    function updateContinueButton() {
+        const continueBtn = elements.continueToStep3Btn;
+        if (continueBtn) {
+            continueBtn.disabled = selectedClubs.length === 0;
+        }
+    }
+
+    function updateSelectedClubsDisplay() {
+        const selectedClubsList = elements.selectedClubsList;
+        if (!selectedClubsList) return;
+        
+        selectedClubsList.innerHTML = selectedClubs.map(clubId => {
+            const club = clubs[clubId];
+            return `
+                <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: white; border-radius: 16px; border: 1.5px solid ${club.color}20;">
+                    <i class="${club.icon}" style="color: ${club.color}; font-size: 0.9rem;"></i>
+                    <span style="font-weight: 600; font-size: 0.85rem;">${club.name}</span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Google Sign-In Handler
+    async function handleGoogleSignIn(response) {
+        try {
+            const credential = response.credential;
+            const userData = parseJwt(credential);
+            
+            currentUser = {
+                uid: userData.sub,
+                email: userData.email,
+                firstName: userData.given_name,
+                lastName: userData.family_name,
+                fullName: userData.name,
+                picture: userData.picture,
+                emailVerified: userData.email_verified
+            };
+            
+            // Store session
+            storeUserSession(currentUser, credential);
+            
+            const userRef = database.ref(`users/${currentUser.uid}`);
+            const snapshot = await userRef.once('value');
+            
+            if (!snapshot.exists()) {
+                // New user
+                const newUser = {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    firstName: currentUser.firstName,
+                    lastName: currentUser.lastName,
+                    profilePicture: currentUser.picture,
+                    joinedDate: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    membershipStatus: "active",
+                    membershipTier: "inner-circle",
+                    selectedClubs: selectedClubs,
+                    bookmarkedPosts: [],
+                    followers: [],
+                    following: [],
+                    isAdmin: false,
+                    status: "active"
+                };
+                
+                await userRef.set(newUser);
+                currentUserData = newUser;
+                showNotification(`Welcome to THE SONGA Inner Circle, ${currentUser.firstName}!`, 'success');
+            } else {
+                // Existing user
+                await userRef.update({ 
+                    lastLogin: new Date().toISOString(),
+                    selectedClubs: selectedClubs
+                });
+                currentUserData = snapshot.val();
+                showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+            }
+            
+            updateUIForMember();
+            if (elements.signinModal) {
+                elements.signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
+            
+            // Setup realtime listeners
+            setupRealtimeListeners();
+            
+            // Reset onboarding
+            selectedClubs = [];
+            currentStep = 1;
+            document.querySelectorAll('.club-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            updateContinueButton();
+            
+        } catch (error) {
+            console.error('Error in Google Sign-In:', error);
+            showNotification('Error signing in. Please try again.', 'error');
+        }
+    }
+
+    // Parse JWT token
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            ).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error('Error parsing JWT:', error);
+            return {};
+        }
+    }
+
+    // Sign out
+    function signOut() {
+        clearUserSession();
+        currentUser = null;
+        currentUserData = null;
+        selectedClubs = [];
+        
+        // Close all modals
+        document.querySelectorAll('.modal.active').forEach(modal => {
+            modal.classList.remove('active');
+        });
+        document.body.classList.remove('modal-open');
+        
+        // Update UI
+        if (elements.userProfile) elements.userProfile.style.display = 'none';
+        if (elements.createPostBtn) elements.createPostBtn.style.display = 'none';
+        if (elements.notificationBtn) elements.notificationBtn.style.display = 'none';
+        
+        // Reset onboarding
+        currentStep = 1;
+        document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
+            slide.classList.toggle('active', index === 0);
+        });
+        document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === 0);
+        });
+        
+        // Show signin modal
+        if (elements.signinModal) {
+            showSigninModal();
+        }
+        
+        showNotification('Signed out successfully', 'success');
+        showSessionStatus('Signed out', 'restored');
+    }
+
+    // Open create post modal
+    function openCreatePostModal() {
+        if (!currentUser) {
+            showNotification('Please join the Inner Circle to create posts', 'error');
+            return;
+        }
+        
+        if (elements.createPostModal) {
+            elements.createPostModal.classList.add('active');
+            document.body.classList.add('modal-open');
+        }
+    }
+
+    // Initialize event listeners
+    function initEventListeners() {
+        // Logo click
+        if (elements.logo) {
+            elements.logo.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Back to top
+        if (elements.backToTop) {
+            elements.backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Create post button
+        if (elements.createPostBtn) {
+            elements.createPostBtn.addEventListener('click', openCreatePostModal);
+        }
+
+        // Notification button
+        if (elements.notificationBtn) {
+            elements.notificationBtn.addEventListener('click', () => {
+                if (!currentUser) {
+                    showNotification('Please join the Inner Circle to view notifications', 'error');
+                    return;
+                }
+                if (elements.notificationsModal) {
+                    elements.notificationsModal.classList.add('active');
+                    document.body.classList.add('modal-open');
+                    loadNotifications();
+                }
+            });
+        }
+
+        // User profile dropdown
+        if (elements.userProfile) {
+            elements.userProfile.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (elements.userDropdown) {
+                    elements.userDropdown.classList.toggle('active');
+                }
+            });
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            if (elements.userDropdown) {
+                elements.userDropdown.classList.remove('active');
+            }
+        });
+
+        // Filter buttons (feed page only)
+        if (elements.filterAllBtn) {
+            elements.filterAllBtn.addEventListener('click', () => filterPosts('all'));
+            elements.filterAnnouncementBtn.addEventListener('click', () => filterPosts('announcement'));
+            elements.filterEventBtn.addEventListener('click', () => filterPosts('event'));
+            elements.filterResourceBtn.addEventListener('click', () => filterPosts('resource'));
+            elements.filterDiscussionBtn.addEventListener('click', () => filterPosts('discussion'));
+        }
+
+        // New posts indicator (feed page only)
+        if (elements.newPostsIndicator) {
+            elements.newPostsIndicator.addEventListener('click', () => {
+                markPostsAsViewed();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Onboarding buttons
+        if (elements.startOnboardingBtn) elements.startOnboardingBtn.addEventListener('click', () => nextStep(2));
+        if (elements.backToStep1Btn) elements.backToStep1Btn.addEventListener('click', () => prevStep());
+        if (elements.continueToStep3Btn) elements.continueToStep3Btn.addEventListener('click', () => nextStep(3));
+        if (elements.backToStep2Btn) elements.backToStep2Btn.addEventListener('click', () => prevStep());
+
+        // Club selection
+        document.querySelectorAll('.club-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const clubId = card.dataset.club;
+                toggleClubSelection(clubId);
+            });
+        });
+
+        // Sign out
+        if (elements.signOutOption) {
+            elements.signOutOption.addEventListener('click', signOut);
+        }
+
+        // Modal close buttons
+        if (elements.closeSigninModal) {
+            elements.closeSigninModal.addEventListener('click', () => {
+                elements.signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+        }
+
+        if (elements.closeNotificationsModal) {
+            elements.closeNotificationsModal.addEventListener('click', () => {
+                elements.notificationsModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            });
+        }
+
+        if (elements.closeCreatePostModal) {
+            elements.closeCreatePostModal.addEventListener('click', closeCreatePostModal);
+        }
+        if (elements.cancelCreatePostBtn) {
+            elements.cancelCreatePostBtn.addEventListener('click', closeCreatePostModal);
+        }
+        if (elements.cancelDeleteBtn) {
+            elements.cancelDeleteBtn.addEventListener('click', () => {
+                if (elements.deleteConfirmModal) {
+                    elements.deleteConfirmModal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                    postToDelete = null;
+                }
+            });
+        }
+        if (elements.confirmDeleteBtn) {
+            elements.confirmDeleteBtn.addEventListener('click', deletePost);
+        }
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                    if (modal.id === 'deleteConfirmModal') {
                         postToDelete = null;
                     }
                 }
             });
+        });
 
-            // Scroll handling
-            window.addEventListener('scroll', handleScroll);
-            
-            // Request notification permission
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-        }
-
-        // Handle scroll
-        function handleScroll() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            // Show/hide back to top button
-            if (elements.backToTop) {
-                if (scrollTop > 300) {
-                    elements.backToTop.classList.add('visible');
-                } else {
-                    elements.backToTop.classList.remove('visible');
+        // Escape key to close modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                    document.body.classList.remove('modal-open');
+                });
+                if (elements.deleteConfirmModal && elements.deleteConfirmModal.classList.contains('active')) {
+                    postToDelete = null;
                 }
             }
-            
-            // Hide/show bottom nav on scroll
-            if (elements.bottomNav) {
-                if (scrollTop > 100) {
-                    elements.bottomNav.classList.add('hidden');
-                } else {
-                    elements.bottomNav.classList.remove('hidden');
-                }
+        });
+
+        // Scroll handling
+        window.addEventListener('scroll', handleScroll);
+        
+        // Request notification permission
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+    }
+
+    // Handle scroll
+    function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Show/hide back to top button
+        if (elements.backToTop) {
+            if (scrollTop > 300) {
+                elements.backToTop.classList.add('visible');
+            } else {
+                elements.backToTop.classList.remove('visible');
             }
         }
-
-        // Initialize the app
-        function initializeApp() {
-            // Check authentication
-            const isAuthenticated = checkAuthStatus();
-            
-            // Initialize event listeners
-            initEventListeners();
-            
-            // Load posts if on feed page
-            if (elements.postsContainer) {
-                loadPosts();
+        
+        // Hide/show bottom nav on scroll
+        if (elements.bottomNav) {
+            if (scrollTop > 100) {
+                elements.bottomNav.classList.add('hidden');
+            } else {
+                elements.bottomNav.classList.remove('hidden');
             }
         }
+    }
 
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', initializeApp);
+    // Initialize the app
+    function initializeApp() {
+        // Check authentication
+        const isAuthenticated = checkAuthStatus();
+        
+        // Initialize event listeners
+        initEventListeners();
+        
+        // Load posts if on feed page
+        if (elements.postsContainer) {
+            loadPosts();
+        }
+    }
 
-        // Make functions available globally
-        window.handleGoogleSignIn = handleGoogleSignIn;
-        window.openCreatePostModal = openCreatePostModal;
-        window.closeCreatePostModal = closeCreatePostModal;
-        window.confirmDeletePost = confirmDeletePost;
-        window.toggleComments = toggleComments;
-        window.submitComment = submitComment;
-        window.handlePostAction = handlePostAction;
-        window.togglePostOptions = togglePostOptions;
-        window.showPostInsights = showPostInsights;
-        window.nextStep = nextStep;
-        window.prevStep = prevStep;
-        window.toggleClubSelection = toggleClubSelection;
-        window.filterPosts = filterPosts;
-        window.removeTag = removeTag;
-        window.viewImage = viewImage;
-        window.viewNotification = viewNotification;
-    </script>
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', initializeApp);
+
+    // Make functions available globally
+    window.handleGoogleSignIn = handleGoogleSignIn;
+    window.openCreatePostModal = openCreatePostModal;
+    window.closeCreatePostModal = closeCreatePostModal;
+    window.confirmDeletePost = confirmDeletePost;
+    window.toggleComments = toggleComments;
+    window.submitComment = submitComment;
+    window.handlePostAction = handlePostAction;
+    window.togglePostOptions = togglePostOptions;
+    window.showPostInsights = showPostInsights;
+    window.nextStep = nextStep;
+    window.prevStep = prevStep;
+    window.toggleClubSelection = toggleClubSelection;
+    window.filterPosts = filterPosts;
+    window.removeTag = removeTag;
+    window.viewImage = viewImage;
+    window.viewNotification = viewNotification;
+</script>
 </body>
 </html>
