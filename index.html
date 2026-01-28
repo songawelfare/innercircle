@@ -9,7 +9,19 @@
     <link rel="preconnect" href="https://www.gstatic.com">
     <link rel="preconnect" href="https://i.postimg.cc">
     <link rel="preconnect" href="https://accounts.google.com">
+
+    <!-- PWA Manifest Connection -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#D4AF37">
     
+    <!-- Icons for PWA -->
+    <link rel="icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp">
+    
+    <!-- Other meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="THE SONGA">
     <!-- Preload critical resources -->
     <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -2438,12 +2450,13 @@
         messagingSenderId: "123922889572",
         appId: "1:123922889572:web:482b2a624930baaf92d871"
     };
-
+    
     // Initialize Firebase with error handling for multiple initializations
     let firebaseApp;
     let database;
     let auth;
     let storage;
+    let messaging;
     
     try {
         // Check if Firebase is already initialized
@@ -2458,6 +2471,14 @@
         database = firebase.database();
         auth = firebase.auth();
         storage = firebase.storage();
+        
+        // Initialize messaging if available
+        if (firebase.messaging && firebase.messaging.isSupported()) {
+            messaging = firebase.messaging();
+            console.log("Firebase Messaging initialized");
+        } else {
+            console.log("Firebase Messaging not supported");
+        }
     } catch (error) {
         console.error("Firebase initialization error:", error);
         // Try to get existing app
@@ -2470,7 +2491,7 @@
             console.error("Could not initialize Firebase:", e);
         }
     }
-
+    
     // Global variables
     let currentUser = null;
     let currentUserData = null;
@@ -2481,7 +2502,8 @@
     let postToDelete = null;
     let realtimeListeners = [];
     let currentImageFile = null;
-
+    let pwaInstaller = null;
+    
     // DOM Elements
     const elements = {
         // Session
@@ -2555,7 +2577,7 @@
         bottomNav: document.getElementById('bottomNav'),
         navFeed: document.getElementById('navFeed')
     };
-
+    
     // Club data
     const clubs = {
         logos: {
@@ -2583,8 +2605,12 @@
             color: '#e74c3c'
         }
     };
-
-    // Show notification toast
+    
+    // ====================
+    // NOTIFICATION SYSTEM
+    // ====================
+    
+    // Show notification
     function showNotification(message, type = 'success', duration = 4000) {
         const toast = elements.notificationToast;
         if (!toast) return;
@@ -2595,7 +2621,7 @@
             toast.classList.remove('show');
         }, duration);
     }
-
+    
     // Show session status
     function showSessionStatus(message, type = 'restored') {
         const status = elements.sessionStatus;
@@ -2611,7 +2637,7 @@
             status.classList.remove('visible');
         }, 3000);
     }
-
+    
     // Format time
     function formatTime(timestamp) {
         if (!timestamp) return 'Recently';
@@ -2630,7 +2656,11 @@
             year: postTime.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
         });
     }
-
+    
+    // ====================
+    // AUTHENTICATION
+    // ====================
+    
     // Check authentication status
     function checkAuthStatus() {
         const storedUser = localStorage.getItem('the_songa_user');
@@ -2667,6 +2697,12 @@
                     showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
                 }
                 
+                // Add PWA install option
+                addPWAInstallOption();
+                
+                // Request notification permission
+                requestNotificationPermission();
+                
                 return true;
             } catch (error) {
                 console.error("Error parsing stored user:", error);
@@ -2684,7 +2720,99 @@
             return false;
         }
     }
-
+    
+    // Store user session
+    function storeUserSession(user, token) {
+        localStorage.setItem('the_songa_user', JSON.stringify(user));
+        localStorage.setItem('the_songa_token', token);
+        localStorage.setItem('the_songa_session_time', Date.now().toString());
+        localStorage.setItem('the_songa_selected_clubs', JSON.stringify(selectedClubs));
+    }
+    
+    // Clear user session
+    function clearUserSession() {
+        localStorage.removeItem('the_songa_user');
+        localStorage.removeItem('the_songa_token');
+        localStorage.removeItem('the_songa_session_time');
+        localStorage.removeItem('the_songa_selected_clubs');
+        
+        // Remove realtime listeners
+        realtimeListeners.forEach(listener => {
+            if (typeof listener === 'function') {
+                listener();
+            }
+        });
+        realtimeListeners = [];
+    }
+    
+    // Show signin modal
+    function showSigninModal() {
+        if (!elements.signinModal) return;
+        
+        elements.signinModal.classList.add('active');
+        document.body.classList.add('modal-open');
+        
+        // Try to restore selected clubs
+        const storedClubs = localStorage.getItem('the_songa_selected_clubs');
+        if (storedClubs) {
+            try {
+                selectedClubs = JSON.parse(storedClubs);
+                selectedClubs.forEach(clubId => {
+                    const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
+                    if (clubCard) {
+                        clubCard.classList.add('selected');
+                    }
+                });
+                updateContinueButton();
+            } catch (error) {
+                console.error("Error parsing stored clubs:", error);
+            }
+        }
+    }
+    
+    // Update UI for member
+    function updateUIForMember() {
+        if (currentUser) {
+            // Show user profile if element exists
+            if (elements.userProfile) {
+                elements.userProfile.style.display = 'flex';
+                if (elements.userAvatar) elements.userAvatar.src = currentUser.picture;
+                if (elements.userDisplayName) elements.userDisplayName.textContent = currentUser.firstName;
+            }
+            
+            // Show create post button if element exists
+            if (elements.createPostBtn) {
+                elements.createPostBtn.style.display = 'flex';
+            }
+            
+            // Show notification button if element exists
+            if (elements.notificationBtn) {
+                elements.notificationBtn.style.display = 'flex';
+            }
+        }
+    }
+    
+    // Fetch user data
+    async function fetchUserData(userId) {
+        try {
+            const userRef = database.ref(`users/${userId}`);
+            const snapshot = await userRef.once('value');
+            if (snapshot.exists()) {
+                currentUserData = snapshot.val();
+                // Update selectedClubs from database
+                if (currentUserData.selectedClubs) {
+                    selectedClubs = currentUserData.selectedClubs;
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+    
+    // ====================
+    // REALTIME LISTENERS
+    // ====================
+    
     // Setup realtime listeners
     function setupRealtimeListeners() {
         // Clear existing listeners
@@ -2694,9 +2822,9 @@
             }
         });
         realtimeListeners = [];
-
+    
         if (!currentUser || !database) return;
-
+    
         // Listen for notifications (works on all pages)
         const notificationsListener = database.ref(`notifications/${currentUser.uid}`).orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
             if (snapshot.exists()) {
@@ -2722,7 +2850,7 @@
             }
         });
         realtimeListeners.push(() => database.ref(`notifications/${currentUser.uid}`).off('value', notificationsListener));
-
+    
         // Only setup post listeners on feed page
         if (window.location.pathname.includes('index.html') || 
             window.location.pathname === '/' || 
@@ -2747,7 +2875,7 @@
             });
             realtimeListeners.push(() => database.ref('communityPosts').off('value', postsListener));
         }
-
+    
         // Listen for user data updates
         const userListener = database.ref(`users/${currentUser.uid}`).on('value', (snapshot) => {
             if (snapshot.exists()) {
@@ -2756,120 +2884,11 @@
         });
         realtimeListeners.push(() => database.ref(`users/${currentUser.uid}`).off('value', userListener));
     }
-
-    // Check for new posts (feed page only)
-    function checkNewPosts() {
-        if (!elements.newPostsIndicator) return;
-        
-        const lastViewed = localStorage.getItem('the_songa_last_viewed') || Date.now();
-        const newPostsCount = posts.filter(post => 
-            new Date(post.createdAt) > new Date(parseInt(lastViewed))
-        ).length;
-        
-        if (newPostsCount > 0) {
-            elements.newPostsIndicator.textContent = `${newPostsCount} New Posts`;
-            elements.newPostsIndicator.style.display = 'inline-flex';
-        } else {
-            elements.newPostsIndicator.style.display = 'none';
-        }
-    }
-
-    // Mark posts as viewed (feed page only)
-    function markPostsAsViewed() {
-        if (!elements.newPostsIndicator) return;
-        
-        localStorage.setItem('the_songa_last_viewed', Date.now().toString());
-        elements.newPostsIndicator.style.display = 'none';
-    }
-
-    // Store user session
-    function storeUserSession(user, token) {
-        localStorage.setItem('the_songa_user', JSON.stringify(user));
-        localStorage.setItem('the_songa_token', token);
-        localStorage.setItem('the_songa_session_time', Date.now().toString());
-        localStorage.setItem('the_songa_selected_clubs', JSON.stringify(selectedClubs));
-    }
-
-    // Clear user session
-    function clearUserSession() {
-        localStorage.removeItem('the_songa_user');
-        localStorage.removeItem('the_songa_token');
-        localStorage.removeItem('the_songa_session_time');
-        localStorage.removeItem('the_songa_selected_clubs');
-        
-        // Remove realtime listeners
-        realtimeListeners.forEach(listener => {
-            if (typeof listener === 'function') {
-                listener();
-            }
-        });
-        realtimeListeners = [];
-    }
-
-    // Show signin modal
-    function showSigninModal() {
-        if (!elements.signinModal) return;
-        
-        elements.signinModal.classList.add('active');
-        document.body.classList.add('modal-open');
-        
-        // Try to restore selected clubs
-        const storedClubs = localStorage.getItem('the_songa_selected_clubs');
-        if (storedClubs) {
-            try {
-                selectedClubs = JSON.parse(storedClubs);
-                selectedClubs.forEach(clubId => {
-                    const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
-                    if (clubCard) {
-                        clubCard.classList.add('selected');
-                    }
-                });
-                updateContinueButton();
-            } catch (error) {
-                console.error("Error parsing stored clubs:", error);
-            }
-        }
-    }
-
-    // Update UI for member
-    function updateUIForMember() {
-        if (currentUser) {
-            // Show user profile if element exists
-            if (elements.userProfile) {
-                elements.userProfile.style.display = 'flex';
-                if (elements.userAvatar) elements.userAvatar.src = currentUser.picture;
-                if (elements.userDisplayName) elements.userDisplayName.textContent = currentUser.firstName;
-            }
-            
-            // Show create post button if element exists
-            if (elements.createPostBtn) {
-                elements.createPostBtn.style.display = 'flex';
-            }
-            
-            // Show notification button if element exists
-            if (elements.notificationBtn) {
-                elements.notificationBtn.style.display = 'flex';
-            }
-        }
-    }
-
-    // Fetch user data
-    async function fetchUserData(userId) {
-        try {
-            const userRef = database.ref(`users/${userId}`);
-            const snapshot = await userRef.once('value');
-            if (snapshot.exists()) {
-                currentUserData = snapshot.val();
-                // Update selectedClubs from database
-                if (currentUserData.selectedClubs) {
-                    selectedClubs = currentUserData.selectedClubs;
-                }
-            }
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    }
-
+    
+    // ====================
+    // NOTIFICATIONS
+    // ====================
+    
     // Load notifications with proper error handling
     async function loadNotifications() {
         if (!currentUser || !database) {
@@ -2978,7 +2997,7 @@
             showNotification('Error loading notifications', 'error');
         }
     }
-
+    
     // View notification and mark as read
     async function viewNotification(notificationId, postId = null) {
         try {
@@ -3019,7 +3038,98 @@
             showNotification('Error processing notification', 'error');
         }
     }
-
+    
+    // Create notification
+    async function createNotification(userId, type, data) {
+        try {
+            const notificationRef = database.ref(`notifications/${userId}`).push();
+            const notification = {
+                id: notificationRef.key,
+                type: type,
+                data: data,
+                read: false,
+                timestamp: new Date().toISOString()
+            };
+            
+            await notificationRef.set(notification);
+            
+            // Send push notification if available
+            if ('Notification' in window && Notification.permission === 'granted') {
+                let title = 'THE SONGA Inner Circle';
+                let body = '';
+                
+                switch(type) {
+                    case 'like':
+                        title = 'New Like';
+                        body = `${data.userName} liked your post: ${data.postTitle}`;
+                        break;
+                    case 'comment':
+                        title = 'New Comment';
+                        body = `${data.userName} commented on your post: ${data.postTitle}`;
+                        break;
+                    case 'share':
+                        title = 'New Share';
+                        body = `${data.userName} shared your post: ${data.postTitle}`;
+                        break;
+                    case 'follow':
+                        title = 'New Follower';
+                        body = `${data.userName} started following you`;
+                        break;
+                    case 'post':
+                        title = 'New Post';
+                        body = `${data.userName} created a new post: ${data.postTitle}`;
+                        break;
+                }
+                
+                const options = {
+                    body: body,
+                    icon: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                    badge: 'https://i.postimg.cc/BbdzCkxQ/20260116-0851-Elegant-Lion-Emblem-remix-01kf2npwbtf06ttr4htekjnd47-removebg-preview-2.webp',
+                    tag: `songa-${type}`,
+                    data: { ...data, type: type }
+                };
+                
+                self.registration?.showNotification(title, options).catch(err => {
+                    console.log('Could not show notification:', err);
+                });
+            }
+            
+        } catch (error) {
+            console.error('Error creating notification:', error);
+        }
+    }
+    
+    // Request notification permission
+    async function requestNotificationPermission() {
+        if ('Notification' in window && Notification.permission === 'default') {
+            try {
+                const permission = await Notification.requestPermission();
+                console.log('Notification permission:', permission);
+                
+                if (permission === 'granted' && messaging) {
+                    // Get FCM token
+                    const token = await messaging.getToken({ 
+                        vapidKey: 'BIN2yC0V5v6wYQZ8nXcR7tGmHjKlOp9AsDfGhJkLzXcVbNmQwErTyUiOaPsDfGhJkLzXcVbNmQwErTyUiOaPs'
+                    });
+                    
+                    if (token) {
+                        console.log('FCM Token:', token);
+                        // Save token to user profile
+                        if (currentUser && database) {
+                            await database.ref(`users/${currentUser.uid}/fcmToken`).set(token);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error requesting notification permission:', error);
+            }
+        }
+    }
+    
+    // ====================
+    // POSTS SYSTEM
+    // ====================
+    
     // Load posts (feed page only)
     async function loadPosts() {
         if (!elements.postsContainer) return;
@@ -3048,7 +3158,7 @@
             renderPosts([]);
         }
     }
-
+    
     // Load sample posts
     async function loadSamplePosts() {
         if (!database || !elements.postsContainer) return;
@@ -3125,7 +3235,32 @@
             console.error('Error loading sample posts:', error);
         }
     }
-
+    
+    // Check for new posts (feed page only)
+    function checkNewPosts() {
+        if (!elements.newPostsIndicator) return;
+        
+        const lastViewed = localStorage.getItem('the_songa_last_viewed') || Date.now();
+        const newPostsCount = posts.filter(post => 
+            new Date(post.createdAt) > new Date(parseInt(lastViewed))
+        ).length;
+        
+        if (newPostsCount > 0) {
+            elements.newPostsIndicator.textContent = `${newPostsCount} New Posts`;
+            elements.newPostsIndicator.style.display = 'inline-flex';
+        } else {
+            elements.newPostsIndicator.style.display = 'none';
+        }
+    }
+    
+    // Mark posts as viewed (feed page only)
+    function markPostsAsViewed() {
+        if (!elements.newPostsIndicator) return;
+        
+        localStorage.setItem('the_songa_last_viewed', Date.now().toString());
+        elements.newPostsIndicator.style.display = 'none';
+    }
+    
     // Render posts
     function renderPosts(postsArray) {
         const container = elements.postsContainer;
@@ -3275,7 +3410,7 @@
             setupPostRealtimeListener(post.id);
         });
     }
-
+    
     // Setup realtime listener for a post
     function setupPostRealtimeListener(postId) {
         if (!database) return;
@@ -3382,7 +3517,7 @@
         
         realtimeListeners.push(() => postRef.off('value', listener));
     }
-
+    
     // Get post category indicator
     function getPostCategoryIndicator(category) {
         switch(category) {
@@ -3392,7 +3527,24 @@
             default: return '<span class="post-type-indicator" style="background: var(--gold-light); color: var(--gold-dark);">INNER CIRCLE</span>';
         }
     }
-
+    
+    // Filter posts
+    function filterPosts(category) {
+        currentFilter = category;
+        
+        // Update active button
+        document.querySelectorAll('.category-filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === category);
+        });
+        
+        // Filter posts
+        const filteredPosts = category === 'all' 
+            ? posts.filter(post => post.status === 'published')
+            : posts.filter(post => post.status === 'published' && post.category === category);
+        
+        renderPosts(filteredPosts);
+    }
+    
     // Handle post actions
     async function handlePostAction(postId, action) {
         if (!currentUser) {
@@ -3415,7 +3567,7 @@
                 break;
         }
     }
-
+    
     // Like post
     async function likePost(postId) {
         try {
@@ -3458,7 +3610,7 @@
             showNotification('Error liking post', 'error');
         }
     }
-
+    
     // Share post
     async function sharePost(postId) {
         try {
@@ -3507,7 +3659,7 @@
             }
         }
     }
-
+    
     // Bookmark post
     async function bookmarkPost(postId) {
         try {
@@ -3553,53 +3705,7 @@
             showNotification('Error bookmarking post', 'error');
         }
     }
-
-    // Create notification
-    async function createNotification(userId, type, data) {
-        try {
-            const notificationRef = database.ref(`notifications/${userId}`).push();
-            const notification = {
-                id: notificationRef.key,
-                type: type,
-                data: data,
-                read: false,
-                timestamp: new Date().toISOString()
-            };
-            
-            await notificationRef.set(notification);
-            
-            // Send push notification if available
-            if ('Notification' in window && Notification.permission === 'granted') {
-                let title = 'New Notification';
-                let body = '';
-                
-                switch(type) {
-                    case 'like':
-                        title = 'New Like';
-                        body = `${data.userName} liked your post: ${data.postTitle}`;
-                        break;
-                    case 'comment':
-                        title = 'New Comment';
-                        body = `${data.userName} commented on your post: ${data.postTitle}`;
-                        break;
-                    case 'share':
-                        title = 'New Share';
-                        body = `${data.userName} shared your post: ${data.postTitle}`;
-                        break;
-                    case 'follow':
-                        title = 'New Follower';
-                        body = `${data.userName} started following you`;
-                        break;
-                }
-                
-                new Notification(title, { body: body, icon: data.userAvatar });
-            }
-            
-        } catch (error) {
-            console.error('Error creating notification:', error);
-        }
-    }
-
+    
     // Toggle comments
     function toggleComments(postId) {
         if (!currentUser) {
@@ -3623,7 +3729,7 @@
             }
         }
     }
-
+    
     // Increment view count
     async function incrementViewCount(postId) {
         if (!currentUser) return;
@@ -3648,7 +3754,7 @@
             console.error('Error incrementing view count:', error);
         }
     }
-
+    
     // Load comments
     async function loadComments(postId) {
         try {
@@ -3700,7 +3806,7 @@
             }
         }
     }
-
+    
     // Setup realtime listener for comments
     function setupCommentsRealtimeListener(postId) {
         if (!database) return;
@@ -3738,7 +3844,7 @@
         
         realtimeListeners.push(() => commentsRef.off('child_added', listener));
     }
-
+    
     // Submit comment
     async function submitComment(postId) {
         if (!currentUser) {
@@ -3800,7 +3906,7 @@
             showNotification('Error posting comment', 'error');
         }
     }
-
+    
     // Toggle post options
     function togglePostOptions(postId, event) {
         event.stopPropagation();
@@ -3814,14 +3920,14 @@
             dropdown.classList.toggle('active');
         }
     }
-
+    
     // Show post insights
     function showPostInsights(postId) {
         // For now, just show a notification
         showNotification('Post insights feature coming soon!', 'info');
         closePostOptions();
     }
-
+    
     // Confirm delete post
     function confirmDeletePost(postId) {
         postToDelete = postId;
@@ -3831,14 +3937,14 @@
             closePostOptions();
         }
     }
-
+    
     // Close post options
     function closePostOptions() {
         document.querySelectorAll('.post-options-dropdown.active').forEach(dropdown => {
             dropdown.classList.remove('active');
         });
     }
-
+    
     // Delete post
     async function deletePost() {
         if (!postToDelete || !currentUser) return;
@@ -3878,24 +3984,304 @@
             postToDelete = null;
         }
     }
-
-    // Filter posts
-    function filterPosts(category) {
-        currentFilter = category;
+    
+    // ====================
+    // PWA FUNCTIONALITY
+    // ====================
+    
+    // PWA Installation and Service Worker Registration
+    class PWAInstaller {
+        constructor() {
+            this.deferredPrompt = null;
+            this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                               window.navigator.standalone || 
+                               document.referrer.includes('android-app://');
+            
+            this.init();
+        }
         
-        // Update active button
-        document.querySelectorAll('.category-filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.category === category);
-        });
+        init() {
+            // Register Service Worker
+            this.registerServiceWorker();
+            
+            // Handle install prompt
+            this.handleInstallPrompt();
+            
+            // Check for updates
+            this.checkForUpdates();
+            
+            // Track PWA usage
+            this.trackPWAStatus();
+        }
         
-        // Filter posts
-        const filteredPosts = category === 'all' 
-            ? posts.filter(post => post.status === 'published')
-            : posts.filter(post => post.status === 'published' && post.category === category);
+        registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then((registration) => {
+                            console.log('✅ Service Worker registered:', registration.scope);
+                            
+                            // Check for updates periodically
+                            setInterval(() => {
+                                registration.update();
+                            }, 60 * 60 * 1000); // Check every hour
+                            
+                            // Listen for updates
+                            registration.addEventListener('updatefound', () => {
+                                const newWorker = registration.installing;
+                                console.log('🔄 New service worker found:', newWorker.state);
+                                
+                                newWorker.addEventListener('statechange', () => {
+                                    console.log('Service Worker state changed:', newWorker.state);
+                                    
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        this.showUpdateNotification();
+                                    }
+                                    
+                                    if (newWorker.state === 'activated') {
+                                        console.log('✅ New service worker activated');
+                                        // Notify user about update
+                                        showNotification('App updated successfully!', 'success');
+                                    }
+                                });
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('❌ Service Worker registration failed:', error);
+                        });
+                });
+            }
+        }
         
-        renderPosts(filteredPosts);
+        handleInstallPrompt() {
+            window.addEventListener('beforeinstallprompt', (event) => {
+                console.log('📱 Install prompt triggered');
+                event.preventDefault();
+                this.deferredPrompt = event;
+                
+                // Show install button
+                this.showInstallButton();
+            });
+            
+            // Track if app was installed
+            window.addEventListener('appinstalled', (event) => {
+                console.log('✅ PWA installed successfully');
+                this.deferredPrompt = null;
+                
+                // Track installation
+                this.trackEvent('pwa_installed');
+                
+                // Show welcome message
+                showNotification('THE SONGA Inner Circle installed successfully!', 'success');
+                
+                // Remove install button
+                this.removeInstallButton();
+            });
+        }
+        
+        showInstallButton() {
+            // Create install button if it doesn't exist and not in standalone mode
+            if (!this.isStandalone && !document.getElementById('pwa-install-btn')) {
+                const installBtn = document.createElement('button');
+                installBtn.id = 'pwa-install-btn';
+                installBtn.className = 'pwa-install-btn';
+                installBtn.innerHTML = `
+                    <i class="fas fa-download"></i>
+                    <span>Install App</span>
+                `;
+                installBtn.addEventListener('click', () => this.promptInstall());
+                
+                // Add to DOM
+                document.body.appendChild(installBtn);
+                
+                // Add CSS for the button
+                this.addInstallButtonStyles();
+            }
+        }
+        
+        removeInstallButton() {
+            const installBtn = document.getElementById('pwa-install-btn');
+            if (installBtn) {
+                installBtn.remove();
+            }
+        }
+        
+        addInstallButtonStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .pwa-install-btn {
+                    position: fixed;
+                    bottom: 100px;
+                    right: 20px;
+                    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+                    color: var(--black);
+                    border: none;
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    font-weight: 700;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    z-index: 9999;
+                    animation: slideUp 0.3s ease;
+                    transition: all 0.3s ease;
+                }
+                
+                .pwa-install-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+                }
+                
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        async promptInstall() {
+            if (this.deferredPrompt) {
+                this.deferredPrompt.prompt();
+                const { outcome } = await this.deferredPrompt.userChoice;
+                console.log(`User response to install prompt: ${outcome}`);
+                this.deferredPrompt = null;
+                
+                // Remove install button
+                this.removeInstallButton();
+            }
+        }
+        
+        showUpdateNotification() {
+            // Show update notification to user
+            if (confirm('A new version of THE SONGA Inner Circle is available. Update now?')) {
+                window.location.reload();
+            }
+        }
+        
+        checkForUpdates() {
+            // Check for manifest updates
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'CHECK_UPDATES'
+                });
+            }
+        }
+        
+        trackPWAStatus() {
+            // Track PWA display mode
+            const displayMode = this.isStandalone ? 'standalone' : 'browser';
+            console.log(`PWA Display Mode: ${displayMode}`);
+            
+            // Add standalone mode specific styles
+            if (this.isStandalone) {
+                document.documentElement.classList.add('standalone-mode');
+                this.addStandaloneStyles();
+            }
+        }
+        
+        addStandaloneStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .standalone-mode header {
+                    padding-top: env(safe-area-inset-top, 0px);
+                    height: calc(56px + env(safe-area-inset-top, 0px));
+                }
+                
+                .standalone-mode .bottom-nav {
+                    padding-bottom: env(safe-area-inset-bottom, 0px);
+                }
+                
+                @supports (padding: max(0px)) {
+                    .standalone-mode {
+                        padding-left: env(safe-area-inset-left, 0px);
+                        padding-right: env(safe-area-inset-right, 0px);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        trackEvent(eventName, data = {}) {
+            // Send event to Firebase analytics
+            if (currentUser && database) {
+                const eventData = {
+                    event: eventName,
+                    userId: currentUser.uid,
+                    timestamp: new Date().toISOString(),
+                    url: window.location.href,
+                    ...data
+                };
+                
+                database.ref('analytics/events').push(eventData);
+            }
+        }
     }
-
+    
+    // PWA Utility Functions
+    function isPWAInstalled() {
+        return window.matchMedia('(display-mode: standalone)').matches || 
+               window.navigator.standalone || 
+               document.referrer.includes('android-app://');
+    }
+    
+    function getPWADisplayMode() {
+        const isStandalone = isPWAInstalled();
+        return isStandalone ? 'standalone' : 'browser';
+    }
+    
+    function requestPWAInstall() {
+        if (pwaInstaller) {
+            pwaInstaller.promptInstall();
+        }
+    }
+    
+    function checkPWAStatus() {
+        return {
+            installed: isPWAInstalled(),
+            displayMode: getPWADisplayMode(),
+            supportsPWA: 'serviceWorker' in navigator && 'PushManager' in window
+        };
+    }
+    
+    // Add install option to user dropdown
+    function addPWAInstallOption() {
+        if (!isPWAInstalled() && 'serviceWorker' in navigator && currentUser) {
+            const userDropdown = document.getElementById('userDropdown');
+            if (userDropdown && !document.getElementById('pwaInstallOption')) {
+                const installOption = document.createElement('div');
+                installOption.className = 'dropdown-item';
+                installOption.id = 'pwaInstallOption';
+                installOption.innerHTML = `
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Install App</span>
+                `;
+                installOption.addEventListener('click', requestPWAInstall);
+                userDropdown.appendChild(installOption);
+            }
+        }
+    }
+    
+    // Initialize PWA
+    function initializePWA() {
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            pwaInstaller = new PWAInstaller();
+        }
+    }
+    
+    // ====================
+    // FORM HANDLING
+    // ====================
+    
     // Handle image upload
     function handleImageUpload(event) {
         const file = event.target.files[0];
@@ -3944,7 +4330,7 @@
         };
         reader.readAsDataURL(file);
     }
-
+    
     // Remove image
     function removeImage() {
         if (elements.previewImage) elements.previewImage.src = '';
@@ -3959,7 +4345,7 @@
             elements.fileSizeWarning.classList.remove('error', 'success');
         }
     }
-
+    
     // Upload image to Firebase Storage
     async function uploadImage(file) {
         return new Promise((resolve, reject) => {
@@ -4000,7 +4386,7 @@
             );
         });
     }
-
+    
     // View image in full screen
     function viewImage(imageUrl) {
         const modal = document.createElement('div');
@@ -4026,219 +4412,42 @@
             }
         });
     }
-
-    // Onboarding functions
-    function nextStep(step) {
-        // Validate step 2
-        if (step === 3 && selectedClubs.length === 0) {
-            showNotification('Please select at least one club to continue', 'error');
-            return;
-        }
-        
-        // Update step indicators
-        document.querySelectorAll('.step-indicator').forEach(indicator => {
-            indicator.classList.remove('active');
-        });
-        const stepIndicator = document.querySelector(`.step-indicator[data-step="${step}"]`);
-        if (stepIndicator) {
-            stepIndicator.classList.add('active');
-        }
-        
-        // Hide current step
-        document.querySelectorAll('.onboarding-slide').forEach(slide => {
-            slide.classList.remove('active');
-        });
-        
-        // Show next step
-        const stepElement = document.getElementById(`step${step}`);
-        if (stepElement) {
-            stepElement.classList.add('active');
-            currentStep = step;
-            
-            // Update selected clubs display for step 3
-            if (step === 3) {
-                updateSelectedClubsDisplay();
+    
+    // Handle tag input
+    function handleTagInput(event) {
+        if (event.key === 'Enter' || event.key === ',') {
+            event.preventDefault();
+            const tag = elements.postTags.value.trim();
+            if (tag) {
+                addTag(tag);
+                elements.postTags.value = '';
             }
         }
     }
-
-    function prevStep() {
-        const prevStep = currentStep - 1;
-        if (prevStep >= 1) {
-            nextStep(prevStep);
+    
+    // Add tag
+    function addTag(tag) {
+        const tagId = 'tag-' + Date.now();
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag-item';
+        tagElement.id = tagId;
+        tagElement.innerHTML = `
+            ${tag}
+            <button class="tag-remove" onclick="removeTag('${tagId}')">&times;</button>
+        `;
+        if (elements.postTagsContainer) {
+            elements.postTagsContainer.appendChild(tagElement);
         }
     }
-
-    function toggleClubSelection(clubId) {
-        const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
-        const index = selectedClubs.indexOf(clubId);
-        
-        if (index === -1) {
-            selectedClubs.push(clubId);
-            if (clubCard) {
-                clubCard.classList.add('selected');
-            }
-        } else {
-            selectedClubs.splice(index, 1);
-            if (clubCard) {
-                clubCard.classList.remove('selected');
-            }
-        }
-        
-        updateContinueButton();
-    }
-
-    function updateContinueButton() {
-        const continueBtn = elements.continueToStep3Btn;
-        if (continueBtn) {
-            continueBtn.disabled = selectedClubs.length === 0;
+    
+    // Remove tag
+    function removeTag(tagId) {
+        const tagElement = document.getElementById(tagId);
+        if (tagElement) {
+            tagElement.remove();
         }
     }
-
-    function updateSelectedClubsDisplay() {
-        const selectedClubsList = elements.selectedClubsList;
-        if (!selectedClubsList) return;
-        
-        selectedClubsList.innerHTML = selectedClubs.map(clubId => {
-            const club = clubs[clubId];
-            return `
-                <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: white; border-radius: 16px; border: 1.5px solid ${club.color}20;">
-                    <i class="${club.icon}" style="color: ${club.color}; font-size: 0.9rem;"></i>
-                    <span style="font-weight: 600; font-size: 0.85rem;">${club.name}</span>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // Google Sign-In Handler
-    async function handleGoogleSignIn(response) {
-        try {
-            const credential = response.credential;
-            const userData = parseJwt(credential);
-            
-            currentUser = {
-                uid: userData.sub,
-                email: userData.email,
-                firstName: userData.given_name,
-                lastName: userData.family_name,
-                fullName: userData.name,
-                picture: userData.picture,
-                emailVerified: userData.email_verified
-            };
-            
-            // Store session
-            storeUserSession(currentUser, credential);
-            
-            const userRef = database.ref(`users/${currentUser.uid}`);
-            const snapshot = await userRef.once('value');
-            
-            if (!snapshot.exists()) {
-                // New user
-                const newUser = {
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    firstName: currentUser.firstName,
-                    lastName: currentUser.lastName,
-                    profilePicture: currentUser.picture,
-                    joinedDate: new Date().toISOString(),
-                    lastLogin: new Date().toISOString(),
-                    membershipStatus: "active",
-                    membershipTier: "inner-circle",
-                    selectedClubs: selectedClubs,
-                    bookmarkedPosts: [],
-                    followers: [],
-                    following: [],
-                    isAdmin: false,
-                    status: "active"
-                };
-                
-                await userRef.set(newUser);
-                currentUserData = newUser;
-                showNotification(`Welcome to THE SONGA Inner Circle, ${currentUser.firstName}!`, 'success');
-            } else {
-                // Existing user
-                await userRef.update({ 
-                    lastLogin: new Date().toISOString(),
-                    selectedClubs: selectedClubs
-                });
-                currentUserData = snapshot.val();
-                showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
-            }
-            
-            updateUIForMember();
-            if (elements.signinModal) {
-                elements.signinModal.classList.remove('active');
-                document.body.classList.remove('modal-open');
-            }
-            
-            // Setup realtime listeners
-            setupRealtimeListeners();
-            
-            // Reset onboarding
-            selectedClubs = [];
-            currentStep = 1;
-            document.querySelectorAll('.club-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            updateContinueButton();
-            
-        } catch (error) {
-            console.error('Error in Google Sign-In:', error);
-            showNotification('Error signing in. Please try again.', 'error');
-        }
-    }
-
-    // Parse JWT token
-    function parseJwt(token) {
-        try {
-            const base64Url = token.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
-                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-            ).join(''));
-            return JSON.parse(jsonPayload);
-        } catch (error) {
-            console.error('Error parsing JWT:', error);
-            return {};
-        }
-    }
-
-    // Sign out
-    function signOut() {
-        clearUserSession();
-        currentUser = null;
-        currentUserData = null;
-        selectedClubs = [];
-        
-        // Close all modals
-        document.querySelectorAll('.modal.active').forEach(modal => {
-            modal.classList.remove('active');
-        });
-        document.body.classList.remove('modal-open');
-        
-        // Update UI
-        if (elements.userProfile) elements.userProfile.style.display = 'none';
-        if (elements.createPostBtn) elements.createPostBtn.style.display = 'none';
-        if (elements.notificationBtn) elements.notificationBtn.style.display = 'none';
-        
-        // Reset onboarding
-        currentStep = 1;
-        document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
-            slide.classList.toggle('active', index === 0);
-        });
-        document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === 0);
-        });
-        
-        // Show signin modal
-        if (elements.signinModal) {
-            showSigninModal();
-        }
-        
-        showNotification('Signed out successfully', 'success');
-        showSessionStatus('Signed out', 'restored');
-    }
-
+    
     // Open create post modal
     function openCreatePostModal() {
         if (!currentUser) {
@@ -4251,7 +4460,7 @@
             document.body.classList.add('modal-open');
         }
     }
-
+    
     // Close create post modal
     function closeCreatePostModal() {
         if (elements.createPostModal) {
@@ -4272,42 +4481,7 @@
             elements.submitPostBtn.disabled = false;
         }
     }
-
-    // Handle tag input
-    function handleTagInput(event) {
-        if (event.key === 'Enter' || event.key === ',') {
-            event.preventDefault();
-            const tag = elements.postTags.value.trim();
-            if (tag) {
-                addTag(tag);
-                elements.postTags.value = '';
-            }
-        }
-    }
-
-    // Add tag
-    function addTag(tag) {
-        const tagId = 'tag-' + Date.now();
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag-item';
-        tagElement.id = tagId;
-        tagElement.innerHTML = `
-            ${tag}
-            <button class="tag-remove" onclick="removeTag('${tagId}')">&times;</button>
-        `;
-        if (elements.postTagsContainer) {
-            elements.postTagsContainer.appendChild(tagElement);
-        }
-    }
-
-    // Remove tag
-    function removeTag(tagId) {
-        const tagElement = document.getElementById(tagId);
-        if (tagElement) {
-            tagElement.remove();
-        }
-    }
-
+    
     // Submit create post form
     async function submitCreatePostForm(event) {
         event.preventDefault();
@@ -4389,7 +4563,242 @@
             }
         }
     }
-
+    
+    // ====================
+    // ONBOARDING
+    // ====================
+    
+    function nextStep(step) {
+        // Validate step 2
+        if (step === 3 && selectedClubs.length === 0) {
+            showNotification('Please select at least one club to continue', 'error');
+            return;
+        }
+        
+        // Update step indicators
+        document.querySelectorAll('.step-indicator').forEach(indicator => {
+            indicator.classList.remove('active');
+        });
+        const stepIndicator = document.querySelector(`.step-indicator[data-step="${step}"]`);
+        if (stepIndicator) {
+            stepIndicator.classList.add('active');
+        }
+        
+        // Hide current step
+        document.querySelectorAll('.onboarding-slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+        
+        // Show next step
+        const stepElement = document.getElementById(`step${step}`);
+        if (stepElement) {
+            stepElement.classList.add('active');
+            currentStep = step;
+            
+            // Update selected clubs display for step 3
+            if (step === 3) {
+                updateSelectedClubsDisplay();
+            }
+        }
+    }
+    
+    function prevStep() {
+        const prevStep = currentStep - 1;
+        if (prevStep >= 1) {
+            nextStep(prevStep);
+        }
+    }
+    
+    function toggleClubSelection(clubId) {
+        const clubCard = document.querySelector(`.club-card[data-club="${clubId}"]`);
+        const index = selectedClubs.indexOf(clubId);
+        
+        if (index === -1) {
+            selectedClubs.push(clubId);
+            if (clubCard) {
+                clubCard.classList.add('selected');
+            }
+        } else {
+            selectedClubs.splice(index, 1);
+            if (clubCard) {
+                clubCard.classList.remove('selected');
+            }
+        }
+        
+        updateContinueButton();
+    }
+    
+    function updateContinueButton() {
+        const continueBtn = elements.continueToStep3Btn;
+        if (continueBtn) {
+            continueBtn.disabled = selectedClubs.length === 0;
+        }
+    }
+    
+    function updateSelectedClubsDisplay() {
+        const selectedClubsList = elements.selectedClubsList;
+        if (!selectedClubsList) return;
+        
+        selectedClubsList.innerHTML = selectedClubs.map(clubId => {
+            const club = clubs[clubId];
+            return `
+                <div style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: white; border-radius: 16px; border: 1.5px solid ${club.color}20;">
+                    <i class="${club.icon}" style="color: ${club.color}; font-size: 0.9rem;"></i>
+                    <span style="font-weight: 600; font-size: 0.85rem;">${club.name}</span>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // ====================
+    // GOOGLE SIGN-IN
+    // ====================
+    
+    // Google Sign-In Handler
+    async function handleGoogleSignIn(response) {
+        try {
+            const credential = response.credential;
+            const userData = parseJwt(credential);
+            
+            currentUser = {
+                uid: userData.sub,
+                email: userData.email,
+                firstName: userData.given_name,
+                lastName: userData.family_name,
+                fullName: userData.name,
+                picture: userData.picture,
+                emailVerified: userData.email_verified
+            };
+            
+            // Store session
+            storeUserSession(currentUser, credential);
+            
+            const userRef = database.ref(`users/${currentUser.uid}`);
+            const snapshot = await userRef.once('value');
+            
+            if (!snapshot.exists()) {
+                // New user
+                const newUser = {
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    firstName: currentUser.firstName,
+                    lastName: currentUser.lastName,
+                    profilePicture: currentUser.picture,
+                    joinedDate: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    membershipStatus: "active",
+                    membershipTier: "inner-circle",
+                    selectedClubs: selectedClubs,
+                    bookmarkedPosts: [],
+                    followers: [],
+                    following: [],
+                    isAdmin: false,
+                    status: "active"
+                };
+                
+                await userRef.set(newUser);
+                currentUserData = newUser;
+                showNotification(`Welcome to THE SONGA Inner Circle, ${currentUser.firstName}!`, 'success');
+            } else {
+                // Existing user
+                await userRef.update({ 
+                    lastLogin: new Date().toISOString(),
+                    selectedClubs: selectedClubs
+                });
+                currentUserData = snapshot.val();
+                showNotification(`Welcome back, ${currentUser.firstName}!`, 'success');
+            }
+            
+            updateUIForMember();
+            if (elements.signinModal) {
+                elements.signinModal.classList.remove('active');
+                document.body.classList.remove('modal-open');
+            }
+            
+            // Setup realtime listeners
+            setupRealtimeListeners();
+            
+            // Add PWA install option
+            addPWAInstallOption();
+            
+            // Request notification permission
+            requestNotificationPermission();
+            
+            // Reset onboarding
+            selectedClubs = [];
+            currentStep = 1;
+            document.querySelectorAll('.club-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            updateContinueButton();
+            
+        } catch (error) {
+            console.error('Error in Google Sign-In:', error);
+            showNotification('Error signing in. Please try again.', 'error');
+        }
+    }
+    
+    // Parse JWT token
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => 
+                '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+            ).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (error) {
+            console.error('Error parsing JWT:', error);
+            return {};
+        }
+    }
+    
+    // Sign out
+    function signOut() {
+        clearUserSession();
+        currentUser = null;
+        currentUserData = null;
+        selectedClubs = [];
+        
+        // Close all modals
+        document.querySelectorAll('.modal.active').forEach(modal => {
+            modal.classList.remove('active');
+        });
+        document.body.classList.remove('modal-open');
+        
+        // Update UI
+        if (elements.userProfile) elements.userProfile.style.display = 'none';
+        if (elements.createPostBtn) elements.createPostBtn.style.display = 'none';
+        if (elements.notificationBtn) elements.notificationBtn.style.display = 'none';
+        
+        // Reset onboarding
+        currentStep = 1;
+        document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
+            slide.classList.toggle('active', index === 0);
+        });
+        document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === 0);
+        });
+        
+        // Remove PWA install option
+        const pwaInstallOption = document.getElementById('pwaInstallOption');
+        if (pwaInstallOption) {
+            pwaInstallOption.remove();
+        }
+        
+        // Show signin modal
+        if (elements.signinModal) {
+            showSigninModal();
+        }
+        
+        showNotification('Signed out successfully', 'success');
+        showSessionStatus('Signed out', 'restored');
+    }
+    
+    // ====================
+    // EVENT LISTENERS
+    // ====================
+    
     // Initialize event listeners
     function initEventListeners() {
         // Logo click
@@ -4398,19 +4807,19 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
-
+    
         // Back to top
         if (elements.backToTop) {
             elements.backToTop.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
-
+    
         // Create post button
         if (elements.createPostBtn) {
             elements.createPostBtn.addEventListener('click', openCreatePostModal);
         }
-
+    
         // Notification button
         if (elements.notificationBtn) {
             elements.notificationBtn.addEventListener('click', () => {
@@ -4425,7 +4834,7 @@
                 }
             });
         }
-
+    
         // User profile dropdown
         if (elements.userProfile) {
             elements.userProfile.addEventListener('click', (e) => {
@@ -4435,7 +4844,7 @@
                 }
             });
         }
-
+    
         // Close dropdowns when clicking outside
         document.addEventListener('click', () => {
             if (elements.userDropdown) {
@@ -4443,7 +4852,7 @@
             }
             closePostOptions();
         });
-
+    
         // Filter buttons (feed page only)
         if (elements.filterAllBtn) {
             elements.filterAllBtn.addEventListener('click', () => filterPosts('all'));
@@ -4452,7 +4861,7 @@
             elements.filterResourceBtn.addEventListener('click', () => filterPosts('resource'));
             elements.filterDiscussionBtn.addEventListener('click', () => filterPosts('discussion'));
         }
-
+    
         // New posts indicator (feed page only)
         if (elements.newPostsIndicator) {
             elements.newPostsIndicator.addEventListener('click', () => {
@@ -4460,13 +4869,13 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
-
+    
         // Onboarding buttons
         if (elements.startOnboardingBtn) elements.startOnboardingBtn.addEventListener('click', () => nextStep(2));
         if (elements.backToStep1Btn) elements.backToStep1Btn.addEventListener('click', () => prevStep());
         if (elements.continueToStep3Btn) elements.continueToStep3Btn.addEventListener('click', () => nextStep(3));
         if (elements.backToStep2Btn) elements.backToStep2Btn.addEventListener('click', () => prevStep());
-
+    
         // Club selection
         document.querySelectorAll('.club-card').forEach(card => {
             card.addEventListener('click', () => {
@@ -4474,12 +4883,12 @@
                 toggleClubSelection(clubId);
             });
         });
-
+    
         // Sign out
         if (elements.signOutOption) {
             elements.signOutOption.addEventListener('click', signOut);
         }
-
+    
         // Modal close buttons
         if (elements.closeSigninModal) {
             elements.closeSigninModal.addEventListener('click', () => {
@@ -4487,14 +4896,14 @@
                 document.body.classList.remove('modal-open');
             });
         }
-
+    
         if (elements.closeNotificationsModal) {
             elements.closeNotificationsModal.addEventListener('click', () => {
                 elements.notificationsModal.classList.remove('active');
                 document.body.classList.remove('modal-open');
             });
         }
-
+    
         if (elements.closeCreatePostModal) {
             elements.closeCreatePostModal.addEventListener('click', closeCreatePostModal);
         }
@@ -4513,7 +4922,7 @@
         if (elements.confirmDeleteBtn) {
             elements.confirmDeleteBtn.addEventListener('click', deletePost);
         }
-
+    
         // Create post form
         if (elements.createPostForm) {
             elements.createPostForm.addEventListener('submit', submitCreatePostForm);
@@ -4527,7 +4936,7 @@
         if (elements.removeImageBtn) {
             elements.removeImageBtn.addEventListener('click', removeImage);
         }
-
+    
         // Close modals when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
@@ -4540,7 +4949,7 @@
                 }
             });
         });
-
+    
         // Escape key to close modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -4553,16 +4962,11 @@
                 }
             }
         });
-
+    
         // Scroll handling
         window.addEventListener('scroll', handleScroll);
-        
-        // Request notification permission
-        if ('Notification' in window && Notification.permission === 'default') {
-            Notification.requestPermission();
-        }
     }
-
+    
     // Handle scroll
     function handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -4585,7 +4989,11 @@
             }
         }
     }
-
+    
+    // ====================
+    // INITIALIZATION
+    // ====================
+    
     // Initialize the app
     function initializeApp() {
         // Check authentication
@@ -4594,15 +5002,18 @@
         // Initialize event listeners
         initEventListeners();
         
+        // Initialize PWA
+        initializePWA();
+        
         // Load posts if on feed page
         if (elements.postsContainer) {
             loadPosts();
         }
     }
-
+    
     // Initialize when DOM is ready
     document.addEventListener('DOMContentLoaded', initializeApp);
-
+    
     // Make functions available globally
     window.handleGoogleSignIn = handleGoogleSignIn;
     window.openCreatePostModal = openCreatePostModal;
@@ -4620,6 +5031,8 @@
     window.removeTag = removeTag;
     window.viewImage = viewImage;
     window.viewNotification = viewNotification;
-</script>
+    window.requestPWAInstall = requestPWAInstall;
+    window.checkPWAStatus = checkPWAStatus;
+    </script>
 </body>
 </html>
